@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+          http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+          http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd
+          http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+          http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+">
+    <!-- 自动扫描dao和service包(自动注入) -->
+    <context:annotation-config/>
+    <mvc:annotation-driven/>
+
+    <!-- 配置datasource 也就是对于数据可链接的配置 -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/SingleShop"/>
+        <property name="username" value="root"/>
+        <property name="password" value="root"/>        <!-- 数据库用户账号和密码 -->
+        
+        <!-- 配置连接池的一些属性 -->
+        <property name="initialSize" value="1" /><!-- 初始化连接数量 --> 
+
+        <property name="minIdle" value="1" /><!-- 最小等待连接中的数量,设 0 为没有限制 -->
+        <property name="maxIdle" value="20" /><!-- 最大等待连接中的数量,设 0 为没有限制 -->
+        <property name="maxActive" value="200" /><!-- 连接池的最大数据库连接数。设为0表示无限制。 -->
+
+        <property name="maxWait" value="1000" /><!-- 最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。 -->  
+    </bean>
+    
+    <!-- 配置sessionFactory -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="packagesToScan">
+            <value>com.Shop.Model</value>
+        </property>     
+
+        <property name="hibernateProperties">
+            <!-- 配置hibernate -->
+            <props>
+                <!--设置数据库的方言-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!--设置是否显示SQL语句-->
+                <prop key="hibernate.show_sql">true</prop>
+                <!--设置是否自动更新数据库的表结构及是否自动创建表-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!--设置是否将SQL语句转化为良好的SQL语句-->
+                <prop key="hibernate.format_sql">false</prop>
+                
+                <!-- 设置二级缓存为true -->
+                <prop key="hibernate.cache.use_second_level_cache">true</prop>
+                <!--设置相应的查询缓存 -->
+                <prop key="hibernate.cache.use_query_cache">true</prop>
+                <!-- 设置二级缓存所提供的类 -->
+                <prop key="hibernate.cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</prop>
+                <!-- 在hibernate4.0之后需要设置facotory_class -->
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</prop>
+                <prop key="hibernate.cache.provider_configuration_file_resource_path">ehcache.xml</prop>
+            </props>
+        </property>       
+    </bean>
+    
+    <!-- 声明一个事务管理器来管理sessionFactory -->
+    <bean id="txManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    
+    <!-- 估计是为事务管理器做某些说明，指明一些方法的权限（只读OR读写） -->    
+    <tx:advice id="txAdvice" transaction-manager="txManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="del*" propagation="REQUIRED"/>
+            <tx:method name="update*" propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+    
+    <!-- 建立一个切面，指明什么时候要调用事务管理器 -->
+    <aop:config>
+        <aop:pointcut id="productServiceMethods" expression="execution(* com.Shop.Service.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="productServiceMethods"/>
+    </aop:config>
+    
+    <!-- 上传文件 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="20000000"></property>
+    </bean>
+
+    <!-- 用于注入到GeneralDao中 -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+    
+    <!-- 下面对于类对注入进行配置 -->
+    <bean id="daoTemplate" abstract="true">
+        <property ref="sessionFactory" name="sessionFactory"/>
+    </bean>
+    
+    <bean id="userDao" class="com.Shop.Dao.UserDao" parent="daoTemplate"/>
+
+
+
+    <bean id="userService" class="com.Shop.Service.UserService">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+
+</beans>
