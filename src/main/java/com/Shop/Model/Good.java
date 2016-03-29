@@ -14,18 +14,20 @@ import java.util.Date;
 @Table
 public class Good {
     private int id;
-    private String name;
-    private int num;
-    private String describes;
-    private Timestamp subTime;
-    private Timestamp downTime;
-    private int status;
-    private String firm;
-    private float wholesalePrices;
-    private float dumpingPrices;
-    private float productPrices;
-    private float wathcPrices;
-    private int wholesaleCount;
+    private String name;  //商品名
+    private int num;        //商品库存
+    private String describes;       //商品描述备注
+    private Timestamp subTime;      //上架时间
+    private Timestamp downTime;         //下架时间
+    private int status;                 //商品状态 1.上架 0.下架
+    private String firm;                    //商品厂家
+    private float pv;                       //pv值
+    private float wholesalePrices;          //促销价
+    private float dumpingPrices;                //倾销价
+    private float productPrices;                //商品零售价
+    private float wPrices;                  //倾销币查看价格
+    private int wholesaleCount;                 //起批量
+    private int saleCount;                      //销量
 
     @Id
     @GeneratedValue
@@ -117,19 +119,36 @@ public class Good {
         this.productPrices = productPrices;
     }
 
-    public float getWathcPrices() {
-        return wathcPrices;
-    }
-
-    public void setWathcPrices(float wathcPrices) {
-        this.wathcPrices = wathcPrices;
-    }
-
     public int getWholesaleCount() {
         return wholesaleCount;
     }
 
     public void setWholesaleCount(int wholesaleCount) {
         this.wholesaleCount = wholesaleCount;
+    }
+
+    public float getPv() {
+        return pv;
+    }
+
+    public void setPv(float pv) {
+        this.pv = pv;
+    }
+
+
+    public int getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(int saleCount) {
+        this.saleCount = saleCount;
+    }
+
+    public float getwPrices() {
+        return wPrices;
+    }
+
+    public void setwPrices(float wPrices) {
+        this.wPrices = wPrices;
     }
 }

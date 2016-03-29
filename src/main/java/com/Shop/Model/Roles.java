@@ -10,7 +10,10 @@ import javax.persistence.*;
 public class Roles {
     private int id;
     private String name;
-    private Area area;
+    private String phone;
+    private String EMail;
+    private int OpenId;
+    private Areas areas;
 
     @Id
     @GeneratedValue
@@ -31,11 +34,35 @@ public class Roles {
     }
 
     @ManyToOne
-    public Area getArea() {
-        return area;
+    public Areas getAreas() {
+        return areas;
     }
 
-    public void setArea(Area area) {
-        this.area = area;
+    public void setAreas(Areas areas) {
+        this.areas = areas;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getEMail() {
+        return EMail;
+    }
+
+    public void setEMail(String EMail) {
+        this.EMail = EMail;
+    }
+
+    public int getOpenId() {
+        return OpenId;
+    }
+
+    public void setOpenId(int openId) {
+        OpenId = openId;
     }
 }

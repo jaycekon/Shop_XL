@@ -16,8 +16,10 @@
     <!-- 指明要扫描的controller所在位置 -->
     <context:component-scan base-package="com.Shop.Controller"/>
 
+    <mvc:resources mapping="/app/**" location="/app/"/>
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="prefix" value="/app/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
 </beans>

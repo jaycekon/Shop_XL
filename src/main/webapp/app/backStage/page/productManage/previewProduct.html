@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一内购后台管理系统</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/components.css">
+
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- [[头部 -->
+    <header class="header">
+        <img src="" alt="一内购" class="logo">
+        <button class="btnExit" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
+    </header>
+    <!-- 头部]] -->
+
+    <!-- [[页面主体 -->
+    <div class="mainBody container-fluid">
+
+        <div class="row">
+
+            <!-- [[ 左边导航 -->
+            <ul class="navigation col-md-2">
+                <li>
+                    <a href="./../index.html"><div class="navItem"><span class="glyphicon glyphicon-home"></span>首页</div></a>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../userManage/copartner.html">合伙人</a></li>
+                        <li><a href="./../userManage/port.html">端口</a></li>
+                        <li><a href="./../userManage/member.html">会员</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem active"><span class="glyphicon glyphicon-tag"></span>商品管理</div>
+                    <ul class="subNav" style="display: block;">
+                        <li><a href="./../productManage/magCategory.html">商品类别</a></li>
+                        <li class="active"><a href="./../productManage/productVerify.html">商品审核</a></li>
+                        <li><a href="./../productManage/productQuery.html">商品查询</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-file"></span>订单管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../orderManage/orderList.html">订单列表</a></li>
+                        <li><a href="./../orderManage/orderCheck.html">订单查询</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-credit-card"></span>财务管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../financingManage/widthQuery.html">提现查询</a></li>
+                        <li><a href="./../financingManage/memberCommissionWithdraw.html">会员佣金提现</a></li>
+                        <li><a href="./../financingManage/portLoanWithdraw.html">端口货款提现</a></li>
+                        <li><a href="./../financingManage/portCommissionWithdraw.html">端口佣金提现</a></li>
+                        <li><a href="./../financingManage/partnerCommissionWithdraw.html">合伙人佣金提现</a></li>
+                        <li><a href="./../financingManage/platformCommissionIncome.html">平台佣金收入</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-wrench"></span>系统设置</div>
+                    <ul class="subNav">
+                        <li><a href="./../systemManage/indexCarousel.html">首页轮播</a></li>
+                        <li><a href="./../systemManage/commissionParameter.html">佣金参数</a></li>
+                    </ul>
+                </li>
+            </ul> <!-- 左边导航]] -->
+
+            <!-- [[右边操作页面 -->
+            <div class="content col-md-9 productDetail">
+
+                <div class="row">
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label control-label1">端口：</label>
+                        <div class="col-md-10 textShow">
+                            扎根网络科技
+                            <!-- QQ号为要联系的人的qq号 -->
+                            <a href="tencent://message/?uin=2965366058"><img src="./../../image/QQ.png" alt="" class="contactImg" /></a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label">商品编号：</label>
+                        <div class="col-md-10 textShow">这些是显示商品编号的</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label">申请时间：</label>
+                        <div class="col-md-10 textShow">2012-02-02 12:12:12</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="product-img col-md-6">
+                        <img src="../../image/carousel2.jpg" alt=""/>
+                    </div>
+                    <!-- [[商品信息-->
+                    <div class="product-message text-left col-md-5 col-md-offset-1">
+                        <div class="title">果就是果七件套餐</div>
+                        <div class="price"><span>销售价：</span>￥123.00</div>
+                        <div class="stocks"><span>库存：</span>123</div>
+                        <div class="specifice text-left">
+                            <label for="specifice">规格：</label>
+                            <select name="specifice" id="specifice">
+                                <option value="0">规格一</option>
+                                <option value="1">规格二</option>
+                                <option value="2">规格三</option>
+                            </select>
+                        </div>
+                        <div class="sales"><span>销量：</span>21314</div>
+                        <div class="freight"><span>运费：</span>￥9.99</div>
+                        <div class="remarks inOneLine" id="myRemark">
+                            <span>备注：</span>呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒
+                        </div>
+                        <!-- tooltip -->
+                        <div class="tooltip">放置跟备注信息一样的内容</div>
+                    </div>
+                </div>
+                <!-- 商品信息]]-->
+                <!-- [[商品介绍-评价-->
+                <div class="introduce-evaluate text-left">
+                    <div class="tab clearfix">
+                        <span class="active">商品介绍</span>
+                        <span class="">商品评价</span>
+                    </div>
+                    <div class="introduce-content">
+                        <div class="introduce-msg">呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒</div>
+                        <img src="../../image/carousel2.jpg" alt=""/>
+                    </div>
+                    <div class="evalute-content text-center" style="display: none;">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <td>用户昵称</td>
+                                <td>产品规格</td>
+                                <td>评价</td>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>魔鬼的翅膀</td>
+                                <td>规格1</td>
+                                <td>真心不错啊</td>
+                            </tr>
+                            <tr>
+                                <td>我是撒旦</td>
+                                <td>规格2</td>
+                                <td>真心黑啊</td>
+                            </tr>
+                            <tr>
+                                <td>我是宙斯</td>
+                                <td>规格3</td>
+                                <td>骗你的啦</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <!-- 商品介绍-评价]]-->
+            </div>
+            <!-- 右边操作页面]] -->
+        </div>
+
+    </div>
+    <!-- 页面主体]] -->
+</div>
+<!-- wrapper]] -->
+
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script>
+    var dom = {
+        $span : $('.tab').find('span'),
+        $introduce : $('.introduce-content'),
+        $evalute : $('.evalute-content')
+    };
+
+    //*产品详情tab*//
+    dom.$span.on('click',function(){
+        $(this).siblings().removeClass('active');
+        $(this).addClass('active');
+
+        var index = $(this).index();
+
+        if(index == 0){
+            dom.$introduce.show();
+            dom.$evalute.hide();
+        }else{
+            dom.$introduce.hide();
+            dom.$evalute.show();
+        }
+    });
+
+    /* 备注tooltip */
+    $('#myRemark').bind('click',function(){
+        $(this).siblings('.tooltip').toggle();
+    });
+    $('#myRemark').bind('mouseover',function(){
+        $(this).siblings('.tooltip').fadeIn();
+    });
+    $('#myRemark').bind('mouseout',function(){
+        $(this).siblings('.tooltip').fadeOut();
+    });
+</script>
+</body>
+</html>

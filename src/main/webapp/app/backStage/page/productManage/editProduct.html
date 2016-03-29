@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一内购后台管理系统</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/common.css">
+    <link rel="stylesheet" type="text/css" href="../../css/components.css">
+
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- [[头部 -->
+    <header class="header">
+        <img src="" alt="一内购" class="logo">
+        <button class="btnExit" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
+    </header>
+    <!-- 头部]] -->
+
+    <!-- [[页面主体 -->
+    <div class="mainBody container-fluid">
+
+        <div class="row">
+
+            <!-- [[ 左边导航 -->
+            <ul class="navigation col-md-2">
+                <li>
+                    <a href="./../index.html"><div class="navItem"><span class="glyphicon glyphicon-home"></span>首页</div></a>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../userManage/copartner.html">合伙人</a></li>
+                        <li><a href="./../userManage/port.html">端口</a></li>
+                        <li><a href="./../userManage/member.html">会员</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem active"><span class="glyphicon glyphicon-tag"></span>商品管理</div>
+                    <ul class="subNav" style="display: block;">
+                        <li><a href="./../productManage/magCategory.html">商品类别</a></li>
+                        <li class="active"><a href="./../productManage/productVerify.html">商品审核</a></li>
+                        <li><a href="./../productManage/productQuery.html">商品查询</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-file"></span>订单管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../orderManage/orderList.html">订单列表</a></li>
+                        <li><a href="./../orderManage/orderCheck.html">订单查询</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-credit-card"></span>财务管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../financingManage/widthQuery.html">提现查询</a></li>
+                        <li><a href="./../financingManage/memberCommissionWithdraw.html">会员佣金提现</a></li>
+                        <li><a href="./../financingManage/portLoanWithdraw.html">端口货款提现</a></li>
+                        <li><a href="./../financingManage/portCommissionWithdraw.html">端口佣金提现</a></li>
+                        <li><a href="./../financingManage/partnerCommissionWithdraw.html">合伙人佣金提现</a></li>
+                        <li><a href="./../financingManage/platformCommissionIncome.html">平台佣金收入</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-wrench"></span>系统设置</div>
+                    <ul class="subNav">
+                        <li><a href="./../systemManage/indexCarousel.html">首页轮播</a></li>
+                        <li><a href="./../systemManage/commissionParameter.html">佣金参数</a></li>
+                    </ul>
+                </li>
+            </ul> <!-- 左边导航]] -->
+
+            <!-- [[右边操作页面 -->
+            <div class="content col-md-9 publishProduct">
+                <!-- [[商品信息-->
+                <form class="product-message form-horizontal">
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label control-label1">端口：</label>
+                        <div class="col-md-10 textShow">
+                            扎根网络科技
+                            <!-- QQ号为要联系的人的qq号 -->
+                            <a href="tencent://message/?uin=2965366058"><img src="./../../image/QQ.png" alt="" class="contactImg" /></a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label">商品编号：</label>
+                        <div class="col-md-10 textShow">这些是显示商品编号的</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label">申请时间：</label>
+                        <div class="col-md-10 textShow">2012-02-02 12:12:12</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="type" class="col-md-2 control-label">商品分类：</label>
+                        <div class="col-md-10">
+                            <select name="" id="type" class="form-control">
+                                <option value="">商品1</option>
+                                <option value="">商品2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subType" class="col-md-2 control-label">子类：</label>
+                        <div class="col-md-10">
+                            <!--<input type="text" id="subType" class="form-control"/>-->
+                            <select name="" id="subType" class="form-control">
+                                <option value="">子类1</option>
+                                <option value="">子类2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="name" class="col-md-2 control-label">商品名：</label>
+                        <div class="col-md-10">
+                            <input type="text" id="name" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="frontPrice" class="col-md-2 control-label">封面价：</label>
+                        <div class="col-md-10 text-left">
+                            <input type="text" id="frontPrice" class="form-control"/> 元
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="remark" class="col-md-2 control-label">备注：</label>
+                        <div class="col-md-10">
+                       <!--     <input type="text" id="remark" class="form-control"/>-->
+                            <textarea name="" id="remark" rows="5" id="remark" class="form-control" maxlength="100"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group frontPage">
+                        <label class="col-md-2">商品封面(最多5张)：</label>
+                        <div class="col-md-10 img-content">
+                            <div class="col-md-2 add">
+                                <span class="addIcon">+</span>
+                                <span class="cancel">X</span>
+                                <input type="file" accept="image/*" name="" class="file"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="detail" class="col-md-2 control-label">详情介绍：</label>
+                        <div class="col-md-10">
+                            <textarea name="detail" class="form-control" id="detail" rows="10"></textarea>
+                        </div>
+                    </div>
+                    <!-- [[规格-->
+
+                    <div class="form-group">
+                        <label for="addSpecBtn" class="col-md-2 control-label">添加商品规格：</label>
+                        <div class="col-md-10 text-left">
+                            <input type="button" class="btn btn-warning" id="addspecbtn" value="添加商品规格"/>
+                        </div>
+                    </div>
+                    <div class="specific col-md-offset-2">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label"></label>
+                            <div class="col-md-10 text-right">
+                                <span class="glyphicon glyphicon-trash glyphicconDel"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">规格：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control spec"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">价格：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control price"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">库存：</label>
+                            <div class="col-md-10">
+                                <input type="text" class="form-control stock"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- 规格]]-->
+
+                    <!-- [[未审核 -->
+                    <div class="form-group">
+                        <label for="subBtn" class="col-md-2 control-label"></label>
+                        <div class="col-md-10 text-left">
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并通过审核"/>
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并不通过审核"/>
+                        </div>
+                    </div> <!-- 未审核]] -->
+
+                    <!-- [[通过审核 -->
+                    <div class="form-group">
+                        <label for="subBtn" class="col-md-2 control-label"></label>
+                        <div class="col-md-10 text-left">
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并下架"/>
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并上架"/>
+                        </div>
+                    </div><!-- 通过审核]] -->
+
+                    <!-- [[不通过审核 -->
+                    <div class="form-group">
+                        <label for="subBtn" class="col-md-2 control-label"></label>
+                        <div class="col-md-10 text-left">
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并通过审核"/>
+                        </div>
+                    </div> <!-- 不通过审核]] -->
+
+                    <!-- [[已上架 -->
+                    <div class="form-group">
+                        <label for="subBtn" class="col-md-2 control-label"></label>
+                        <div class="col-md-10 text-left">
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并下架"/>
+                        </div>
+                    </div><!-- 已上架]] -->
+
+                    <!-- [[已下架 -->
+                    <div class="form-group">
+                        <label for="subBtn" class="col-md-2 control-label"></label>
+                        <div class="col-md-10 text-left">
+                            <input class="btn btn-primary" id="subBtn" type="button" value="保存并上架"/>
+                        </div>
+                    </div><!-- 已下架]] -->
+
+                </form>
+            </div>
+            <!-- 右边操作页面]] -->
+        </div>
+
+    </div>
+    <!-- 页面主体]] -->
+</div>
+<!-- wrapper]] -->
+
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../script/product.js"></script>
+</body>
+</html>

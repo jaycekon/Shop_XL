@@ -10,9 +10,12 @@ import javax.persistence.*;
 public class OrderProduct {
     private int id;
     private int count;
-    private double prices;
-    private Good good;
+    private float prices;
+    private String name;
+    private int good_id;
+    private String image;
     private Cart cart;
+    private Orders orders;
 
     @Id
     @GeneratedValue
@@ -32,21 +35,12 @@ public class OrderProduct {
         this.count = count;
     }
 
-    public double getPrices() {
+    public float getPrices() {
         return prices;
     }
 
-    public void setPrices(double prices) {
+    public void setPrices(float prices) {
         this.prices = prices;
-    }
-
-    @ManyToOne
-    public Good getGood() {
-        return good;
-    }
-
-    public void setGood(Good good) {
-        this.good = good;
     }
 
 
@@ -57,5 +51,39 @@ public class OrderProduct {
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+
+    @ManyToOne
+    public Orders getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getGood_id() {
+        return good_id;
+    }
+
+    public void setGood_id(int good_id) {
+        this.good_id = good_id;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

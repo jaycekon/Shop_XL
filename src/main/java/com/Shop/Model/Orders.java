@@ -1,9 +1,6 @@
 package com.Shop.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -12,16 +9,24 @@ import java.util.Date;
 @Entity
 @Table
 public class Orders {
-    private int id;
-    private int number;
-    private int status;
-    private double prices;
-    private Date setTime;
-    private Date payTime;
-    private String firm;
-    private String payType;
-    private int stream;
-    private int refund;
+    private int id;             //订单号
+    private int number;             //商品数量
+    private int status;             //订单状态
+    private double prices;              //订单总额
+    private Date setTime;               //下单时间
+    private Date payTime;               //付款时间
+    private String payType;                 //付款方式
+    private int stream;                 //物流
+    private int refund;                 //退款申请
+    private String name;                //收货人
+    private String address;             //收货地址
+    private String phone;               //联系电话
+    private Roles roles;
+    private float rolesProfit;
+    private Areas areas;
+    private float areaProfit;
+    private User user;
+
 
 
     @Id
@@ -74,13 +79,6 @@ public class Orders {
         this.payTime = payTime;
     }
 
-    public String getFirm() {
-        return firm;
-    }
-
-    public void setFirm(String firm) {
-        this.firm = firm;
-    }
 
     public String getPayType() {
         return payType;
@@ -104,5 +102,50 @@ public class Orders {
 
     public void setRefund(int refund) {
         this.refund = refund;
+    }
+
+    @ManyToOne
+    public Roles getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Roles roles) {
+        this.roles = roles;
+    }
+
+    public float getRolesProfit() {
+        return rolesProfit;
+    }
+
+    public void setRolesProfit(float rolesProfit) {
+        this.rolesProfit = rolesProfit;
+    }
+
+
+    @ManyToOne
+    public Areas getAreas() {
+        return areas;
+    }
+
+    public void setAreas(Areas areas) {
+        this.areas = areas;
+    }
+
+    public float getAreaProfit() {
+        return areaProfit;
+    }
+
+    public void setAreaProfit(float areaProfit) {
+        this.areaProfit = areaProfit;
+    }
+
+
+    @ManyToOne
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>一内购后台管理系统</title>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="../../css/systemManager.css">
+
+</head>
+<body>
+
+<div class="wrapper">
+    <!-- [[头部 -->
+    <header class="header">
+        <img src="" alt="一内购" class="logo">
+        <button class="btnExit" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
+    </header>
+    <!-- 头部]] -->
+
+    <!-- [[页面主体 -->
+    <div class="mainBody container-fluid">
+
+        <div class="row">
+
+            <!-- [[ 左边导航 -->
+            <ul class="navigation col-md-2">
+                <li>
+                    <a href="./../index.html"><div class="navItem"><span class="glyphicon glyphicon-home"></span>首页</div></a>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../userManage/copartner.html">合伙人</a></li>
+                        <li><a href="./../userManage/port.html">端口</a></li>
+                        <li><a href="./../userManage/member.html">会员</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-tag"></span>商品管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../productManage/magCategory.html">商品类别</a></li>
+                        <li><a href="./../productManage/productVerify.html">商品审核</a></li>
+                        <li><a href="./../productManage/productQuery.html">商品查询</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-file"></span>订单管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../orderManage/orderList.html">订单列表</a></li>
+                        <li><a href="./../orderManage/orderCheck.html">订单查询</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-credit-card"></span>财务管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../financingManage/widthQuery.html">提现查询</a></li>
+                        <li><a href="./../financingManage/memberCommissionWithdraw.html">会员佣金提现</a></li>
+                        <li><a href="./../financingManage/portLoanWithdraw.html">端口货款提现</a></li>
+                        <li><a href="./../financingManage/portCommissionWithdraw.html">端口佣金提现</a></li>
+                        <li><a href="./../financingManage/partnerCommissionWithdraw.html">合伙人佣金提现</a></li>
+                        <li><a href="./../financingManage/platformCommissionIncome.html">平台佣金收入</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem active"><span class="glyphicon glyphicon-wrench"></span>系统设置</div>
+                    <ul class="subNav" style="display: block;">
+                        <li><a href="./../systemManage/indexCarousel.html">首页轮播</a></li>
+                        <li class="active"><a href="./../systemManage/commissionParameter.html">佣金参数</a></li>
+                    </ul>
+                </li>
+            </ul> <!-- 左边导航]] -->
+
+            <!-- [[右边操作页面 -->
+            <div class="content col-md-10 parameter">
+                <div class="tip">提示：佣金比例按百分比计算</div>
+                <div class="row form-horizontal">
+                    <label class="col-md-3 control-label" for="port1">端口佣金/产品比例：</label>
+                    <div class="col-md-5">
+                        <input type="text" id="port1" class="form-control"/>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary">更新</button>
+                    </div>
+                </div>
+                <div class="row form-horizontal">
+                    <label class="col-md-3 control-label" for="port2">端口佣金比例：</label>
+                    <div class="col-md-5">
+                        <input type="text" id="port2" class="form-control"/>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary">更新</button>
+                    </div>
+                </div>
+                <div class="row form-horizontal">
+                    <label class="col-md-3 control-label">会员佣金比例：</label>
+                    <div class="col-md-9 level-content">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="level1">一级佣金比例：</label>
+                            <div class="col-md-9">
+                                <input type="text" id="level1" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="level2">二级佣金比例：</label>
+                            <div class="col-md-9">
+                                <input type="text" id="level2" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="level3">三级佣金比例：</label>
+                            <div class="col-md-9">
+                                <input type="text" id="level3" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9 text-left">
+                                <button class="btn btn-primary">更新</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-horizontal">
+                    <label class="col-md-3 control-label">合伙人佣金比例：</label>
+                    <div class="col-md-9 level-content">
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="less">10<=X<=50：</label>
+                            <div class="col-md-9">
+                                <input type="text" id="less" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="middle">50<=X<=100：</label>
+                            <div class="col-md-9">
+                                <input type="text" id="middle" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="more">100<=X：</label>
+                            <div class="col-md-9">
+                                <input type="text" id="more" class="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label"></label>
+                            <div class="col-md-9 text-left">
+                                <button class="btn btn-primary">更新</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <!-- 右边操作页面]] -->
+        </div>
+
+    </div>
+    <!-- 页面主体]] -->
+</div>
+<!-- wrapper]] -->
+
+<script src="/node_modules/jquery/dist/jquery.min.js"></script>
+<script src="../../script/systemManager.js"></script>
+<script src="../../script/common.js"></script>
+
+</body>
+</html>

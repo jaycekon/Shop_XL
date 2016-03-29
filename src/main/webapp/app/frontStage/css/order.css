@@ -1,0 +1,9 @@
+/* 订单列表 */
+.orderTab {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+.ui-notice {
+    height: 80%;
+}

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class GoodDao extends BaseDao implements IGeneralDao<Good> {
     public Good findById(int id) {
-        return (Good)super.hibernateTemplate.get("id",id);
+        return super.hibernateTemplate.get(Good.class,id);
     }
 
     public List<Good> findAll() {
@@ -20,7 +20,7 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
         String hql ="from Good";
         List<Good> goods = session.createQuery(hql).list();
         session.close();
-        return null;
+        return goods;
     }
 
     public void save(Good good) {
@@ -51,10 +51,11 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
 
     }
 
-    public List<Good> findByName(String name){
-        String hql ="from Good where name=:name";
+    public List<Good> findAllByName(String name){
+        String hql ="from Good where name like:name";
         Session session = super.openSession();
-        List<Good> goods = session.createQuery(hql).setParameter("name",name).list();
+        List<Good> goods = session.createQuery(hql).setParameter("name","%"+name+"%").list();
         return goods;
     }
+
 }

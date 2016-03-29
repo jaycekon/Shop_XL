@@ -102,11 +102,31 @@
     </bean>
     
     <bean id="userDao" class="com.Shop.Dao.UserDao" parent="daoTemplate"/>
+    <bean id="areaDao" class="com.Shop.Dao.AreaDao" parent="daoTemplate"/>
+    <bean id="rolesDao" class="com.Shop.Dao.RolesDao" parent="daoTemplate"/>
+    <bean id="goodDao" class="com.Shop.Dao.GoodDao" parent="daoTemplate"/>
+    <bean id="cartDao" class="com.Shop.Dao.CartDao" parent="daoTemplate"/>
+    <bean id="orderProductDao" class="com.Shop.Dao.OrderProductDao" parent="daoTemplate"/>
+    <bean id="terraceDao" class="com.Shop.Dao.TerraceDao" parent="daoTemplate"/>
+    <bean id="watchProductDao" class="com.Shop.Dao.WatchProductDao" parent="daoTemplate"/>
+    <bean id="imageDao" class="com.Shop.Dao.ImageDao" parent="daoTemplate"/>
 
 
 
     <bean id="userService" class="com.Shop.Service.UserService">
-        <property name="userDao" ref="userDao"/>
+        <!--<property name="userDao" ref="userDao"/>-->
+        <!--<property name="areaDao" ref="areaDao"/>-->
+        <!--<property name="rolesDao" ref="rolesDao"/>-->
+    </bean>
+
+
+    <bean id="goodService" class="com.Shop.Service.GoodService">
+    </bean>
+
+    <bean id="cartService" class="com.Shop.Service.CartService">
+    </bean>
+
+    <bean id="terraceService" class="com.Shop.Service.TerraceService">
     </bean>
 
 

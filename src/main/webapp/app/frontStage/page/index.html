@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>百城万店倾销网</title>
+
+    <link rel="stylesheet" type="text/css" href="./../lib/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="./../css/index.css">
+</head>
+<body>
+
+    <footer class="ui-footer ui-footer-stable ui-border-t">
+        <ul class="ui-tiled">
+            <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
+            <li class="footerItem"><i class="ui-icon-cart"></i><div>购物车</div></li>
+            <li class="footerItem"><i class="ui-icon-personal"></i><div>个人中心</div></li>
+        </ul>
+    </footer>
+
+    <section class="ui-container">
+
+        <!-- [[轮播图 -->
+        <div class="ui-slider">
+            <ul class="ui-slider-content" style="width: 300%">
+                <li><img src="./../image/carousel1.jpg" alt=""></li>
+                <li><img src="./../image/carousel2.jpg" alt=""></li>
+                <li><img src="./../image/carousel3.jpg" alt=""></li>
+            </ul>
+        </div><!-- 轮播图]] -->
+
+        <div class="productListWrapper">
+            <!-- [[产品列表 -->
+            <a class="productList" href="productDetail.html">
+                <div class="ui-row-flex">
+                    <div class="ui-col ui-col-2">
+                        <img src="./../image/1.jpg" alt="" class="productImg">
+                    </div>
+                    <div class="ui-col ui-col-3 ui-row-flex ui-whitespace ui-row-flex-ver productCol2">
+                        <p class="ui-col ui-nowrap ui-flex  ui-flex-align-center productName">自然堂雪域精粹纯粹滋润冰肌水(清润型)汇聚喜马拉雅5000米，滋润力量,提升肌肤角质屏障功能,优化肌肤保水力,令肌肤水润鲜活.欢迎访问自然堂(Chando)官网,发掘你与生俱来的美.</p>
+                        <p class="ui-col ui-flex  ui-flex-align-center productSpec">销售价：<span class="productMoney">&#165;159.00</span></p>
+                        <p class="ui-col ui-flex  ui-flex-align-center productSpec">批发价：<span class="productMoney">&#165;159.00</span></p>
+                        <p class="ui-col ui-flex  ui-flex-align-center"><button class="ui-btn productBtn wathcPrices">查看倾销价</button></p>
+                    </div>
+                </div>
+            </a><!-- 产品列表]] -->
+        </div>
+
+    </section>
+
+    <!-- [[点击查看需要倾销 -->
+    <div class="ui-dialog">
+        <div class="ui-dialog-cnt">
+            <div class="ui-dialog-bd">
+                <div>查看需要支付XX倾销币</div>
+            </div>
+            <div class="ui-dialog-ft">
+                <button type="button" data-role="button">取消</button>
+                <button type="button" data-role="button">去支付</button>
+            </div>
+        </div>
+    </div><!-- 点击查看需要倾销]] -->
+
+    <script src="./../lib/js/zepto.min.js"></script>
+    <script src="./../lib/js/frozen.js"></script>
+    <script src="./../js/index.js"></script>
+
+</body>
+</html>

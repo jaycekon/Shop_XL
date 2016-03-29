@@ -58,6 +58,7 @@ public class UserDao extends BaseDao implements IGeneralDao<User>{
         Session session = super.openSession();
         String hql = "from User where username=:name";
         return (User)session.createQuery(hql).setParameter("name",username).uniqueResult();
-//        return (User)super.hibernateTemplate.get(User.class,username);
     }
+
+
 }

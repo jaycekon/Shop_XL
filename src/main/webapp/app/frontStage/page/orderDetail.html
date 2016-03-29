@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <title>百城万店倾销网</title>
+
+    <link rel="stylesheet" type="text/css" href="./../lib/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="./../css/index.css">
+
+</head>
+<body>
+
+<header class="ui-header ui-header-stable ui-border-b">
+    <i class="ui-icon-return" onclick="history.back()"></i>
+    <h1>订单详情</h1>
+</header>
+
+<footer class="ui-footer ui-footer-stable ui-border-t">
+    <ul class="ui-tiled">
+        <li class="footerItem" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
+        <li class="footerItem"><i class="ui-icon-cart"></i><div>购物车</div></li>
+        <li class="footerItem"><i class="ui-icon-personal"></i><div>个人中心</div></li>
+    </ul>
+</footer>
+
+<section class="ui-container">
+
+    <!-- [[轮播图 -->
+    <div class="ui-slider productDetailSlider">
+        <ul class="ui-slider-content" style="width: 300%">
+            <li><img src="./../image/carousel1.jpg" alt=""></li>
+            <li><img src="./../image/carousel2.jpg" alt=""></li>
+            <li><img src="./../image/carousel3.jpg" alt=""></li>
+        </ul>
+    </div><!-- 轮播图]] -->
+
+    <!-- [[商品参数 -->
+    <div class="ui-row productSpecBlock">
+        <div class="ui-col ui-col-50">
+            <div class="specText"><span class="specTitle">零售价：</span>&#165;123.09</div>
+            <div class="specText"><span class="specTitle">市场价：</span>&#165;123.09</div>
+            <div class="specText"><span class="specTitle">运　费：</span>123</div>
+            <div class="specText"><button class="ui-btn productBtn">查看倾销价</button></div>
+        </div>
+        <div class="ui-col ui-col-50">
+            <div class="specText"><span class="specTitle">库　存：</span>123</div>
+            <div class="specText"><span class="specTitle">起批量：</span>1234</div>
+            <div class="specText"><span class="specTitle">销　量：</span>123</div>
+            <div><button class="ui-btn addCartBtn" id="addCartBtn"><i class="ui-icon-cart"></i></button></div>
+        </div>
+        <div class="ui-col ui-col-100 remark">
+            备注
+        </div>
+    </div>
+    <!-- 商品参数]] -->
+
+    <!-- [[商品介绍和评价-->
+    <div class="ui-tab bottomBlock">
+        <ul class="ui-tab-nav ui-border-b">
+            <li class="current">商品介绍</li>
+            <li>商品评价</li>
+        </ul>
+        <ul class="ui-tab-content" style="width:300%">
+            <!-- [[商品介绍内容 -->
+            <li class="productIntro">
+                <p class="content">这是正文内容</p>
+                <img src="../image/1.jpg" alt="">
+                <img src="../image/1.jpg" alt="">
+            </li><!-- 商品介绍内容]] -->
+            <!-- [[商品评价内容 -->
+            <li class="productComment">
+                <ul class="ui-list ui-list-pure ui-border-tb">
+                    <li class="ui-border-t">
+                        <p><span>1.faycheng </span><span class="date"> 2月12日</span></p>
+                        <h4>这本书太赞了，每次看都有不一样的体会和感悟，超级喜欢！期待大结局。</h4>
+                    </li>
+                    <li class="ui-border-t">
+                        <p><span>2.faycheng </span><span class="date"> 2月12日</span></p>
+                        <h4>这本书太赞了，每次看都有不一样的体会和感悟，超级喜欢！期待大结局。</h4>
+                    </li>
+                    <li class="ui-border-t">
+                        <p><span>3.faycheng </span><span class="date"> 2月12日</span></p>
+                        <h4>这本书太赞了，每次看都有不一样的体会和感悟，超级喜欢！期待大结局。</h4>
+                    </li>
+                </ul>
+            </li><!-- 商品评价内容]] -->
+        </ul>
+    </div>
+    <!-- 商品介绍和评价]]-->
+</section>
+
+<div class="ui-actionsheet">
+    <div class="rise_div">
+        <div class="rise_div_top">
+            <span class="ui-icon-close-page fr" id="rise_div_close"></span>
+        </div>
+        <div class="rise_div_mid select_num">
+            购买数量
+            <div class="selectBlock">
+                <button id="plus">&#43;</button>
+                <input type="text" value="1" id="num">
+                <button id="minus">&#45;</button>
+            </div>
+        </div>
+        <div class="rise_div_bottom">
+            <button class="lg_btn" id="addCartSure">确定</button>
+        </div>
+    </div>
+</div>
+
+<script src="./../lib/js/zepto.min.js"></script>
+<script src="./../lib/js/frozen.js"></script>
+<script src="./../js/index.js"></script>
+
+</body>
+</html>

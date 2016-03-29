@@ -16,11 +16,11 @@ public class TerraceDao extends BaseDao implements IGeneralDao<Terrace> {
     }
 
     public List<Terrace> findAll() {
-//        Session session = super.openSession();
-//        String hql = "from Terrace ";
-//        List<Terrace> terraces = session.createQuery(hql).list();
-//        session.close();
-        return null;
+        Session session = super.openSession();
+        String hql = "from Terrace ";
+        List<Terrace> terraces = session.createQuery(hql).list();
+        session.close();
+        return terraces;
     }
 
     public void save(Terrace terrace) {
@@ -49,5 +49,11 @@ public class TerraceDao extends BaseDao implements IGeneralDao<Terrace> {
 
     public void flush() {
 
+    }
+
+    public Terrace findByName(String name){
+        String hql = "from Terrace where name=:name";
+        Terrace terrace= (Terrace)super.openSession().createQuery(hql).setParameter("name",name).uniqueResult();
+        return terrace;
     }
 }
