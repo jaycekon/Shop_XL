@@ -3,22 +3,18 @@ package com.Shop.Controller;
 import com.Shop.Model.*;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.UserService;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -34,63 +30,63 @@ public class GoodController {
     private UserService userService;
 
 
-    @RequestMapping(value = "addGoodUp",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String addGoodUp(Good good,HttpSession session,HttpServletRequest request){
-        if(session.getAttribute("loginTerrace") == null){
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("status",false);
-            return jsonObject.toString();
-        }
-        good.setStatus(1);
-        goodService.addGood(good);
-        String[] address = request.getParameterValues("address");
-        Image image = null;
-        for(String str:address){
-            image = new Image();
-            image.setGood(good);
-            image.setAddress(str);
-            goodService.addImage(image);
-        }
-        Gson gson = new Gson();
-        String json = gson.toJson(good);
-        return json;
+    @RequestMapping(value ="addGood" ,method = RequestMethod.GET)
+    public String addGood(){
+        return "backStage/Product/productPublish";
     }
 
     @RequestMapping(value = "addGoodDown",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String addGoodDown(Good good,HttpSession session,HttpServletRequest request){
-        if(session.getAttribute("loginTerrace") == null){
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("status",false);
-            return jsonObject.toString();
-        }
+    public String addGoodDown(Good good,HttpSession session,@RequestParam("files")MultipartFile[] files){
+//        if(session.getAttribute("loginTerrace") == null){
+//            JsonObject jsonObject = new JsonObject();
+//            jsonObject.addProperty("status",false);
+//            return jsonObject.toString();
+//        }
         good.setStatus(0);
         goodService.addGood(good);
-        String[] address = request.getParameterValues("address");
-        Image image = null;
-        for(String str:address){
-            image = new Image();
-            image.setGood(good);
-            image.setAddress(str);
-            goodService.addImage(image);
+
+        String path="D:/XAMPP/xamp/htdocs/Shop_XL/";
+        for(int i = 0;i<files.length;i++){
+            System.out.println(i);
+            if(!files[i].isEmpty()){
+                String fileName = path + new Date().getTime() + good.getId()+".jpg";
+                try {
+                    //拿到输出流，同时重命名上传的文件
+                    FileOutputStream os = new FileOutputStream(fileName);
+                    //拿到上传文件的输入流
+                    FileInputStream in = (FileInputStream) files[i].getInputStream();
+                    //以写字节的方式写文件
+                    int b = 0;
+                    while((b=in.read()) != -1){
+                        os.write(b);
+                    }
+                    os.flush();
+                    os.close();
+                    in.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("上传出错");
+                }
+                Image image = new Image();
+                image.setAddress(fileName);
+                image.setGood(good);
+                goodService.addImage(image);
+            }
         }
-        Gson gson = new Gson();
-        String json = gson.toJson(good);
-        return json;
+        return "redirect:/listGood";
     }
 
-    @RequestMapping(value = "updateGood",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String updateGood(int id,HttpSession session){
+
+    @RequestMapping(value = "updateGood/{id}",method = RequestMethod.GET)
+    public String updateGood(@PathVariable(value ="id") int id,HttpSession session,HttpServletRequest request){
         if(session.getAttribute("loginTerrace") == null){
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("status",false);
             return jsonObject.toString();
         }
         Good good = goodService.findGoodById(id);
-        Gson gson = new Gson();
-        return gson.toJson(good);
+        request.setAttribute("good",good);
+        return "backStage/Product/previewProduct";
     }
 
     @RequestMapping(value = "updateGood",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
@@ -104,12 +100,12 @@ public class GoodController {
 
     @RequestMapping(value = "listGood",method = RequestMethod.GET)
     public String listGood(Model model,HttpSession session){
-        if(session.getAttribute("loginTerrace") == null){
-            return "redirect:/loginTerrace";
-        }
+//        if(session.getAttribute("loginTerrace") == null){
+//            return "redirect:/loginTerrace";
+//        }
         List<Good> goods = goodService.listGood();
         model.addAttribute("goods",goods);
-        return "backStage/page/productManage/productList";
+        return "backStage/Product/productList";
     }
 
     @RequestMapping(value = "findGoodByName",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
@@ -122,15 +118,11 @@ public class GoodController {
 
 
 
-    @RequestMapping(value = "changeStatus",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String changeStatus(int id,HttpSession session){
-        JsonObject object = new JsonObject();
-        if(session.getAttribute("loginTerrace") == null){
-            object.addProperty("status",false);
-            object.addProperty("message","用户未登录");
-            return object.toString();
-        }
+    @RequestMapping(value = "changeStatus/{id}",method = RequestMethod.GET)
+    public String changeStatus(@PathVariable(value = "id") int id,HttpSession session){
+//        if(session.getAttribute("loginTerrace") == null){
+//            return "redirect:/loginTerrace";
+//        }
         Good good = goodService.findGoodById(id);
         if(good.getStatus() == 1){
             good.setStatus(0);
@@ -139,48 +131,69 @@ public class GoodController {
             good.setStatus(1);
             goodService.updateGood(good);
         }
-        object.addProperty("status",true);
-        object.addProperty("message","货品状态更改成功");
-        return object.toString();
-    }
-    @RequestMapping(value = "/upload",method = RequestMethod.GET)
-    public String addGood(){
-        return "addFile";
+        return "redirect:/listGood";
     }
 
-    @RequestMapping(value = "/upload",method = RequestMethod.POST)
-    public String addUser(@RequestParam("files") CommonsMultipartFile[] files, HttpServletRequest request){
-        System.out.println(request.getSession().getServletContext().getRealPath("/app/img/"));
-//        String path = request.getServletPath()+"/app/img/good/";
-//        System.out.println(path);
-//        for(int i = 0;i<files.length;i++){
-//            System.out.println("fileName---------->" + files[i].getOriginalFilename());
-//
-//            if(!files[i].isEmpty()){
-//                int pre = (int) System.currentTimeMillis();
-//                try {
-//                    //拿到输出流，同时重命名上传的文件
-//                    FileOutputStream os = new FileOutputStream(path + new Date().getTime() + files[i].getOriginalFilename());
-//                    //拿到上传文件的输入流
-//                    FileInputStream in = (FileInputStream) files[i].getInputStream();
-//
-//                    //以写字节的方式写文件
-//                    int b = 0;
-//                    while((b=in.read()) != -1){
-//                        os.write(b);
-//                    }
-//                    os.flush();
-//                    os.close();
-//                    in.close();
-//                    int finaltime = (int) System.currentTimeMillis();
-//                    System.out.println(finaltime - pre);
-//
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    System.out.println("上传出错");
-//                }
-//            }
-//        }
-        return "/success";
+    @RequestMapping(value = "goodDetail/{id}",method = RequestMethod.GET)
+    public String goodDetail(@PathVariable(value ="id")int id,HttpSession session,Model model){
+        Good good= goodService.findGoodById(id);
+        model.addAttribute("good",good);
+        List<String> address = goodService.findImageByGoodId(good.getId());
+        model.addAttribute("address",address);
+        return "backStage/Product/previewProduct";
+    }
+
+    @RequestMapping(value = "editGood/{id}",method = RequestMethod.GET)
+    public String editGood(@PathVariable(value = "id") int id,HttpSession session,Model model){
+        Good good = goodService.findGoodById(id);
+        model.addAttribute("good",good);
+        return "backStage/Product/editProduct";
+    }
+
+    @RequestMapping(value = "editGood/{id}",method = RequestMethod.POST)
+    public String editGood(@PathVariable(value = "id") int id,HttpSession session,Good good,@RequestParam("files")MultipartFile[] files){
+        Good g = goodService.findGoodById(id);
+        g.setName(good.getName());
+        g.setWholesaleCount(good.getWholesaleCount());
+        g.setNum(good.getNum());
+        System.out.println(good.getDescribes());
+        g.setDescribes(good.getDescribes());
+        g.setDumpingPrices(good.getDumpingPrices());
+        g.setProductPrices(good.getProductPrices());
+        g.setSaleCount(good.getSaleCount());
+        g.setPv(good.getPv());
+        g.setwPrices(good.getwPrices());
+        goodService.updateGood(g);
+        if(files.length>0){
+            goodService.clearImage(good.getId());
+            String path="D:/XAMPP/xamp/htdocs/Shop_XL/";
+            for(int i = 0;i<files.length;i++){
+                if(!files[i].isEmpty()){
+                    String fileName = path + new Date().getTime() + good.getId()+".jpg";
+                    try {
+                        //拿到输出流，同时重命名上传的文件
+                        FileOutputStream os = new FileOutputStream(fileName);
+                        //拿到上传文件的输入流
+                        FileInputStream in = (FileInputStream) files[i].getInputStream();
+                        //以写字节的方式写文件
+                        int b = 0;
+                        while((b=in.read()) != -1){
+                            os.write(b);
+                        }
+                        os.flush();
+                        os.close();
+                        in.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("上传出错");
+                    }
+                    Image image = new Image();
+                    image.setAddress(fileName);
+                    image.setGood(good);
+                    goodService.addImage(image);
+                }
+            }
+        }
+        return "redirect:/listGood";
     }
 }

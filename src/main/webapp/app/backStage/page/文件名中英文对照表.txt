@@ -11,8 +11,8 @@
 (6)会员  		 	       -->  member.html
 
 3.商品管理       （productManage)
-(1)类别管理			       -->  magCategory.html   subMagCategory.html
-(2)商品审核                -->  productVerify.html
+(1)商品列表			       -->  produtList.html
+(2)发布商品                -->  productPublish.html
 	(3)预览商品信息        -->  previewProduct.html
 	(4)编辑商品详情        -->  editProduct.html
 (5)商品查询                -->  productQuery.html

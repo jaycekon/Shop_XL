@@ -6,6 +6,9 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,9 +23,19 @@ public class UserService {
     @Autowired
     private RolesDao rolesDao;
     @Autowired
+    private GoodDao goodDao;
+    @Autowired
     private OrderProductDao orderProductDao;
     @Autowired
     private WatchProductDao watchProductDao;
+    @Autowired
+    private AddressDao addressDao;
+    @Autowired
+    private OrdersDao ordersDao;
+    @Autowired
+    private ImageDao imageDao;
+    @Autowired
+    private ProfitDao profitDao;
 
 
     public String addUser(User user){
@@ -43,7 +56,7 @@ public class UserService {
         return userDao.findById(id);
     }
 
-    public List<User> findAll(){
+    public List<User> listUser(){
         return userDao.findAll();
     }
 
@@ -58,6 +71,13 @@ public class UserService {
 
     }
 
+    public Roles getRoles(int id){
+        return rolesDao.findById(id);
+    }
+
+    public List<Roles> listRoles(){
+        return rolesDao.findAll();
+    }
     public boolean addArea(Areas areas){
         Areas a = areaDao.findByName(areas.getName());
         if(a == null){
@@ -69,8 +89,12 @@ public class UserService {
 
     }
 
-    public void addOrderProduct(OrderProduct orderProduct){
-        orderProductDao.save(orderProduct);
+    public Areas getArea(int id){
+        return areaDao.findById(id);
+    }
+
+    public List<Areas> listAreas(){
+        return areaDao.findAll();
     }
 
     public User loginUser(User user){
@@ -95,7 +119,7 @@ public class UserService {
     public boolean findWatchProductByUIdAndGId(int user_id,int good_id){
         WatchProduct watchProduct = watchProductDao.findByUIdAndPId(user_id,good_id);
         System.out.println("查看商品！");
-        if(watchProduct.getGood() == null){
+        if(watchProduct == null){
             System.out.println("商品未查看");
             return false;
         }else{
@@ -108,7 +132,7 @@ public class UserService {
         watchProductDao.save(watchProduct);
     }
 
-    public void buyGood(Cart cart,Good good,String imageAddress,int count){
+    public OrderProduct addOrderProduct(Cart cart,Good good,String imageAddress,int count){
         OrderProduct orderProduct = new OrderProduct();
         orderProduct.setCart(cart);
         orderProduct.setGood_id(good.getId());
@@ -116,10 +140,82 @@ public class UserService {
         orderProduct.setName(good.getName());
         orderProduct.setImage(imageAddress);
         orderProduct.setPrices(good.getDumpingPrices());
-        addOrderProduct(orderProduct);
+        Profit profit = profitDao.findById();
+        float areaProfit = good.getPv() * count * profit.getArea_count();
+        orderProduct.setAreaProfit(areaProfit/100);
+        float roleProfit = good.getPv() * count * profit.getRole_count();
+        orderProduct.setRoleProfit(roleProfit/100);
+        orderProductDao.save(orderProduct);
+        return orderProduct;
     }
 
-    public void watchGood(){
 
+    public HashMap addOrderProduct(int id,int count,User user){
+        //创建订单
+        Orders orders = new Orders();
+        orders.setUser(user);
+        orders.setNumber(count);
+        orders.setSetTime(new Date());
+        ordersDao.save(orders);
+
+        //创建订单项
+        OrderProduct orderProduct = new OrderProduct();
+        orderProduct.setCount(count);
+        Good good = goodDao.findById(id);
+        orderProduct.setName(good.getName());
+        orderProduct.setPrices(good.getDumpingPrices());
+        orderProduct.setGood_id(good.getId());
+        List<Image> images = imageDao.findAllByGoodId(good.getId());
+        orderProduct.setImage(images.get(0).getAddress());
+        orderProduct.setOrders(orders);
+        orderProductDao.save(orderProduct);
+        List<OrderProduct> orderProucts = new ArrayList<>();
+        orderProucts.add(orderProduct);
+        HashMap map = new HashMap();
+        map.put("orders",orders);
+        map.put("orderProduct",orderProucts);
+        return map;
+    }
+
+    public List<Address> listAddress(int id){
+        return addressDao.findByUserId(id);
+    }
+
+
+    public void updateOrderProduct(OrderProduct orderProduct){
+        orderProductDao.update(orderProduct);
+    }
+    public void addOrders(Orders orders){
+        ordersDao.save(orders);
+    }
+
+    public Orders findOrdersById(int id){
+        return ordersDao.findById(id);
+    }
+    public void updateOrders(Orders orders){
+        ordersDao.update(orders);
+    }
+
+    public List<Orders> listOrders(){
+        return ordersDao.findAll();
+    }
+    public List<Orders> listOrdersByF(int f){
+        return ordersDao.findAllByF(f);
+    }
+    public List<Orders> listOrdersByP(int p){
+        return ordersDao.findAllByP(p);
+    }
+    public List<Orders> listOrdersByC(int c){
+        return ordersDao.findAllByC(c);
+    }
+    public List<Orders> listOrdersByT(int t){
+        return ordersDao.findAllByT(t);
+    }
+    public List<Orders> listOrdersByD(int d){
+        return ordersDao.findAllByD(d);
+    }
+
+    public List<OrderProduct> findOrderProductByOrderId(int order_id){
+        return orderProductDao.findAllByOrderId(order_id);
     }
 }

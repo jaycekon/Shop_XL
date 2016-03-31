@@ -20,9 +20,9 @@
 
 <footer class="ui-footer ui-footer-stable ui-border-t">
     <ul class="ui-tiled">
-        <li class="footerItem" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-        <li class="footerItem"><i class="ui-icon-cart"></i><div>购物车</div></li>
-        <li class="footerItem"><i class="ui-icon-personal"></i><div>个人中心</div></li>
+        <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
+        <li class="footerItem"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
+        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
     </ul>
 </footer>
 
@@ -43,7 +43,7 @@
             <div class="specText"><span class="specTitle">零售价：</span>&#165;123.09</div>
             <div class="specText"><span class="specTitle">市场价：</span>&#165;123.09</div>
             <div class="specText"><span class="specTitle">运　费：</span>123</div>
-            <div class="specText"><button class="ui-btn productBtn">查看倾销价</button></div>
+            <div class="specText"><button class="ui-btn productBtn watchPrice">查看倾销价</button></div>
         </div>
         <div class="ui-col ui-col-50">
             <div class="specText"><span class="specTitle">库　存：</span>123</div>
@@ -92,7 +92,8 @@
     <!-- 商品介绍和评价]]-->
 </section>
 
-<div class="ui-actionsheet">
+<!-- [[选择商品数量-->
+<section class="ui-actionsheet">
     <div class="rise_div">
         <div class="rise_div_top">
             <span class="ui-icon-close-page fr" id="rise_div_close"></span>
@@ -109,7 +110,20 @@
             <button class="lg_btn" id="addCartSure">确定</button>
         </div>
     </div>
-</div>
+</section><!-- 选择商品数量]] -->
+
+<!-- [[点击查看需要倾销 -->
+<div class="ui-dialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div>查看需要支付XX倾销币</div>
+        </div>
+        <div class="ui-dialog-ft">
+            <button type="button" data-role="button">取消</button>
+            <button type="button" data-role="button">支付查看</button>
+        </div>
+    </div>
+</div><!-- 点击查看需要倾销]] -->
 
 <script src="./../lib/js/zepto.min.js"></script>
 <script src="./../lib/js/frozen.js"></script>

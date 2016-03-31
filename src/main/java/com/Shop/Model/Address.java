@@ -1,9 +1,6 @@
 package com.Shop.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Administrator on 2016/3/21 0021.
@@ -16,6 +13,7 @@ public class Address {
     private String area;
     private String phone;
     private String EMail;
+    private User user;
 
     @Id
     @GeneratedValue
@@ -57,5 +55,15 @@ public class Address {
 
     public void setEMail(String EMail) {
         this.EMail = EMail;
+    }
+
+
+    @ManyToOne
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

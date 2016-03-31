@@ -19,7 +19,7 @@
     <header class="header container-fluid">
         <div class="row">
             <div class="col-xs-3">
-                <img src="../image/logo.jpg" alt="一内购" class="logo img-responsive">
+                <img src="../../image/logo.jpg" alt="一内购" class="logo img-responsive">
                 <button class="navbar-toggle collapsed" type="button">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -42,9 +42,9 @@
         <div class="row">
 
             <!-- [[ 左边导航 -->
-            <ul class="navigation col-md-2">
+            <ul class="col-md-3 col-lg-2 navigation" aria-expanded="true">
                 <li>
-                    <a href="./../index.html"><div class="navItem"><span class="glyphicon glyphicon-home"></span>首页</div></a>
+                    <div class="navItem"><a href="./../index.html"><span class="glyphicon glyphicon-home"></span>首页</a></div>
                 </li>
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
@@ -55,10 +55,10 @@
                     </ul>
                 </li>
                 <li>
-                    <div class="navItem active"><span class="glyphicon glyphicon-tag"></span>商品管理</div>
+                    <div class="navItem"><span class="glyphicon glyphicon-tag"></span>商品管理</div>
                     <ul class="subNav" style="display: block;">
-                        <li class="active"><a href="./../productManage/magCategory.html">商品类别</a></li>
-                        <li><a href="./../productManage/productVerify.html">商品审核</a></li>
+                        <li class="active"><a href="./../productManage/productList.html">商品列表</a></li>
+                        <li><a href="./../productManage/publishProduct.html">发布商品</a></li>
                         <li><a href="./../productManage/productQuery.html">商品查询</a></li>
                     </ul>
                 </li>
@@ -72,19 +72,23 @@
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-credit-card"></span>财务管理</div>
                     <ul class="subNav">
-                        <li><a href="./../financingManage/widthQuery.html">提现查询</a></li>
-                        <li><a href="./../financingManage/memberCommissionWithdraw.html">会员佣金提现</a></li>
-                        <li><a href="./../financingManage/portLoanWithdraw.html">端口货款提现</a></li>
-                        <li><a href="./../financingManage/portCommissionWithdraw.html">端口佣金提现</a></li>
-                        <li><a href="./../financingManage/partnerCommissionWithdraw.html">合伙人佣金提现</a></li>
-                        <li><a href="./../financingManage/platformCommissionIncome.html">平台佣金收入</a></li>
+                        <li><a href="./../financingManage/loadList.html">贷款列表</a></li>
+                        <li><a href="./../financingManage/recharge.html">充值列表</a></li>
+                        <li><a href="./../financingManage/taxList.html">会费列表</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-open"></span>提现管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../withdrawManage/largeCommission.html">大区佣金提现</a></li>
+                        <li><a href="./../withdrawManage/roleCommission.html">角色佣金提现</a></li>
                     </ul>
                 </li>
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-wrench"></span>系统设置</div>
                     <ul class="subNav">
                         <li><a href="./../systemManage/indexCarousel.html">首页轮播</a></li>
-                        <li><a href="./../systemManage/commissionParameter.html">佣金参数</a></li>
+                        <li><a href="./../systemManage/parameter.html">参数设置</a></li>
                     </ul>
                 </li>
             </ul> <!-- 左边导航]] -->
@@ -93,17 +97,20 @@
             <div class="content col-md-10">
 
                 <div class="tab">
-                    <button class="btn btn-primary">已上架</button>
-                    <button class="btn btn-primary">已下架</button>
+                    <button class="btn btn-info">已上架</button>
+                    <button class="btn btn-info">已下架</button>
                 </div>
 
-                <table class="table table-bordered">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
                     <thead>
+                    <tr>
                         <th>商品编号</th>
-                        <th>商品名</th>
+                        <th>商品编号</th>
                         <th>商品状态</th>
                         <th>相关操作</th>
                         <th>销量</th>
+                    </tr>
                     </thead>
                     <tbody>
                     <tr>
@@ -111,15 +118,15 @@
                         <td>blablablablabla</td>
                         <td>已上架</td>
                         <td>
-                            <a href="">编辑</a>
-                            <a href="">预览</a>
-                            <a href="">下架</a>
+                            <a href="./editProduct.html" class="table_a">编辑</a>
+                            <a href="./previewProduct.html" class="table_a">预览</a>
+                            <a data-toggle="modal" data-target="#undercarriageModal" class="table_a undercarriage">下架</a>
                         </td>
                         <td>100000</td>
                     </tr>
                     </tbody>
                 </table>
-
+                </div>
 
                 <!-- [[分页-->
                 <div class="paging">
@@ -128,7 +135,6 @@
                 </div>
                 <!-- 分页]]-->
 
-
             </div><!-- 右边操作页面]] -->
         </div>
 
@@ -136,38 +142,8 @@
 
 </div><!-- wrapper]] -->
 
-<!-- [[编辑弹出框 -->
-<div class="modal fade" id="editModal">
-    <div class="modal-dialog">
-        <form class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="exit"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">添加分类</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="name" class="control-label">类别名称</label>
-                    <input type="text" class="form-control" id="name">
-                </div>
-                <div class="form-group">
-                    <label for="imgFile" class="control-label">类别图片</label>
-                    <div class="imgBox">&#43;
-                        <input type="file" accept="image/*" id="imgFile">
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel">取消</button>
-                <button type="submit" class="btn btn-primary" id="sure">确定</button>
-            </div>
-        </form><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- 编辑弹出框]] -->
-
-
-<!-- [[确认删除模态弹出框 -->
-<div class="modal fade bs-example-modal-sm" id="delModal">
+<!-- [[确认下架模态弹出框 -->
+<div class="modal fade bs-example-modal-sm" id="undercarriageModal">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
@@ -175,39 +151,32 @@
                 <h4 class="modal-title">温馨提示</h4>
             </div>
             <div class="modal-body">
-                <p>确认删除此类别么</p>
+                <p>确认要下架此商品么</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-primary sureBtn">确定</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-<!-- 确认删除模态弹出框]] -->
+<!-- 确认下架模态弹出框]] -->
 
-<!-- [[提示模态弹出框 -->
-<div class="modal fade bs-example-modal-sm" id="tipModal">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">温馨提示</h4>
-            </div>
-            <div class="modal-body">
-                <p></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="tipModalSure">确定</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-<!-- 提示模态弹出框]] -->
 
 <script src="./../../lib/jquery/jquery.min.js"></script>
 <script src="./../../lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="./../../js/common.js"></script>
+<script>
+    /*模态弹出框*/
+    var thisTr;
+    $('.undercarriage').click(function(){
+        thisTr = $(this).parents('tr');
+    })
+    $("#undercarriageModal .sureBtn").click(function(){
+        $('#undercarriageModal').modal('hide');
+        thisTr.remove();
+    })
+</script>
 
 </body>
 </html>

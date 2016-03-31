@@ -76,10 +76,10 @@ $(function(){
                 return;
             }else{
                 imgcontent.append(
-                    '<div class="col-md-2 add">'+
+                    '<div class="col-xs-2 add">'+
                     '<span class="addIcon">+</span>'+
                     '<span class="cancel">X</span>'+
-                    '<input type="file" accept="image/*" name="" class="file"/>'+
+                    '<input type="file" accept="image/*" name="files" class="file"/>'+
                     '</div>')
             }
         });
@@ -89,13 +89,13 @@ $(function(){
 
         var imgcontent = $(this).parents('.img-content');
 
-        $(this).parents('.col-md-2').remove();
+        $(this).parents('.col-xs-2').remove();
 
         if(imgcontent.children().length < 5 && imgcontent.find('.add').length > 0){
             return;
         }else{
             imgcontent.append(
-                '<div class="col-md-2 add">'+
+                '<div class="col-xs-2 add">'+
                 '<span class="addIcon">+</span>'+
                 '<span class="cancel">X</span>'+
                 '<input type="file" accept="image/*" name="" class="file"/>'+
@@ -110,4 +110,6 @@ $(function(){
     dom.$form.on('click','.glyphicconDel',function(){
         $(this).parents('.specific').remove();
     });
+
+
 });

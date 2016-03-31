@@ -16,18 +16,24 @@ public class Orders {
     private Date setTime;               //下单时间
     private Date payTime;               //付款时间
     private String payType;                 //付款方式
-    private int stream;                 //物流
-    private int refund;                 //退款申请
     private String name;                //收货人
     private String address;             //收货地址
     private String phone;               //联系电话
+    private int D;                      //订单状态
+    private int F;                      //支付状态
+    private int P;                      //配送状态
+    private int T;                      //退货状态
+    private int C;                      //评价状态
     private Roles roles;
     private float rolesProfit;
     private Areas areas;
     private float areaProfit;
     private User user;
 
-
+    public Orders(){
+        super();
+        this.D = 0;this.F = 0;this.P = 0;this.T = 0;this.C = 0;
+    }
 
     @Id
     @GeneratedValue
@@ -88,21 +94,6 @@ public class Orders {
         this.payType = payType;
     }
 
-    public int getStream() {
-        return stream;
-    }
-
-    public void setStream(int stream) {
-        this.stream = stream;
-    }
-
-    public int getRefund() {
-        return refund;
-    }
-
-    public void setRefund(int refund) {
-        this.refund = refund;
-    }
 
     @ManyToOne
     public Roles getRoles() {
@@ -147,5 +138,69 @@ public class Orders {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public int getD() {
+        return D;
+    }
+
+    public void setD(int d) {
+        D = d;
+    }
+
+    public int getF() {
+        return F;
+    }
+
+    public void setF(int f) {
+        F = f;
+    }
+
+    public int getP() {
+        return P;
+    }
+
+    public void setP(int p) {
+        P = p;
+    }
+
+    public int getT() {
+        return T;
+    }
+
+    public void setT(int t) {
+        T = t;
+    }
+
+    public int getC() {
+        return C;
+    }
+
+    public void setC(int c) {
+        C = c;
     }
 }

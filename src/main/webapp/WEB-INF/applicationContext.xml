@@ -110,6 +110,9 @@
     <bean id="terraceDao" class="com.Shop.Dao.TerraceDao" parent="daoTemplate"/>
     <bean id="watchProductDao" class="com.Shop.Dao.WatchProductDao" parent="daoTemplate"/>
     <bean id="imageDao" class="com.Shop.Dao.ImageDao" parent="daoTemplate"/>
+    <bean id="addressDao" class="com.Shop.Dao.AddressDao" parent="daoTemplate"/>
+    <bean id="ordersDao" class="com.Shop.Dao.OrdersDao" parent="daoTemplate"/>
+    <bean id="profitDao" class="com.Shop.Dao.ProfitDao" parent="daoTemplate"/>
 
 
 

@@ -3,16 +3,23 @@ package com.Shop.Controller;
 import com.Shop.Model.*;
 import com.Shop.Service.CartService;
 import com.Shop.Service.GoodService;
+import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
+import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.Order;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -70,8 +77,11 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value ="buyGood",method = RequestMethod.POST)
+    @RequestMapping(value ="buyGood",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @ResponseBody
     public String buyGood(int good_id,int count, HttpSession session){
+        JsonObject object = new JsonObject();
+        Gson gson = new Gson();
         User user = (User) session.getAttribute("loginUser");
         if(user == null){
             return "redirect:login";
@@ -82,15 +92,26 @@ public class UserController {
             cart.setUser(user);
             cartService.addCart(cart);
         }
+        int num = cart.getCount();
+        num += count;
+        cart.setCount(num);
+        double prices = cart.getTotalPrices();
         Good good = goodService.findGoodById(good_id);
+        prices += good.getDumpingPrices()*count;
+        cart.setTotalPrices(prices);
+        cartService.updateCart(cart);
+        OrderProduct orderProduct = null;
         if(userService.findWatchProductByUIdAndGId(user.getId(),good_id)) {
-            List<Image> images = goodService.findImageByGoodId(good_id);
-            String imageAddress = images.get(0).getAddress();
-            userService.buyGood(cart, good, imageAddress, count);
+            List<String> images = goodService.findImageByGoodId(good_id);
+            String imageAddress =null;
+            if(images.size()>0){
+             imageAddress = images.get(0);}
+            orderProduct=userService.addOrderProduct(cart, good, imageAddress, count);
         }else{
-            System.out.println("并未查看商品");
+            object.addProperty("status","并未查看商品");
+            return object.toString();
         }
-        return "";
+        return gson.toJson(orderProduct);
     }
 
 
@@ -142,19 +163,64 @@ public class UserController {
         return json;
     }
 
-    public String payCart(int cart_id,HttpSession session){
+    @RequestMapping(value = "createOrder",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String payCart(HttpSession session){
         User user = (User)session.getAttribute("loginUser");
-        Cart cart = cartService.getByCartId(cart_id);
+        Cart cart = cartService.getCartByUserId(user.getId());
+        if(cart == null){
+            return null;
+        }
         List<OrderProduct> orderProducts = userService.myCart(cart.getId());
         Orders orders = new Orders();
         orders.setUser(user);
+        orders.setSetTime(new Date());
+        int count =0;
         double prices = 0;
+        float areaProfit =0;
+        float roleProfit = 0;
+        userService.addOrders(orders);
         for(OrderProduct orderProduct:orderProducts){
             orderProduct.setCart(null);
             orderProduct.setOrders(orders);
+            userService.updateOrderProduct(orderProduct);
+            count += orderProduct.getCount();
+            prices += orderProduct.getPrices()*orderProduct.getCount();
+            areaProfit += orderProduct.getAreaProfit();
+            roleProfit += orderProduct.getRoleProfit();
         }
-        return null;
+        orders.setNumber(count);
+        orders.setPrices(prices);
+        orders.setAreaProfit(areaProfit);
+        orders.setRolesProfit(roleProfit);
+        if(user.getRoles() !=null) {
+            Roles roles = userService.getRoles(user.getRoles().getId());
+            orders.setRoles(roles);
+            Areas areas = userService.getArea(roles.getAreas().getId());
+            orders.setAreas(areas);
+        }
+        cartService.deleteCart(cart);
+        userService.updateOrders(orders);
+        Gson gson = new Gson();
+        return gson.toJson(orders);
     }
+
+    @RequestMapping(value = "easyBuy",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public OrderPoJo easyBuy(int id, int count,HttpSession session,Model model){
+        if(session.getAttribute("loginUser")==null){
+            return null;
+        }
+        User user =(User) session.getAttribute("loginUser");
+        HashMap map = userService.addOrderProduct(id,count,user);
+        model.addAttribute("orders",map.get("orders"));
+        model.addAttribute("orderProduct",map.get("orderProduct"));
+        List<Address> addresses = userService.listAddress(user.getId());
+        model.addAttribute("addresses",addresses);
+        OrderPoJo orderPoJo = new OrderPoJo((Orders)map.get("orders"),(List<OrderProduct>)map.get("orderProduct"));
+        return orderPoJo;
+    }
+
 
 
 }

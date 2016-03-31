@@ -105,8 +105,7 @@
 }
 /* 内容展示区 */
 .content {
-    text-align: center;
-    padding: 40px 0;
+    padding: 40px 15px;
 }
 
 /* 媒体查询 */
@@ -142,7 +141,6 @@
     }
     .content {
         padding: 40px 40px;
-        text-align: center;
     }
     .navigation {
         display: block;
@@ -165,7 +163,21 @@ ul{
 /* table自定义样式 */
 .table {
     background-color: #fff;
-    margin: 0 auto;
+    text-align: center;
+}
+.table .imgTd {
+   width: 120px;
+}
+.table .imgTd img{
+    width: 100%;
+}
+.textLeft {
+    text-align: left;
+    padding-left: 2%;
+}
+.textRight {
+    text-align: right;
+    padding-right: 2%;
 }
 .table caption {
     font-weight: bold;
@@ -173,39 +185,56 @@ ul{
     color: #41C1E7;
     line-height: 34px;
 }
-.table thead {
-    font-weight: bold;
+.table thead tr th{
     color: #666;
 }
 .table>tbody>tr>td {
     vertical-align: middle;
 }
-.table img {
-    width: 40%;
-}
 .table_a {
     display: inline-block;
-    width: 36%;
+    width: 50px;
     padding: 10px;
+    vertical-align: top;
 }
-
 .nav-tabs {
     margin-bottom: 40px;
 }
 .textShow {
     text-align: left;
 }
-.paging {
-    margin-top: 40px;
+.tableType2 {
+    margin: 30px auto;
 }
-.next {
-    margin-left: 100px;
+.tableType2 tr td:nth-child(odd){
+    padding-right: 20px;
+    text-align: right;
+    width: 120px;
 }
+.tableType2 tr td:nth-child(even){
+    padding-left: 20px;
+    text-align: left;
+    color: #acacac;
+}
+
 /* 一行显示 */
 .inOneLine {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+
+/* tab选项卡 */
+.tab {
+    margin-bottom: 26px;
+}
+/* 分页器 */
+.paging {
+    margin-top: 40px;
+    text-align: center;
+}
+.paging .next {
+    margin-left: 50px;
 }
 
 

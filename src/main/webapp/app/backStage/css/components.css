@@ -58,15 +58,11 @@
 /* 登录 */
 .login_panel {
     max-width: 500px;
-    width: 94%;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -250px;
-    margin-top: -320px;
+    width: 98%;
     background-color: #fff;
     box-shadow: 1px 0px  4px 1px #ddd;
     border-radius: 6px;
+    margin: 140px auto 0;
 }
 .login_header {
     background-color: #41C1E7;
@@ -129,22 +125,6 @@
 
 }
 
-/* 商品查询 */
-.productQueryShow {
-    max-width: 600px;
-    margin: 30px auto;
-}
-.productQueryShow tr td:nth-child(odd){
-    padding-right: 20px;
-    text-align: right;
-    width: 120px;
-}
-.productQueryShow tr td:nth-child(even){
-    padding-left: 20px;
-    text-align: left;
-    color: #acacac;
-}
-
 
 /* 商品详细信息 */
 .productInfoWrapper {
@@ -191,6 +171,7 @@
     width: 100px;
     height: 100px;
     opacity: 0;
+    cursor: pointer;
 }
 
 /*商品详情*/
@@ -286,6 +267,7 @@
     font-size: 50px;
     font-weight: 600;
     color: #FF0000;
+    text-align: center;
 }
 .publishProduct .product-message .add .cancel{
     display: none;
@@ -337,15 +319,18 @@
 #remark {
     resize: none;
 }
-.textShow {
-    padding-top: 7px;
-}
 .publishProduct .product-message img.contactImg {
     width: 36px;
     margin-left: 16px;
 }
 .control-label1 {
     line-height: 36px;
+}
+/*预览产品*/
+.tableType2 img {
+    width: 20%;
+    margin-right: 20px;
+    margin-top: 20px;
 }
 
 

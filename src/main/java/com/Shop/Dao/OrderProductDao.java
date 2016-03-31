@@ -64,4 +64,10 @@ public class OrderProductDao extends BaseDao implements IGeneralDao<OrderProduct
         List<OrderProduct> orderProducts = super.openSession().createQuery(hql).setParameter("id",id).list();
         return orderProducts;
     }
+
+    public List<OrderProduct> findAllByOrderId(int id){
+        String hql ="from OrderProduct where orders_id=:id";
+        List<OrderProduct> orderProducts = super.openSession().createQuery(hql).setParameter("id",id).list();
+        return orderProducts;
+    }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class AreaDao extends BaseDao implements IGeneralDao<Areas> {
     public Areas findById(int id) {
-        return null;
+        return super.hibernateTemplate.get(Areas.class,id);
     }
 
     public List<Areas> findAll() {

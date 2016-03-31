@@ -1,4 +1,4 @@
-/* 轮播图 */
+/* 轮播图《首页和商品详情》 */
 window.addEventListener('load', function(){
 
     /* fz 即 FrozenJS 的意思 */
@@ -23,13 +23,13 @@ window.addEventListener('load', function(){
 });
 
 /*点击查看倾销币*/
-$('.wathcPrices').click(function(event){
+$('.watchPrice').click(function(event){
     $(".ui-dialog").dialog("show");
     return false;
-})
+});
 
 
-/* 商品介绍和评价 */
+/* tab 《商品介绍和评价》 */
 window.addEventListener('load', function(){
 
     var tab = new fz.Scroll('.bottomBlock', {
@@ -56,7 +56,9 @@ $('#addCartBtn').tap(function(){
 $('#rise_div_close, #addCartSure').tap(function(){
     $('.ui-actionsheet').removeClass('show');
 })
-// 商品数量编辑
+
+
+/*商品数量编辑《商品详情页》*/
 var $minus = $('#minus');
 var $plus = $('#plus');
 var $num = $('#num');

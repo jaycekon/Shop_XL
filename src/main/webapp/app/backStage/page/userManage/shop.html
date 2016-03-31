@@ -5,8 +5,8 @@
     <title>一内购后台管理系统</title>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="../../css/userManager.css">
+    <link rel="stylesheet" type="text/css" href="./../../lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./../../css/userManager.css">
 
 </head>
 <body>
@@ -14,11 +14,25 @@
 <div class="wrapper">
 
     <!-- [[头部 -->
-    <header class="header">
-        <img src="" alt="一内购" class="logo">
-        <button class="btnExit" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
-    </header>
-    <!-- 头部]] -->
+    <header class="header container-fluid">
+        <div class="row">
+            <div class="col-xs-3">
+                <img src="../image/logo.jpg" alt="一内购" class="logo img-responsive">
+                <button class="navbar-toggle collapsed" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="col-xs-6 header_center">
+                <h1 class="websiteName">百城万店倾销网平台</h1>
+            </div>
+            <div class="col-xs-3">
+                <button class="btnExit fr" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
+            </div>
+        </div>
+    </header><!-- 头部]] -->
 
     <!-- [[页面主体 -->
     <div class="mainBody container-fluid">
@@ -31,11 +45,11 @@
                     <a href="./../index.html"><div class="navItem"><span class="glyphicon glyphicon-home"></span>首页</div></a>
                 </li>
                 <li>
-                    <div class="navItem active"><span class="glyphicon glyphicon-user"></span>用户管理</div>
+                    <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
                     <ul class="subNav" style="display: block;">
-                        <li><a href="./../userManage/copartner.html">合伙人</a></li>
-                        <li class="active"><a href="./../userManage/port.html">端口</a></li>
-                        <li><a href="./../userManage/member.html">会员</a></li>
+                        <li><a href="./largeArea.html">大区列表</a></li>
+                        <li><a href="./role.html">角色列表</a></li>
+                        <li class=" active"><a href="./shop.html">店家列表</a></li>
                     </ul>
                 </li>
                 <li>
@@ -75,79 +89,38 @@
 
             <!-- [[右边操作页面 -->
             <div class="content col-md-10 userManager-port">
-                <div class="text-left statue">
-                    <button class="btn btn-default btn-primary">未审核（100）</button>
-                    <button class="btn btn-default">审核通过（20）</button>
-                    <button class="btn btn-default">审核不通过（80）</button>
+
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover">
+                        <caption>店家列表</caption>
+                        <thead>
+                        <tr>
+                            <td>头像</td>
+                            <td>姓名</td>
+                            <td>关注时间</td>
+                            <td>会员认证</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="imgTd">
+                                <img src="./../../image/bg1.jpg" alt="">
+                            </td>
+                            <td>张三</td>
+                            <td>2016-01-01 06:06:06</td>
+                            <td>已认证</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <table class="table table-striped table-bordered table-hover">
-                    <thead>
-                    <tr>
-                        <td>用户昵称</td>
-                        <td>企业名称</td>
-                        <td>直接会员数量</td>
-                        <td>申请时间</td>
-                        <td>推荐人</td>
-                        <td>待收入佣金</td>
-                        <td>可支配佣金</td>
-                        <td>待收入货款</td>
-                        <td>可支配货款</td>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>张三</td>
-                        <td>
-                            <a href="./examine.html">幻灵科技</a>
-                        </td>
-                        <td>
-                            <a href="./member.html">20</a>
-                        </td>
-                        <td>2012-02-02 20:30:56</td>
-                        <td>恶霸</td>
-                        <td>￥10.22</td>
-                        <td>￥9.99</td>
-                        <td>￥9.99</td>
-                        <td>￥9.99</td>
-                    </tr>
-                    <tr>
-                        <td>张三</td>
-                        <td>
-                            <a href="./examine.html">幻灵科技</a>
-                        </td>
-                        <td>
-                            <a href="./member.html">20</a>
-                        </td>
-                        <td>2012-02-02 20:30:56</td>
-                        <td>恶霸</td>
-                        <td>￥10.22</td>
-                        <td>￥9.99</td>
-                        <td>￥9.99</td>
-                        <td>￥9.99</td>
-                    </tr>
-                    <tr>
-                        <td>张三</td>
-                        <td>
-                            <a href="./examine.html">幻灵科技</a>
-                        </td>
-                        <td>
-                            <a href="./member.html">20</a>
-                        </td>
-                        <td>2012-02-02 20:30:56</td>
-                        <td>恶霸</td>
-                        <td>￥10.22</td>
-                        <td>￥9.99</td>
-                        <td>￥9.99</td>
-                        <td>￥9.99</td>
-                    </tr>
-                    </tbody>
-                </table>
+
                 <!-- [[分页-->
                 <div class="paging">
                     <span class="prev btn btn-primary">上一页</span>
                     <span class="next btn btn-primary">下一页</span>
                 </div>
                 <!-- 分页]]-->
+
             </div>
             <!-- 右边操作页面]] -->
         </div>
@@ -157,8 +130,9 @@
 </div>
 <!-- wrapper]] -->
 
-<script src="/node_modules/jquery/dist/jquery.min.js"></script>
-<script src="./../../script/common.js"></script>
+<script src="./../../lib/jquery/jquery.min.js"></script>
+<script src="./../../lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="./../../js/common.js"></script>
 
 </body>
 </html>

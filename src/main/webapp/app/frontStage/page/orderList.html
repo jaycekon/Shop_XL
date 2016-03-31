@@ -9,85 +9,113 @@
 
     <link rel="stylesheet" type="text/css" href="./../lib/css/frozen.css">
     <link rel="stylesheet" type="text/css" href="./../css/index.css">
-    <link rel="stylesheet" type="text/css" href="./../css/order.css">
+    <link rel="stylesheet" type="text/css" href="./../css/product.css">
 
 </head>
 <body>
 
     <header class="ui-header ui-header-stable ui-border-b">
         <i class="ui-icon-return" onclick="history.back()"></i>
-        <h1>订单列表</h1>
+        <h1>我的订单</h1>
     </header>
 
     <footer class="ui-footer ui-footer-stable ui-border-t">
         <ul class="ui-tiled">
-            <li class="footerItem" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-            <li class="footerItem"><i class="ui-icon-cart"></i><div>购物车</div></li>
-            <li class="footerItem"><i class="ui-icon-personal"></i><div>个人中心</div></li>
+            <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
+            <li class="footerItem"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
+            <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
         </ul>
     </footer>
 
     <section class="ui-container">
-        <!-- [[订单类型 -->
-        <ul class="ui-tab-nav ui-border-b orderTab">
-            <li class="current">待付款</li>
-            <li>待发货</li>
-            <li>代收货</li>
-            <li>已完成</li>
-            <li>待评价</li>
-            <li>退款中</li>
-            <li>已关闭</li>
-        </ul><!-- 订单类型]] -->
 
-        <!-- [[ 订单内容 -->
-        <ul class="ui-tab-content">
-                <li>
+        <!-- [[订单类别 -->
+        <ul class="tab">
+            <li>
+                <a href="" class="ui-btn productBtn">待付款</a>
+            </li>
+            <li>
+                <a href="" class="ui-btn">待发货</a>
+            </li>
+            <li>
+                <a href="" class="ui-btn">待收货</a>
+            </li>
+            <li>
+                <a href="" class="ui-btn">已完成</a>
+            </li>
+            <li>
+                <a href="" class="ui-btn">待评价</a>
+            </li>
+            <li>
+                <a href="" class="ui-btn">退款中</a>
+            </li>
+            <li>
+                <a href="" class="ui-btn">已关闭</a>
+            </li>
+        </ul>
+        <!-- 订单类别]] -->
 
-                    <div class="oneOrder">
+        <!-- [[没有订单的情况 -->
+      <!--  <section class="ui-notice">
+            <i></i>
+            <p>没有此类型的订单</p>
+        </section>--><!-- [[没有订单的情况 -->
 
-                    </div>
-
-                    <ul class="ui-list ui-list-text ui-border-tb">
-                            <div class="ui-list-info">
-                                <h4>订单编号：123876ndklnmf876</h4>
-                            </div>
-                            <div class="ui-list-action">已完成</div>
-                        </li>
-
-                    </ul>
-
-                </li>
-                <li>
-                    <section class="ui-notice">
-                        <i></i>
-                        <p>没有此类型的订单</p>
-                        <div class="ui-notice-btn">
-                        </div>
-                    </section>
-                </li>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
-                <li>
-
-                </li>
-            </ul><!-- [[ 订单内容 -->
+        <ul class="order ui-list ui-list-text ui-border-tb uiListNoLink">
+            <!-- [[订单头部 -->
+            <li class="ui-border-t">
+                <div class="ui-list-info">
+                    <h4 class="ui-nowrap">订单编号：123456794974123456794974123456794974</h4>
+                </div>
+                <div class="ui-list-action themeColor">使用中</div>
+            </li><!-- 订单头部]] -->
+            <!-- [[订单商品 -->
+            <li class="ui-border-t productLink">
+                <div class="ui-list-thumb">
+                    <img src="./../image/1.jpg" alt="">
+                </div>
+                <div class="ui-list-info">
+                    <h4 class="ui-nowrap">性别</h4>
+                </div>
+                <div class="textRight">
+                    <p class="">&#165; 20.11</p>
+                    <p class="unMarjorColor">X2</p>
+                </div>
+            </li><!-- 订单商品]] -->
+            <!-- [[订单商品 -->
+            <li class="ui-border-t productLink">
+                <div class="ui-list-thumb">
+                    <img src="./../image/1.jpg" alt="">
+                </div>
+                <div class="ui-list-info productLink">
+                    <h4 class="ui-nowrap">性别</h4>
+                </div>
+                <div class="textRight">
+                    <p class="">&#165; 20.11</p>
+                    <p class="unMarjorColor">X2</p>
+                </div>
+            </li><!-- 订单商品]] -->
+        </ul>
+        <div class="countBlock">
+            <p>商品合计： <span class="themeColor">&#165; 123.00</span>（共四件）</p>
+            <p>运费合计： <span class="themeColor">&#165; 10.00</span></p>
+        </div>
 
     </section>
-
 
     <script src="./../lib/js/zepto.min.js"></script>
     <script src="./../lib/js/frozen.js"></script>
     <script src="./../js/index.js"></script>
+    <script>
+        $('.productLink').tap(function(){
+            var $target = $(this);
+            $target.addClass('clickActive');
+            setTimeout(function(){
+                $target.removeClass('clickActive');
+            },150);
+            window.location.href = "./orderDetail.html"
+        })
+    </script>
 
 </body>
 </html>

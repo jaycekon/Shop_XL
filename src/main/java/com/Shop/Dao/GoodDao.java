@@ -28,7 +28,7 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
     }
 
     public void update(Good good) {
-        super.hibernateTemplate.save(good);
+        super.hibernateTemplate.update(good);
     }
 
     public void saveOrUpdate(Good good) {

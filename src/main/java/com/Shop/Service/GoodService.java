@@ -7,6 +7,7 @@ import com.Shop.Model.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,11 +37,7 @@ public class GoodService {
     }
 
     public boolean updateGood(Good good){
-        Good good1 =goodDao.findById(good.getId());
-        good1.setName(good.getName());
-        good1.setNum(good.getNum());
-        good1.setWholesaleCount(good.getWholesaleCount());
-        goodDao.update(good1);
+        goodDao.update(good);
         return true;
     }
 
@@ -48,7 +45,19 @@ public class GoodService {
         imageDao.save(image);
     }
 
-    public List<Image> findImageByGoodId(int id){
-        return imageDao.findAllByGoodId(id);
+    public List<String> findImageByGoodId(int id){
+        List<Image> imgs = imageDao.findAllByGoodId(id);
+        List<String> address = new ArrayList<>();
+        for(Image img :imgs){
+            address.add(img.getAddress());
+        }
+        return address;
+    }
+
+    public void clearImage(int id){
+        List<Image> imgs = imageDao.findAllByGoodId(id);
+        for(Image img:imgs){
+            imageDao.delete(img);
+        }
     }
 }

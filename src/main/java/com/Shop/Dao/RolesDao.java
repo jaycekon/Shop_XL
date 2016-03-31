@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
     public Roles findById(int id) {
-        return null;
+        return super.hibernateTemplate.get(Roles.class,id);
     }
 
     public List<Roles> findAll() {
@@ -57,4 +57,5 @@ public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
         String hql = "from Roles where name=:name";
         return (Roles) session.createQuery(hql).setParameter("name",name).uniqueResult();
     }
+
 }

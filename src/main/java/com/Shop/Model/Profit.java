@@ -12,10 +12,10 @@ import javax.persistence.Table;
 @Table
 public class Profit {
     private int id;
-    private int Area_Id;
-    private int Role_Id;
-    private float recordPrices;
-    private int dumpingCount;
+    private int Area_count;   //大区比率
+    private int Role_count;        //角色比率
+    private float recordPrices;         //认证费用
+    private int dumpingCount;           //赠送倾销币
 
 
     @Id
@@ -28,21 +28,6 @@ public class Profit {
         this.id = id;
     }
 
-    public int getArea_Id() {
-        return Area_Id;
-    }
-
-    public void setArea_Id(int area_Id) {
-        Area_Id = area_Id;
-    }
-
-    public int getRole_Id() {
-        return Role_Id;
-    }
-
-    public void setRole_Id(int role_Id) {
-        Role_Id = role_Id;
-    }
 
     public float getRecordPrices() {
         return recordPrices;
@@ -58,5 +43,21 @@ public class Profit {
 
     public void setDumpingCount(int dumpingCount) {
         this.dumpingCount = dumpingCount;
+    }
+
+    public int getArea_count() {
+        return Area_count;
+    }
+
+    public void setArea_count(int area_count) {
+        Area_count = area_count;
+    }
+
+    public int getRole_count() {
+        return Role_count;
+    }
+
+    public void setRole_count(int role_count) {
+        Role_count = role_count;
     }
 }

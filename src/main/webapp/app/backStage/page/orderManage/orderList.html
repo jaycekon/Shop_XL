@@ -2,24 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>一内购-订单列表</title>
+    <title>百城万店-订单列表</title>
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
     <link rel="stylesheet" type="text/css" href="./../../lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../../css/common.css">
-    <link rel="stylesheet" type="text/css" href="../../css/components.css">
+    <link rel="stylesheet" type="text/css" href="../../css/order.css">
 
 </head>
 <body>
 
 <div class="wrapper">
     <!-- [[头部 -->
-    <header class="header">
-        <img src="" alt="一内购" class="logo">
-        <button class="btnExit" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
-    </header>
-    <!-- 头部]] -->
+    <header class="header container-fluid">
+        <div class="row">
+            <div class="col-xs-3">
+                <img src="../image/logo.jpg" alt="一内购" class="logo img-responsive">
+                <button class="navbar-toggle collapsed" type="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="col-xs-6 header_center">
+                <h1 class="websiteName">百城万店倾销网平台</h1>
+            </div>
+            <div class="col-xs-3">
+                <button class="btnExit fr" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
+            </div>
+        </div>
+    </header><!-- 头部]] -->
 
     <!-- [[页面主体 -->
     <div class="mainBody container-fluid">
@@ -27,28 +41,28 @@
         <div class="row">
 
             <!-- [[ 左边导航 -->
-            <ul class="navigation col-md-2">
+            <ul class="col-md-3 col-lg-2 navigation" aria-expanded="true">
                 <li>
-                    <a href="./../index.html"><div class="navItem"><span class="glyphicon glyphicon-home"></span>首页</div></a>
+                    <div class="navItem"><a href="./../index.html"><span class="glyphicon glyphicon-home"></span>首页</a></div>
                 </li>
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
                     <ul class="subNav">
-                        <li><a href="./../userManage/copartner.html">合伙人</a></li>
-                        <li><a href="./../userManage/port.html">端口</a></li>
-                        <li><a href="./../userManage/member.html">会员</a></li>
+                        <li><a href="./../userManage/largeArea.html">大区列表</a></li>
+                        <li><a href="./../userManage/role.html">角色列表</a></li>
+                        <li><a href="./../userManage/shop.html">店家列表</a></li>
                     </ul>
                 </li>
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-tag"></span>商品管理</div>
                     <ul class="subNav">
-                        <li><a href="./../productManage/magCategory.html">商品类别</a></li>
-                        <li><a href="./../productManage/productVerify.html">商品审核</a></li>
+                        <li><a href="./../productManage/productList.html">商品列表</a></li>
+                        <li><a href="./../productManage/publishProduct.html">发布商品</a></li>
                         <li><a href="./../productManage/productQuery.html">商品查询</a></li>
                     </ul>
                 </li>
                 <li>
-                    <div class="navItem active"><span class="glyphicon glyphicon-file"></span>订单管理</div>
+                    <div class="navItem"><span class="glyphicon glyphicon-file"></span>订单管理</div>
                     <ul class="subNav" style="display: block;">
                         <li class="active"><a href="./../orderManage/orderList.html">订单列表</a></li>
                         <li><a href="./../orderManage/orderCheck.html">订单查询</a></li>
@@ -57,19 +71,23 @@
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-credit-card"></span>财务管理</div>
                     <ul class="subNav">
-                        <li><a href="./../financingManage/widthQuery.html">提现查询</a></li>
-                        <li><a href="./../financingManage/memberCommissionWithdraw.html">会员佣金提现</a></li>
-                        <li><a href="./../financingManage/portLoanWithdraw.html">端口货款提现</a></li>
-                        <li><a href="./../financingManage/portCommissionWithdraw.html">端口佣金提现</a></li>
-                        <li><a href="./../financingManage/partnerCommissionWithdraw.html">合伙人佣金提现</a></li>
-                        <li><a href="./../financingManage/platformCommissionIncome.html">平台佣金收入</a></li>
+                        <li><a href="./../financingManage/loadList.html">贷款列表</a></li>
+                        <li><a href="./../financingManage/recharge.html">充值列表</a></li>
+                        <li><a href="./../financingManage/taxList.html">会费列表</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <div class="navItem"><span class="glyphicon glyphicon-open"></span>提现管理</div>
+                    <ul class="subNav">
+                        <li><a href="./../withdrawManage/largeCommission.html">大区佣金提现</a></li>
+                        <li><a href="./../withdrawManage/roleCommission.html">角色佣金提现</a></li>
                     </ul>
                 </li>
                 <li>
                     <div class="navItem"><span class="glyphicon glyphicon-wrench"></span>系统设置</div>
                     <ul class="subNav">
                         <li><a href="./../systemManage/indexCarousel.html">首页轮播</a></li>
-                        <li><a href="./../systemManage/commissionParameter.html">佣金参数</a></li>
+                        <li><a href="./../systemManage/parameter.html">参数设置</a></li>
                     </ul>
                 </li>
             </ul> <!-- 左边导航]] -->
@@ -87,18 +105,10 @@
                 </div>
                 <!-- [[订单-->
                 <div class="order">
-                    <div>
+                    <a href="./orderDetail.html">
                         <div class="order-statue clearfix">
-                            <div class="company pull-left">企业：扎根科技（张三）</div>
-                            <div class="pull-right contact">
-                                联系负责人：13699727265
-                                <!-- QQ号为要联系的人的qq号 -->
-                                <a href="tencent://message/?uin=2965366058"><img src="./../../image/QQ.png" alt="" class="contactImg" /></a>
-                            </div>
-                        </div>
-                        <div class="order-statue clearfix">
-                            <div class="order-number pull-left"><a  href="./orderDetail.html" class="blueText">订单号：1f56aw4f56er44f64afe6f4er6</a></div>
-                            <div class="pull-right statue">订单状态：已完成</div>
+                            <div class="company pull-left">订单号：1f56aw4f56er44f64afe6f4er6</div>
+                            <div class="pull-right contact">订单状态：已完成</div>
                         </div>
                         <div class="product clearfix">
                             <div class="pull-left col-md-8">
@@ -134,107 +144,7 @@
                             <div class="product-total">商品合计：￥99.99（共99件）</div>
                             <div class="freight">运费合计：￥9.99</div>
                         </div>
-                    </div>
-                </div>
-                <div class="order">
-                    <div>
-                        <div class="order-statue clearfix">
-                            <div class="company pull-left">企业：扎根科技（张三）</div>
-                            <div class="pull-right contact">
-                                联系负责人：13699727265
-                                <!-- QQ号为要联系的人的qq号 -->
-                                <a href="tencent://message/?uin=2965366058"><img src="./../../image/QQ.png" alt="" class="contactImg" /></a>
-                            </div>
-                        </div>
-                        <div class="order-statue clearfix">
-                            <div class="order-number pull-left"><a  href="./orderDetail.html" class="blueText">订单号：1f56aw4f56er44f64afe6f4er6</a></div>
-                            <div class="pull-right statue">订单状态：已完成</div>
-                        </div>
-                        <div class="product clearfix">
-                            <div class="pull-left col-md-8">
-                                <div class="col-md-4">
-                                    <img src="../../image/user.jpg" alt=""/>
-                                </div>
-                                <div class="col-md-8 text-left">
-                                    <span class="name">萝莉就是萝莉七件套装</span><br /><br />
-                                    <span class="specific">规格：规格1</span><br />
-                                </div>
-                            </div>
-                            <div class="pull-right width-2 text-right">
-                                <span class="price">￥99.99</span><br /><br />
-                                <span class="number">X 99</span>
-                            </div>
-                        </div>
-                        <div class="product clearfix">
-                            <div class="pull-left col-md-8">
-                                <div class="col-md-4">
-                                    <img src="../../image/user.jpg" alt=""/>
-                                </div>
-                                <div class="col-md-8 text-left">
-                                    <span class="name">萝莉就是萝莉七件套装</span><br /><br />
-                                    <span class="specific">规格：规格1</span><br />
-                                </div>
-                            </div>
-                            <div class="pull-right width-2 text-right">
-                                <span class="price">￥99.99</span><br /><br />
-                                <span class="number">X 99</span>
-                            </div>
-                        </div>
-                        <div class="order-total clearfix text-left">
-                            <div class="product-total">商品合计：￥99.99（共99件）</div>
-                            <div class="freight">运费合计：￥9.99</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="order">
-                    <div>
-                        <div class="order-statue clearfix">
-                            <div class="company pull-left">企业：扎根科技（张三）</div>
-                            <div class="pull-right contact">
-                                联系负责人：13699727265
-                                <!-- QQ号为要联系的人的qq号 -->
-                                <a href="tencent://message/?uin=2965366058"><img src="./../../image/QQ.png" alt="" class="contactImg" /></a>
-                            </div>
-                        </div>
-                        <div class="order-statue clearfix">
-                            <div class="order-number pull-left"><a  href="./orderDetail.html" class="blueText">订单号：1f56aw4f56er44f64afe6f4er6</a></div>
-                            <div class="pull-right statue">订单状态：已完成</div>
-                        </div>
-                        <div class="product clearfix">
-                            <div class="pull-left col-md-8">
-                                <div class="col-md-4">
-                                    <img src="../../image/user.jpg" alt=""/>
-                                </div>
-                                <div class="col-md-8 text-left">
-                                    <span class="name">萝莉就是萝莉七件套装</span><br /><br />
-                                    <span class="specific">规格：规格1</span><br />
-                                </div>
-                            </div>
-                            <div class="pull-right width-2 text-right">
-                                <span class="price">￥99.99</span><br /><br />
-                                <span class="number">X 99</span>
-                            </div>
-                        </div>
-                        <div class="product clearfix">
-                            <div class="pull-left col-md-8">
-                                <div class="col-md-4">
-                                    <img src="../../image/user.jpg" alt=""/>
-                                </div>
-                                <div class="col-md-8 text-left">
-                                    <span class="name">萝莉就是萝莉七件套装</span><br /><br />
-                                    <span class="specific">规格：规格1</span><br />
-                                </div>
-                            </div>
-                            <div class="pull-right width-2 text-right">
-                                <span class="price">￥99.99</span><br /><br />
-                                <span class="number">X 99</span>
-                            </div>
-                        </div>
-                        <div class="order-total clearfix text-left">
-                            <div class="product-total">商品合计：￥99.99（共99件）</div>
-                            <div class="freight">运费合计：￥9.99</div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
                 <!-- 订单]]-->
                 <!-- [[分页-->

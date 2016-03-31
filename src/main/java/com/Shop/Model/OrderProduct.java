@@ -16,6 +16,8 @@ public class OrderProduct {
     private String image;
     private Cart cart;
     private Orders orders;
+    private float areaProfit;
+    private float roleProfit;
 
     @Id
     @GeneratedValue
@@ -85,5 +87,21 @@ public class OrderProduct {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public float getAreaProfit() {
+        return areaProfit;
+    }
+
+    public void setAreaProfit(float areaProfit) {
+        this.areaProfit = areaProfit;
+    }
+
+    public float getRoleProfit() {
+        return roleProfit;
+    }
+
+    public void setRoleProfit(float roleProfit) {
+        this.roleProfit = roleProfit;
     }
 }
