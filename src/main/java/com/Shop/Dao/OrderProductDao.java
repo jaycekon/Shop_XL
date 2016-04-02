@@ -21,6 +21,7 @@ public class OrderProductDao extends BaseDao implements IGeneralDao<OrderProduct
         Session session = super.openSession();
         String hql = "from OrderProduct";
         List<OrderProduct> orderProducts = session.createQuery(hql).list();
+        session.close();
         return orderProducts;
     }
 

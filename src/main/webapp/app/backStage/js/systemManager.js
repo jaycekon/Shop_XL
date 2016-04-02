@@ -39,8 +39,12 @@ $(function(){
                 img = parents.find('img');
 
             img[0].src = src;
-        });
+        })
+
+
     });
+
+
 });
 
 

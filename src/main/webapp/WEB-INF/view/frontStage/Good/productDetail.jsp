@@ -1,5 +1,13 @@
-<!doctype html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<%@ page import="com.Shop.Model.Good" %>
+<%@ page import="java.util.List" %><%--
+  Created by IntelliJ IDEA.
+  User: Administrator
+  Date: 2016/4/2 0002
+  Time: 上午 10:39
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -7,9 +15,8 @@
     <meta name="format-detection" content="telephone=no, email=no">
     <title>百城万店倾销网</title>
 
-    <link rel="stylesheet" type="text/css" href="./../lib/css/frozen.css">
-    <link rel="stylesheet" type="text/css" href="./../css/index.css?12">
-    <link rel="stylesheet" type="text/css" href="./../css/product.css?12">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/frontStage/lib/css/frozen.css">
+    <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/app/frontStage/css/index.css?12">
     <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 </head>
@@ -33,45 +40,35 @@
     <!-- [[轮播图 -->
     <div class="ui-slider" id="productDetailSlider">
         <ul class="ui-slider-content" style="width: 300%">
-            <li><img src="./../image/1.jpg" alt=""></li>
-            <li><img src="./../image/2.jpg" alt=""></li>
-            <li><img src="./../image/3.jpg" alt=""></li>
+            <li><img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt=""></li>
+            <li><img src="<%=request.getContextPath()%>/app/frontStage/image/2.jpg" alt=""></li>
+            <li><img src="<%=request.getContextPath()%>/app/frontStage/image/3.jpg" alt=""></li>
         </ul>
     </div><!-- 轮播图]] -->
 
+    <%
+        Good good = (Good)request.getAttribute("good");
+
+
+    %>
     <!-- [[商品参数 -->
     <div class="ui-row productSpecBlock">
-        <!--<div class="ui-col ui-col-50">
-            <div class="specText">零售价：<span class="themeColor">&#165;123.09</span></div>
-            <div class="specText">市场价：<span class="themeColor">&#165;123.09</span></div>
-            <div class="specText">运　费：<span>123</span></div>
-        </div>
-        <div class="ui-col ui-col-50">
-            <div class="specText">库　存：<span>123</span></div>
-            <div class="specText">起批量：<span>123</span></div>
-            <div class="specText">销　量：<span>123</span></div>
-        </div>
-        <div class="ui-col ui-col-100">
-            备注
-        </div>
-
-        <div class="ui-col-100">
-            <button class="ui-btn productBtn watchPrice">查看倾销价</button>
-            <button class="ui-btn addCartBtn" id="addCartBtn"><i class="ui-icon-cart"></i></button>
-        </div>-->
-
-        <p class="specText"><span>零售价：</span><span class="themeColor">&#165;123.09</span></p>
-        <p class="specText"><span>市场价：</span><span class="themeColor">&#165;123.09</span></p>
-        <p class="specText"><span>运费：</span>123</p>
-        <p class="specText"><span>库存：</span><span id="stock">3</span></p>
-        <p class="specText"><span>起批量：</span>123</p>
-        <p class="specText"><span>销量：</span>123</p>
+        <p class="specText"><span>零售价：</span><span class="themeColor">&#165;<%=good.getProductPrices()%></span></p>
+        <p class="specText"><span>批发价：</span><span class="themeColor">&#165;<%=good.getWholesalePrices()%></span></p>
+        <p class="specText"><span>运费：</span>0.00</p>
+        <p class="specText"><span>库存：</span><span id="stock"><%=good.getNum()%></span></p>
+        <p class="specText"><span>起批量：</span><%=good.getWholesaleCount()%></p>
+        <p class="specText"><span>销量：</span><%=good.getSaleCount()%></p>
         <button class="ui-btn productBtn watchPrice">查看倾销价</button>
         <button class="ui-btn addCartBtn" id="addCartBtn"><i class="ui-icon-cart"></i></button>
-
-        <div class="ui-poptips ui-poptips-success addTip">
-            <div class="ui-poptips-cnt"><i></i>1件商品成功加入购物车</div>
-        </div>
+        <form action = "<%=request.getContextPath()%>/buyGood" method = "post">
+            <input type = "hidden" value = 1 name="count"/>
+            <input type = "hidden" value ="<%=good.getId()%>" name ="good_id"/>
+            <%--<div class="ui-poptips ui-poptips-success addTip">--%>
+            <%--<div class="ui-poptips-cnt"><i></i>1件商品成功加入购物车</div>--%>
+            <input type = "submit" value ="购买"/>
+            <%--</div>--%>
+        </form>
 
     </div>
     <!-- 商品参数]] -->
@@ -86,8 +83,8 @@
             <!-- [[商品介绍内容 -->
             <li class="productIntro"><!--
                 <p class="content">这是正文内容</p>-->
-                <img src="../image/1.jpg" alt="">
-                <img src="../image/1.jpg" alt="">
+                <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
+                <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
             </li><!-- 商品介绍内容]] -->
             <!-- [[商品评价内容 -->
             <li class="productComment">
@@ -109,8 +106,8 @@
         </ul>
     </div>
     <!-- 商品介绍和评价]]-->
-<!--
-    <button class="ui-btn" onclick="location.reload()">刷新</button>-->
+    <!--
+        <button class="ui-btn" onclick="location.reload()">刷新</button>-->
 
 </section>
 
@@ -120,12 +117,12 @@
         <div class="rise_div_top">
             <span class="ui-icon-close-page fr" id="rise_div_close"></span>
         </div>
-        <div class="rise_div_mid ui-border-tb">
-            <span>购买数量</span>
-            <div class="selectNum">
-                <button class="reduce minus">&#45;</button>
-                <input type="number" value="1" />
-                <button class="add plus">&#43;</button>
+        <div class="rise_div_mid select_num">
+            购买数量
+            <div class="selectBlock selectNum">
+                <button class="plus">&#43;</button>
+                <input type="number" value="1" id="num">
+                <button class="minus">&#45;</button>
             </div>
         </div>
         <div class="rise_div_bottom">
@@ -148,30 +145,30 @@
     </div>
 </div><!-- 点击查看需要倾销]] -->
 
-<script src="./../lib/js/zepto.min.js"></script>
-<script src="./../lib/js/frozen.js"></script>
-<script src="./../js/index.js?12"></script>
+<script src="<%=request.getContextPath()%>/app/frontStage/lib/js/zepto.min.js"></script>
+<script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
+<script src="<%=request.getContextPath()%>/app/frontStage/js/index.js?12"></script>
 <script>
-/*    wx.config({
-    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-    appId: 'wx0c8e5793aa3e836b', // 必填，公众号的唯一标识
-    timestamp: 1459498527595, // 必填，生成签名的时间戳
-    nonceStr: 'qml', // 必填，生成签名的随机串
-    signature: '8d1a43795fc75a6ac64cbc1698578bdff098d153',// 必填，签名，见附录1
-    jsApiList: ['previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    });*/
+    /*    wx.config({
+     debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+     appId: 'wx0c8e5793aa3e836b', // 必填，公众号的唯一标识
+     timestamp: 1459498527595, // 必填，生成签名的时间戳
+     nonceStr: 'qml', // 必填，生成签名的随机串
+     signature: '8d1a43795fc75a6ac64cbc1698578bdff098d153',// 必填，签名，见附录1
+     jsApiList: ['previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+     });*/
 
 
-/*    $('#productDetailSlider img').tap(function(){
-        wx.previewImage({
-            current: 'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/page/productDetail.html', // 当前显示图片的http链接
-            urls: [
-                'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/1.jpg',
-                'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/2.jpg',
-                'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/3.jpg',
-            ] // 需要预览的图片http链接列表
-        });
-    })*/
+    /*    $('#productDetailSlider img').tap(function(){
+     wx.previewImage({
+     current: 'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/page/productDetail.html', // 当前显示图片的http链接
+     urls: [
+     'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/1.jpg',
+     'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/2.jpg',
+     'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/3.jpg',
+     ] // 需要预览的图片http链接列表
+     });
+     })*/
 
 </script>
 

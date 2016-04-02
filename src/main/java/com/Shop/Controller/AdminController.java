@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -112,12 +113,11 @@ public class AdminController {
         return gson.toJson(orderPoJos);
     }
 
-    @RequestMapping(value ="listOrderByP",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String listOrderByP(HttpSession session, Model model,int p){
-        if(session.getAttribute("loginTerrace") == null){
-            return "redirect:/loginTerrace";
-        }
+    @RequestMapping(value ="listOrderByP/{p}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public String listOrderByP(HttpSession session, Model model,@PathVariable(value ="p") int p){
+//        if(session.getAttribute("loginTerrace") == null){
+//            return "redirect:/loginTerrace";
+//        }
         List<Orders> orders = userService.listOrdersByP(p);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
@@ -126,11 +126,10 @@ public class AdminController {
             orderPoJos.add(orderPoJo);
         }
         model.addAttribute("orderPoJos",orderPoJos);
-        Gson gson = new Gson();
-        return gson.toJson(orderPoJos);
+        return "backStage/Orders/listOrders";
     }
 
-    @RequestMapping(value ="listOrderByD",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @RequestMapping(value ="listOrderByD",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listOrderByD(HttpSession session, Model model,int d){
         if(session.getAttribute("loginTerrace") == null){
@@ -148,7 +147,7 @@ public class AdminController {
         return gson.toJson(orderPoJos);
     }
 
-    @RequestMapping(value ="listOrderByT",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    @RequestMapping(value ="listOrderByT",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public String listOrderByT(HttpSession session, Model model,int t){
         if(session.getAttribute("loginTerrace") == null){
@@ -198,6 +197,15 @@ public class AdminController {
         return gson.toJson(orderPoJo);
     }
 
+    @RequestMapping(value ="orderDetail/{id}",method = RequestMethod.GET)
+    public String orderDetail(@PathVariable(value ="id")int id,Model model){
+        Orders orders = userService.findOrdersById(id);
+        List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+        OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+        model.addAttribute("orderPojo",orderPoJo);
+        return "backStage/Orders/orderDetail";
+    }
+
 
     @RequestMapping(value ="listAreas",method = RequestMethod.GET)
     public String listAreas(Model model){
@@ -219,5 +227,24 @@ public class AdminController {
         model.addAttribute("users",users);
         return "backStage/User/listUser";
     }
+
+    @RequestMapping(value ="orderCheck",method = RequestMethod.GET)
+    public String checkOrder(){
+        return "backStage/Orders/orderCheck";
+    }
+
+    @RequestMapping(value ="orderCheck",method = RequestMethod.POST)
+    public String checkOrder(int id,Model model){
+        Orders orders = userService.findOrdersById(id);
+        if(orders == null){
+            model.addAttribute("orderPoJo",null);
+            return "backStage/Orders/orderCheck";
+        }
+        List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+        OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+        model.addAttribute("orderPoJo",orderPoJo);
+        return "backStage/Orders/orderCheck";
+    }
+
 
 }

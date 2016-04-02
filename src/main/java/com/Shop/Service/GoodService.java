@@ -28,6 +28,10 @@ public class GoodService {
         return goodDao.findAll();
     }
 
+    public List<Good> listGoodUp(int status){
+        return goodDao.findAllByStatus(status);
+    }
+
     public List<Good> listGoodByName(String name){
         return goodDao.findAllByName(name);
     }

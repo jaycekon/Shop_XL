@@ -58,4 +58,11 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
         return goods;
     }
 
+    public List<Good> findAllByStatus(int status){
+        String hql ="from Good where status=:status";
+        Session session = super.openSession();
+        List<Good> goods = session.createQuery(hql).setParameter("status",status).list();
+        return goods;
+    }
+
 }

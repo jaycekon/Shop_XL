@@ -200,9 +200,6 @@ ul{
 .nav-tabs {
     margin-bottom: 40px;
 }
-.textShow {
-    text-align: left;
-}
 .tableType2 {
     margin: 30px auto;
 }
@@ -235,6 +232,10 @@ ul{
 }
 .paging .next {
     margin-left: 50px;
+}
+.operate {
+    text-align: center;
+    margin: 0 0 40px;
 }
 
 

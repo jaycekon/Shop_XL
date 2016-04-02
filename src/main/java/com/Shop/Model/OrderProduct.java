@@ -13,6 +13,7 @@ public class OrderProduct {
     private float prices;
     private String name;
     private int good_id;
+    private String describes;
     private String image;
     private Cart cart;
     private Orders orders;
@@ -103,5 +104,13 @@ public class OrderProduct {
 
     public void setRoleProfit(float roleProfit) {
         this.roleProfit = roleProfit;
+    }
+
+    public String getDescribes() {
+        return describes;
+    }
+
+    public void setDescribes(String describes) {
+        this.describes = describes;
     }
 }

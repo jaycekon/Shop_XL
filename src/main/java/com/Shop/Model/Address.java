@@ -12,7 +12,7 @@ public class Address {
     private String address;
     private String area;
     private String phone;
-    private String EMail;
+    private String username;
     private User user;
 
     @Id
@@ -49,14 +49,6 @@ public class Address {
         this.phone = phone;
     }
 
-    public String getEMail() {
-        return EMail;
-    }
-
-    public void setEMail(String EMail) {
-        this.EMail = EMail;
-    }
-
 
     @ManyToOne
     public User getUser() {
@@ -65,5 +57,13 @@ public class Address {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

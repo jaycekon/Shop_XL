@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.Cart;
+import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -9,8 +10,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class CartDao extends BaseDao {
     public Cart findByUserId(int id){
+        Session session = super.openSession();
         String hql = "from Cart where user_id=:id";
-        Cart cart =(Cart) super.openSession().createQuery(hql).setParameter("id",id).uniqueResult();
+        Cart cart =(Cart) session.createQuery(hql).setParameter("id",id).uniqueResult();
+        session.close();
         return cart;
     }
 
@@ -27,6 +30,9 @@ public class CartDao extends BaseDao {
     }
 
     public void update(Cart cart){
-        super.hibernateTemplate.update(cart);
+        Session session = super.openSession();
+        session.update(cart);
+        session.beginTransaction().commit();
+//       super.hibernateTemplate.update(cart);
     }
 }

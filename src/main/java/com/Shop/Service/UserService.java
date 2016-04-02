@@ -107,9 +107,9 @@ public class UserService {
         return u;
     }
 
-    public List<OrderProduct> myCart(int id){
-        return orderProductDao.findAllByCartId(id);
-    }
+//    public List<OrderProduct> myCart(int id){
+//        return orderProductDao.findAllByCartId(id);
+//    }
 
 
     public List<WatchProduct> findAllWatchProduct(int id){
@@ -140,6 +140,7 @@ public class UserService {
         orderProduct.setName(good.getName());
         orderProduct.setImage(imageAddress);
         orderProduct.setPrices(good.getDumpingPrices());
+        orderProduct.setDescribes(good.getDescribes());
         Profit profit = profitDao.findById();
         float areaProfit = good.getPv() * count * profit.getArea_count();
         orderProduct.setAreaProfit(areaProfit/100);
@@ -177,6 +178,12 @@ public class UserService {
         return map;
     }
 
+    public void addAddress(Address address){
+        addressDao.save(address);
+    }
+    public Address findAddressById(int id){
+        return addressDao.findById(id);
+    }
     public List<Address> listAddress(int id){
         return addressDao.findByUserId(id);
     }
@@ -218,4 +225,17 @@ public class UserService {
     public List<OrderProduct> findOrderProductByOrderId(int order_id){
         return orderProductDao.findAllByOrderId(order_id);
     }
+
+    public List<OrderProduct> findOrderProductByCartId(int cart_id){
+        return orderProductDao.findAllByCartId(cart_id);
+    }
+
+    public OrderProduct findOrderProductById(int id){
+        return orderProductDao.findById(id);
+    }
+
+    public void deleteOrderProduct(OrderProduct orderProduct){
+        orderProductDao.delete(orderProduct);
+    }
+
 }

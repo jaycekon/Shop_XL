@@ -4,6 +4,7 @@ import com.Shop.Model.*;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.UserService;
 import com.google.gson.JsonObject;
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -143,6 +144,15 @@ public class GoodController {
         return "backStage/Product/previewProduct";
     }
 
+    @RequestMapping(value = "Detail/{id}",method = RequestMethod.GET)
+    public String detail(@PathVariable(value ="id")int id,HttpSession session,Model model){
+        Good good= goodService.findGoodById(id);
+        model.addAttribute("good",good);
+        List<String> address = goodService.findImageByGoodId(good.getId());
+        model.addAttribute("address",address);
+        return "frontStage/Good/productDetail";
+    }
+
     @RequestMapping(value = "editGood/{id}",method = RequestMethod.GET)
     public String editGood(@PathVariable(value = "id") int id,HttpSession session,Model model){
         Good good = goodService.findGoodById(id);
@@ -195,5 +205,32 @@ public class GoodController {
             }
         }
         return "redirect:/listGood";
+    }
+
+    @RequestMapping(value = "checkGood",method = RequestMethod.GET)
+    public String findGoodById(){
+        return "backStage/Product/productQuery";
+    }
+
+    @RequestMapping(value = "checkGood",method = RequestMethod.POST)
+    public String findGoodById(int id,Model model){
+        Good good = goodService.findGoodById(id);
+        System.out.println(good.getName());
+        model.addAttribute("good",good);
+        return "backStage/Product/productQuery";
+    }
+
+    @RequestMapping(value = "listGoodUp",method = RequestMethod.GET)
+    public String listGoodUp(Model model){
+        List<Good> goods = goodService.listGoodUp(1);
+        model.addAttribute("goods",goods);
+        return "backStage/Product/productList";
+    }
+
+    @RequestMapping(value = "listGoodDown",method = RequestMethod.GET)
+    public String listGoodDown(Model model){
+        List<Good> goods = goodService.listGoodUp(0);
+        model.addAttribute("goods",goods);
+        return "backStage/Product/productList";
     }
 }
