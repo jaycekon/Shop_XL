@@ -12,7 +12,7 @@ public class Roles {
     private String name;
     private String phone;
     private String EMail;
-    private int OpenId;
+    private String OpenId;
     private Areas areas;
 
     @Id
@@ -58,11 +58,11 @@ public class Roles {
         this.EMail = EMail;
     }
 
-    public int getOpenId() {
+    public String getOpenId() {
         return OpenId;
     }
 
-    public void setOpenId(int openId) {
+    public void setOpenId(String openId) {
         OpenId = openId;
     }
 }

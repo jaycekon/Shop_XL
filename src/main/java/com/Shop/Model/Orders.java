@@ -15,6 +15,7 @@ public class Orders {
     private double prices;              //订单总额
     private Date setTime;               //下单时间
     private Date payTime;               //付款时间
+    private Date sentTime;              //发货时间
     private String payType;                 //付款方式
     private String name;                //收货人
     private String address;             //收货地址
@@ -202,5 +203,13 @@ public class Orders {
 
     public void setC(int c) {
         C = c;
+    }
+
+    public Date getSentTime() {
+        return sentTime;
+    }
+
+    public void setSentTime(Date sentTime) {
+        this.sentTime = sentTime;
     }
 }

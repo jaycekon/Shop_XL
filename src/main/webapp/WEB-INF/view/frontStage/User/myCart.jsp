@@ -28,48 +28,40 @@
     <h1>购物车</h1>
 </header>
 
-<footer class="ui-footer ui-footer-stable ui-border-t">
-    <ul class="ui-tiled">
-        <li class="footerItem" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-        <li class="footerItem active"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
-        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
-    </ul>
-</footer>
+<%@include file="../footer.jsp" %>
 
 <section class="ui-container">
 
-    <!-- [[没有商品 -->
-    <section class="ui-notice hide" id="noProductWrapper">
-        <i></i>
-        <p>购物车还是空的</p>
-        <div class="ui-notice-btn">
-            <button class="ui-btn-lg productBtn" onclick="window.location.href='./index.html'">去购买</button>
-        </div>
-    </section>
+    <%
+        if(request.getAttribute("cart")!=null){
+        Cart cart = (Cart) request.getAttribute("cart");
+        List<OrderProduct> orderProducts = (List<OrderProduct>) request.getAttribute("orderProducts");
+    %>
+
 
     <!-- [[有商品 -->
     <div id="hasProductWrapper">
-
+        <%
+            System.out.println(cart.getCount());
+            for (OrderProduct orderProduct : orderProducts) {
+        %>
         <div class="productsBox ui-border-tb ">
-            <%
-                Cart cart = (Cart)request.getAttribute("cart");
-                List<OrderProduct> orderProducts = (List<OrderProduct>)request.getAttribute("orderProducts");
-                for(OrderProduct orderProduct :orderProducts){
 
-            %>
             <!-- [[单个商品 -->
             <div class="productBox ui-border-b">
 
                 <div class="col imgCol">
-                    <a href="<%=request.getContextPath()%>/removeProduct/<%=orderProduct.getId()%>"><img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt=""></a>
+                    <a href="<%=request.getContextPath()%>/removeProduct/<%=orderProduct.getId()%>"><img
+                            src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt=""></a>
                 </div>
 
                 <div class="col describeCol">
-                    <h4 class="intwoline productName"><%=orderProduct.getName()%></h4>
+                    <h4 class="intwoline productName"><%=orderProduct.getName()%>
+                    </h4>
                     <div>
                         <div class="selectNum">
                             <button class="reduce minus">&#45;</button>
-                            <input type="number" value="1" />
+                            <input type="number" value="<%=orderProduct.getCount()%>"/>
                             <button class="add plus">&#43;</button>
                         </div>
                     </div>
@@ -77,30 +69,56 @@
 
                 <div class="col rightCol">
                     <a href="<%=request.getContextPath()%>/removeProduct/<%=orderProduct.getId()%>">删除</a>
-                    <p class="totalPrice">&#165; <%=orderProduct.getPrices()%></p>
+                    <p class="totalPrice">&#165; <%
+                       float price =  orderProduct.getPrices()*orderProduct.getCount();
+                        out.println(price);
+                    %>
+                    </p>
                 </div>
 
             </div><!-- 单个商品]] -->
 
             <%
-
                 }
-            %>
 
+
+            %>
+        </div>
 
             <!-- [[价格合计 -->
             <ul class="countBlock ui-border-b">
-                <li>商品合计： <span class="themeColor" id="amount">&#165; <%=cart.getTotalPrices()%></span>（共<%=cart.getCount()%>件）</li>
+                <li>商品合计： <span class="themeColor"
+                                id="amount">&#165; <%=cart.getTotalPrices()%></span>（共<%=cart.getCount()%>件）
+                </li>
                 <li>运费合计： <span class="themeColor" id="freight">&#165; 10.00</span></li>
             </ul><!-- 价格合计]] -->
 
-        </div>
-
         <div class="ui-btn-wrap">
-            <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/createOrder'">
-              去结算
+            <button class="ui-btn-lg productBtn"
+                    onclick="window.location.href='<%=request.getContextPath()%>/createOrder'">
+                去结算
             </button>
         </div>
+            <%
+                 } else {
+            %>
+
+
+
+        <!-- [[没有商品 -->
+        <section class="ui-notice" id="noProductWrapper">
+            <i></i>
+            <p>购物车还是空的</p>
+            <div class="ui-notice-btn">
+                <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/'">去购买</button>
+            </div>
+        </section>
+        <%
+            }
+        %>
+
+
+
 
     </div><!-- 没有商品]] -->
 

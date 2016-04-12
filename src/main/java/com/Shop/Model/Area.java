@@ -1,9 +1,6 @@
 package com.Shop.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by Administrator on 2016/3/21 0021.
@@ -13,6 +10,7 @@ import javax.persistence.Table;
 public class Area {
     private int id;
     private String name;
+    private Area area;
 
     @Id
     @GeneratedValue
@@ -30,5 +28,14 @@ public class Area {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @ManyToOne
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
     }
 }

@@ -25,7 +25,7 @@ public class Good {
     private float wholesalePrices;          //促销价
     private float dumpingPrices;                //倾销价
     private float productPrices;                //商品零售价
-    private float wPrices;                  //倾销币查看价格
+    private int  wPrices;                   //倾销币查看价格
     private int wholesaleCount;                 //起批量
     private int saleCount;                      //销量
 
@@ -144,11 +144,11 @@ public class Good {
         this.saleCount = saleCount;
     }
 
-    public float getwPrices() {
+    public int getwPrices() {
         return wPrices;
     }
 
-    public void setwPrices(float wPrices) {
+    public void setwPrices(int wPrices) {
         this.wPrices = wPrices;
     }
 }

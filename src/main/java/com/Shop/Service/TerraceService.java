@@ -1,7 +1,9 @@
 package com.Shop.Service;
 
+import com.Shop.Dao.AreasDao;
 import com.Shop.Dao.ProfitDao;
 import com.Shop.Dao.TerraceDao;
+import com.Shop.Model.Areas;
 import com.Shop.Model.Profit;
 import com.Shop.Model.Terrace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ public class TerraceService {
     private TerraceDao terraceDao;
     @Autowired
     private ProfitDao profitDao;
+    @Autowired
+    private AreasDao areasDao;
 
     public void addTerrace(Terrace terrace){
         terraceDao.save(terrace);
@@ -48,5 +52,9 @@ public class TerraceService {
 
     public Profit findProfit(){
         return profitDao.findById();
+    }
+
+    public Areas findAreasByFlag(Long flag){
+        return areasDao.findByFlag(flag);
     }
 }

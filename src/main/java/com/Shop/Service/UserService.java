@@ -19,7 +19,7 @@ public class UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
-    private AreaDao areaDao;
+    private AreasDao areasDao;
     @Autowired
     private RolesDao rolesDao;
     @Autowired
@@ -36,6 +36,8 @@ public class UserService {
     private ImageDao imageDao;
     @Autowired
     private ProfitDao profitDao;
+    @Autowired
+    private CountOrderDao countOrderDao;
 
 
     public String addUser(User user){
@@ -52,6 +54,9 @@ public class UserService {
         return object.toString();
     }
 
+    public void updateUser(User user){
+        userDao.update(user);
+    }
     public User findById(int id){
         return userDao.findById(id);
     }
@@ -79,9 +84,9 @@ public class UserService {
         return rolesDao.findAll();
     }
     public boolean addArea(Areas areas){
-        Areas a = areaDao.findByName(areas.getName());
+        Areas a = areasDao.findByName(areas.getName());
         if(a == null){
-            areaDao.save(areas);
+            areasDao.save(areas);
             return true;
         }else{
             return false;
@@ -90,11 +95,11 @@ public class UserService {
     }
 
     public Areas getArea(int id){
-        return areaDao.findById(id);
+        return areasDao.findById(id);
     }
 
     public List<Areas> listAreas(){
-        return areaDao.findAll();
+        return areasDao.findAll();
     }
 
     public User loginUser(User user){
@@ -118,9 +123,7 @@ public class UserService {
 
     public boolean findWatchProductByUIdAndGId(int user_id,int good_id){
         WatchProduct watchProduct = watchProductDao.findByUIdAndPId(user_id,good_id);
-        System.out.println("查看商品！");
         if(watchProduct == null){
-            System.out.println("商品未查看");
             return false;
         }else{
             System.out.println(watchProduct.getGood().getName());
@@ -184,6 +187,10 @@ public class UserService {
     public Address findAddressById(int id){
         return addressDao.findById(id);
     }
+
+    public  void updateAddress(Address address){
+        addressDao.update(address);
+    }
     public List<Address> listAddress(int id){
         return addressDao.findByUserId(id);
     }
@@ -206,6 +213,10 @@ public class UserService {
     public List<Orders> listOrders(){
         return ordersDao.findAll();
     }
+    public List<Orders> listOrdersByUser(int user_id){
+        return ordersDao.findAllByUser(user_id);
+    }
+
     public List<Orders> listOrdersByF(int f){
         return ordersDao.findAllByF(f);
     }
@@ -238,4 +249,12 @@ public class UserService {
         orderProductDao.delete(orderProduct);
     }
 
+
+    public void addCountOrder(CountOrder countOrder){
+        countOrderDao.save(countOrder);
+    }
+
+    public List<CountOrder> listCountOrderByUserId(int user_id){
+        return countOrderDao.findAllByUserId(user_id);
+    }
 }

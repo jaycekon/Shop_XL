@@ -20,9 +20,9 @@
     <!-- 配置datasource 也就是对于数据可链接的配置 -->
     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql://localhost:3306/SingleShop"/>
+        <property name="url" value="jdbc:mysql://115.29.141.108:3306/singleshop"/>
         <property name="username" value="root"/>
-        <property name="password" value="root"/>        <!-- 数据库用户账号和密码 -->
+        <property name="password" value="231231Qq"/>        <!-- 数据库用户账号和密码 -->
         
         <!-- 配置连接池的一些属性 -->
         <property name="initialSize" value="1" /><!-- 初始化连接数量 --> 
@@ -102,7 +102,7 @@
     </bean>
     
     <bean id="userDao" class="com.Shop.Dao.UserDao" parent="daoTemplate"/>
-    <bean id="areaDao" class="com.Shop.Dao.AreaDao" parent="daoTemplate"/>
+    <bean id="areasDao" class="com.Shop.Dao.AreasDao" parent="daoTemplate"/>
     <bean id="rolesDao" class="com.Shop.Dao.RolesDao" parent="daoTemplate"/>
     <bean id="goodDao" class="com.Shop.Dao.GoodDao" parent="daoTemplate"/>
     <bean id="cartDao" class="com.Shop.Dao.CartDao" parent="daoTemplate"/>
@@ -113,6 +113,7 @@
     <bean id="addressDao" class="com.Shop.Dao.AddressDao" parent="daoTemplate"/>
     <bean id="ordersDao" class="com.Shop.Dao.OrdersDao" parent="daoTemplate"/>
     <bean id="profitDao" class="com.Shop.Dao.ProfitDao" parent="daoTemplate"/>
+    <bean id="countOrderDao" class="com.Shop.Dao.CountOrderDao" parent="daoTemplate"/>
 
 
 

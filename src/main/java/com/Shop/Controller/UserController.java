@@ -5,9 +5,11 @@ import com.Shop.Service.CartService;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
+import com.Shop.Util.AccessTokenUtil;
 import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.apache.poi.ss.formula.functions.Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.criteria.Order;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -34,11 +37,18 @@ public class UserController {
     private CartService cartService;
     @Autowired
     private GoodService goodService;
+    @Autowired
+    private TerraceService terraceService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model) {
+    public String index(Model model,HttpSession session) {
         List<Good> goods = goodService.listGood();
         model.addAttribute("goods", goods);
+        if(session.getAttribute("loginUser")!=null){
+            User user =(User)session.getAttribute("loginUser");
+            List<WatchProduct> watchProducts = userService.findAllWatchProduct(user.getId());
+            model.addAttribute("watchProducts",watchProducts);
+        }
         return "frontStage/index";
     }
 
@@ -82,11 +92,12 @@ public class UserController {
 
     @RequestMapping(value = "buyGood", method = RequestMethod.POST)
     public String buyGood(int good_id, int count, HttpSession session) {
-        JsonObject object = new JsonObject();
-        Gson gson = new Gson();
         User user = (User) session.getAttribute("loginUser");
         if (user == null) {
             return "redirect:login";
+        }
+        if(user.getSign()==0){
+            return "redirect:/personSign";
         }
         Cart cart = cartService.getCartByUserId(user.getId());
         if (cart == null) {
@@ -102,48 +113,54 @@ public class UserController {
         prices += good.getDumpingPrices() * count;
         cart.setTotalPrices(prices);
         cartService.updateCart(cart);
-        OrderProduct orderProduct = null;
         if (userService.findWatchProductByUIdAndGId(user.getId(), good_id)) {
             List<String> images = goodService.findImageByGoodId(good_id);
             String imageAddress = null;
             if (images.size() > 0) {
                 imageAddress = images.get(0);
             }
-            orderProduct = userService.addOrderProduct(cart, good, imageAddress, count);
+           userService.addOrderProduct(cart, good, imageAddress, count);
         } else {
-            object.addProperty("status", "并未查看商品");
-            return object.toString();
+            return "redirect:/watchGood/"+good_id;
         }
         return "redirect:/myCart";
     }
 
 
-    @RequestMapping(value = "watchGood", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String watchGood(HttpSession session, int good_Id) {
-        JsonObject object = new JsonObject();
+    @RequestMapping(value = "watchGood/{id}", method = RequestMethod.GET)
+    public String watchGood(HttpSession session, @PathVariable(value="id") int good_Id) {
         if (session.getAttribute("loginUser") == null) {
-            object.addProperty("status", false);
-            object.addProperty("message", "用户未登录");
-            return object.toString();
+            return "redirect:/login";
         }
         User user = (User) session.getAttribute("loginUser");
         Good good = goodService.findGoodById(good_Id);
         List<WatchProduct> watchProducts = userService.findAllWatchProduct(user.getId());
         for (WatchProduct watchProduct : watchProducts) {
             if (watchProduct.getGood().getId() == good.getId()) {
-                object.addProperty("status", true);
-                object.addProperty("message", "用户已查看过该商品");
-                return object.toString();
+                return "redirect:/Detail/"+good_Id;
             }
         }
+        if(user.getCount()<good.getwPrices()){
+            return "redirect:/myCount";
+        }
+        CountOrder countOrder = new CountOrder();
+        countOrder.setUser(user);
+        countOrder.setDate(new Date());
+        countOrder.setType("使用");
+        countOrder.setStatus(1);
+        countOrder.setCount(good.getwPrices());
+        int count = user.getCount() - good.getwPrices();
+        int usecount = user.getUsecount() +good.getwPrices();
+        user.setCount(count);
+        user.setUsecount(usecount);
+        userService.updateUser(user);
+        session.setAttribute("loginUser",user);
+        userService.addCountOrder(countOrder);
         WatchProduct watchProduct = new WatchProduct();
         watchProduct.setUser(user);
         watchProduct.setGood(good);
         userService.addWatchProduct(watchProduct);
-        object.addProperty("status", true);
-        object.addProperty("message", "用户已成功查看该商品");
-        return object.toString();
+        return "redirect:/Detail/"+good_Id;
     }
 
     @RequestMapping(value = "myCart", method = RequestMethod.GET)
@@ -153,12 +170,14 @@ public class UserController {
         }
         User user = (User) session.getAttribute("loginUser");
         Cart cart = cartService.getCartByUserId(user.getId());
-        if(cart == null){
-            return "redirect:/";
+//        if(cart == null){
+//            return "redirect:/";
+//        }
+        if(cart !=null) {
+            List<OrderProduct> orderProducts = userService.findOrderProductByCartId(cart.getId());
+            model.addAttribute("orderProducts", orderProducts);
         }
-        List<OrderProduct> orderProducts = userService.findOrderProductByCartId(cart.getId());
         model.addAttribute("cart", cart);
-        model.addAttribute("orderProducts", orderProducts);
         return "frontStage/User/myCart";
     }
 
@@ -181,7 +200,6 @@ public class UserController {
     }
 
     @RequestMapping(value = "createOrder/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    @ResponseBody
     public String payCart(HttpSession session, @PathVariable(value = "id") int id) {
         User user = (User) session.getAttribute("loginUser");
         Cart cart = cartService.getCartByUserId(user.getId());
@@ -222,8 +240,7 @@ public class UserController {
         }
         cartService.deleteCart(cart);
         userService.updateOrders(orders);
-        Gson gson = new Gson();
-        return gson.toJson(orders);
+        return "redirect:/userOrders";
     }
 
     @RequestMapping(value = "easyBuy", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -242,14 +259,6 @@ public class UserController {
         return orderPoJo;
     }
 
-    @RequestMapping(value = "addAddress", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public Address addAddress(HttpSession session, Address address) {
-        User user = (User) session.getAttribute("loginUser");
-        address.setUser(user);
-        userService.addAddress(address);
-        return address;
-    }
 
     @RequestMapping(value = "listAddress", method = RequestMethod.GET)
     public String listAddress(Model model, HttpSession session) {
@@ -261,6 +270,8 @@ public class UserController {
         model.addAttribute("addresses", addresses);
         return "frontStage/User/myAddress";
     }
+
+
 
     @RequestMapping(value = "myAddress/{id}", method = RequestMethod.GET)
     public String myAddress(@PathVariable(value = "id") int id, HttpSession session, Model model) {
@@ -295,10 +306,154 @@ public class UserController {
         double prices = cart.getTotalPrices();
         prices =prices - orderProduct.getPrices()* orderProduct.getCount();
         cart.setTotalPrices(prices);
-        cartService.updateCart(cart);
+        if(cart.getCount()==0){
+            cartService.deleteCart(cart);
+        }else {
+            cartService.updateCart(cart);
+        }
         userService.deleteOrderProduct(orderProduct);
         return "redirect:/myCart";
     }
 
+    @RequestMapping(value ="userOrders",method = RequestMethod.GET)
+    public String listOrders(Model model,HttpSession session){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        User user = (User)session.getAttribute("loginUser");
+        List<Orders> orderses = userService.listOrdersByUser(user.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
+    }
 
+    @RequestMapping(value ="userOrderDetail/{id}",method = RequestMethod.GET)
+    public String orderDetail(@PathVariable(value ="id")int id,Model model,HttpSession session){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        Orders orders = userService.findOrdersById(id);
+        List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+        OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+        model.addAttribute("orderPoJo",orderPoJo);
+        return "frontStage/User/orderDetail";
+    }
+
+    @RequestMapping(value ="personCenter",method = RequestMethod.GET)
+    public String personCenter(HttpSession session){
+        if(session.getAttribute("loginUser") == null){
+            return "redirect:/login";
+        }
+        return "frontStage/User/storeCenter";
+    }
+
+
+    @RequestMapping(value ="personSign",method = RequestMethod.GET)
+    public String memberSign(Model model,HttpSession session){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        User user =(User)session.getAttribute("loginUser");
+        if(user.getSign() ==1){
+            return "redirect:/";
+        }
+        Profit profit = terraceService.findProfit();
+        model.addAttribute("profit",profit);
+        return "frontStage/User/memberCeritification";
+    }
+
+    @RequestMapping(value ="personSignSuccess",method = RequestMethod.GET)
+    public String memberSign(HttpSession session){
+        User user =(User)session.getAttribute("loginUser");
+        Profit profit = terraceService.findProfit();
+        int count = user.getCount()+profit.getDumpingCount();
+        CountOrder countOrder = new CountOrder();
+        countOrder.setDate(new Date());
+        countOrder.setType("会员认证");
+        countOrder.setCount(profit.getDumpingCount());
+        countOrder.setStatus(1);
+        countOrder.setUser(user);
+        user.setCount(count);
+        user.setSign(1);
+        userService.addCountOrder(countOrder);
+        userService.updateUser(user);
+        return "redirect:/personCenter";
+    }
+
+    @RequestMapping(value ="myCount",method = RequestMethod.GET)
+    public String myCount(HttpSession session,Model model){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        User user =(User)session.getAttribute("loginUser");
+        List<CountOrder> countOrders = userService.listCountOrderByUserId(user.getId());
+        model.addAttribute("countOrders",countOrders);
+        return "frontStage/User/myCount";
+    }
+
+
+    @RequestMapping(value ="recharge",method = RequestMethod.GET)
+    public String recharge(){
+        return "frontStage/User/recharge";
+    }
+
+    @RequestMapping(value ="recharge",method = RequestMethod.POST)
+    public String recharge(HttpSession session,int count){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        User user =(User)session.getAttribute("loginUser");
+        CountOrder countOrder =new CountOrder();
+        countOrder.setCount(count);
+        countOrder.setStatus(1);
+        countOrder.setType("充值");
+        countOrder.setUser(user);
+        countOrder.setDate(new Date());
+        int num = user.getCount()+count;
+        user.setCount(num);
+        userService.updateUser(user);
+        userService.addCountOrder(countOrder);
+        return "redirect:/mycount";
+    }
+
+    @RequestMapping(value ="addAddress",method = RequestMethod.GET)
+    public String addAddress(HttpSession session){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        return "frontStage/User/addAddress";
+    }
+
+    @RequestMapping(value ="addAddress",method = RequestMethod.POST)
+    public String addAddress(Address address,HttpSession session){
+        User user =(User)session.getAttribute("loginUser");
+        address.setUser(user);
+        userService.addAddress(address);
+        return "redirect:/listAddress";
+    }
+
+
+    @RequestMapping(value ="editAddress/{id}",method = RequestMethod.GET)
+    public String editAddress(@PathVariable(value ="id")int id,Model model){
+        Address address = userService.findAddressById(id);
+        model.addAttribute("address",address);
+        return "frontStage/User/editAddress";
+    }
+
+    @RequestMapping(value ="editAddress",method = RequestMethod.POST)
+    public String editAddress(Address address){
+        Address a = userService.findAddressById(address.getId());
+        a.setUsername(address.getUsername());
+        a.setAddress(address.getAddress());
+        a.setFlag(address.getFlag());
+        a.setPhone(address.getPhone());
+        a.setArea(address.getArea());
+        userService.updateAddress(address);
+        return "frontStage/User/addAddress";
+    }
 }

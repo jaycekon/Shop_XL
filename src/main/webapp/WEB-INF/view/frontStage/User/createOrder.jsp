@@ -30,13 +30,7 @@
     <h1>结算中心</h1>
 </header>
 
-<footer class="ui-footer ui-footer-stable ui-border-t">
-    <ul class="ui-tiled">
-        <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-        <li class="footerItem"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
-        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
-    </ul>
-</footer>
+<%@include file="../footer.jsp" %>
 
 <section class="ui-container">
 

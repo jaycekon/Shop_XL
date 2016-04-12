@@ -146,6 +146,17 @@ public class GoodController {
 
     @RequestMapping(value = "Detail/{id}",method = RequestMethod.GET)
     public String detail(@PathVariable(value ="id")int id,HttpSession session,Model model){
+        if(session.getAttribute("loginUser")==null){
+            return "redirect:/login";
+        }
+        User user = (User)session.getAttribute("loginUser");
+        if(user.getSign()!=1){
+            return "redirect:/personSign";
+        }
+        boolean status = userService.findWatchProductByUIdAndGId(user.getId(),id);
+        if(!status){
+            return "redirect:/watchGood/"+id;
+        }
         Good good= goodService.findGoodById(id);
         model.addAttribute("good",good);
         List<String> address = goodService.findImageByGoodId(good.getId());

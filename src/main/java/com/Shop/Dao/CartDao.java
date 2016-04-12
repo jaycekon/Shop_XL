@@ -22,7 +22,10 @@ public class CartDao extends BaseDao {
     }
 
     public void delete(Cart cart){
-        super.hibernateTemplate.delete(cart);
+        Session session = super.openSession();
+        session.delete(cart);
+        session.beginTransaction().commit();
+        session.close();
     }
 
     public Cart findByCartId(int id){
@@ -33,6 +36,7 @@ public class CartDao extends BaseDao {
         Session session = super.openSession();
         session.update(cart);
         session.beginTransaction().commit();
+        session.close();
 //       super.hibernateTemplate.update(cart);
     }
 }

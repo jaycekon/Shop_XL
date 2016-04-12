@@ -28,13 +28,7 @@
     <h1>我的收货地址</h1>
 </header>
 
-<footer class="ui-footer ui-footer-stable ui-border-t">
-    <ul class="ui-tiled">
-        <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-        <li class="footerItem"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
-        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
-    </ul>
-</footer>
+    <%@include file="../footer.jsp" %>
 
 <section class="ui-container">
     <%
@@ -50,7 +44,7 @@
             <p>姓名：<%=address.getUsername()%></p>
             <p>电话：<%=address.getPhone()%></p>
             <p>地址：<%=address.getAddress()%></p>
-            <button class="icon iconfont RTIcon" onclick="window.location.href='./editAddress.html'">&#xe603;</button>
+            <button class="icon iconfont RTIcon" onclick="window.location.href='<%=request.getContextPath()%>/editAddress/<%=address.getId()%>'">&#xe603;</button>
         </li></a>
         <%
             }
@@ -58,7 +52,7 @@
     </ul>
 
     <div class="ui-btn-wrap">
-        <button class="ui-btn-lg productBtn" onclick="window.location.href='./addAddress.html'">
+        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/addAddress'">
             新增收货地址
         </button>
     </div>

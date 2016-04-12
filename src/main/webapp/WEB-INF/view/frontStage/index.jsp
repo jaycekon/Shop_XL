@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.Good" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Model.WatchProduct" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/2 0002
@@ -21,13 +22,7 @@
 </head>
 <body>
 
-<footer class="ui-footer ui-footer-stable ui-border-t">
-    <ul class="ui-tiled">
-        <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-        <li class="footerItem"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
-        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
-    </ul>
-</footer>
+<%@include file="footer.jsp" %>
 
 <section class="ui-container">
 
@@ -42,26 +37,60 @@
 
     <div class="productListWrapper">
         <%
-            List<Good> goods = (List<Good>)request.getAttribute("goods");
-            for(Good good :goods){
+            List<Good> goods = (List<Good>) request.getAttribute("goods");
+            List<WatchProduct> watchProducts = (List<WatchProduct>) request.getAttribute("watchProducts");
+            for (Good good : goods) {
         %>
         <!-- [[产品列表 -->
         <div class="productList">
             <div class="ui-row-flex">
                 <div class="ui-col ui-col-2">
-                    <a href="<%=request.getContextPath()%>/Detail/<%=good.getId()%>"><img src="http://localhost:55555/Shop_XL1459415582486.jpg" alt="" class="productImg" /></a>
+                    <a href="<%=request.getContextPath()%>/Detail/<%=good.getId()%>"><img
+                            src="http://localhost:55555/Shop_XL1459415582486.jpg" alt="" class="productImg"/></a>
                 </div>
                 <div class="ui-col ui-col-3 ui-row-flex ui-whitespace ui-row-flex-ver productCol2">
-                    <p class="ui-col ui-nowrap ui-flex-align-center productName"><a href="<%=request.getContextPath()%>/Detail/<%=good.getId()%>"><%=good.getDescribes()%></a></p>
-                    <p class="ui-col ui-flex  ui-flex-align-center productSpec">销售价：<span class="productMoney">&#165;<%=good.getProductPrices()%></span></p>
-                    <p class="ui-col ui-flex  ui-flex-align-center productSpec">批发价：<span class="productMoney">&#165;<%=good.getWholesalePrices()%></span></p>
-                    <p class="ui-col ui-flex  ui-flex-align-center"><button class="ui-btn productBtn watchPrice">查看倾销价</button></p>
+                    <p class="ui-col ui-nowrap ui-flex-align-center productName"><a
+                            href="<%=request.getContextPath()%>/Detail/<%=good.getId()%>"><%=good.getDescribes()%>
+                    </a></p>
+                    <p class="ui-col ui-flex  ui-flex-align-center productSpec">销售价：<span
+                            class="productMoney">&#165;<%=good.getProductPrices()%></span></p>
+                    <p class="ui-col ui-flex  ui-flex-align-center productSpec">批发价：<span
+                            class="productMoney">&#165;<%=good.getWholesalePrices()%></span></p>
+                    <%
+                        if (watchProducts != null) {
+                            int flag =1;
+                            for (WatchProduct watchProduct : watchProducts) {
+                                if (watchProduct.getGood().getId() == good.getId()) {
+                                    flag = 0;
+                    %>
+                    <p class="ui-col ui-flex  ui-flex-align-center productSpec">倾销价：<span
+                            class="productMoney">&#165;<%=good.getDumpingPrices()%></span></p>
+                    <%
+                        }
+                    }if(flag == 1){
+                        %>
+                    <p class="ui-col ui-flex  ui-flex-align-center">
+                        <button class="ui-btn productBtn watchPrice">查看倾销价</button>
+                    </p>
+                    <%
+                    }
+                } else {
+                %>
+                    <p class="ui-col ui-flex  ui-flex-align-center">
+                        <button class="ui-btn productBtn watchPrice">查看倾销价</button>
+                    </p>
+                    <%
+
+                        }
+                    %>
+
+
                 </div>
             </div>
         </div><!-- 产品列表]] -->
-    <%
-        }
-    %>
+        <%
+            }
+        %>
     </div>
 
 </section>

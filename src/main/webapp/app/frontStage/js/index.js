@@ -71,7 +71,6 @@ $(function(){
     });
 
     /*商品数量编辑《商品详情页》*/
-
     var max = 100/*parseInt( $('#stock').text() )*/;   /*库存量*/
 
     $('.minus').tap(function(){
@@ -100,16 +99,5 @@ $(function(){
         }
     });
 
-    $('.productDel').tap(function(){
-        $(this).parents('.productBox').remove();
-        if( $('.productBox').size() == 0 ) {
-            $('#noProductWrapper').removeClass('hide');
-            $('#hasProductWrapper').empty();
-        }
-    });
 
-    /*商品合计*/
-    function editAmount(){
-        $('#amount').text('&#165;'+ amount);
-    }
 });

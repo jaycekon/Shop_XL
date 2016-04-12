@@ -19,37 +19,6 @@ $(function(){
         }
     };
 
-    //添加规格
-    var addSpec = function(){
-        var div = $('<div>').addClass('specific col-md-offset-2');
-        div.html(
-            '<div class="form-group">'+
-            '<label class="col-md-2 control-label"></label>'+
-            '<div class="col-md-10 text-right">'+
-            '<span class="glyphicon glyphicon-trash glyphicconDel"></span>'+
-            '</div>'+
-            '</div>'+
-            '<div class="form-group">'+
-            '<label class="col-md-2 control-label">规格：</label>'+
-            '<div class="col-md-10">'+
-            '<input type="text" class="form-control spec"/>'+
-            '</div>'+
-            '</div>'+
-            '<div class="form-group">'+
-            '<label class="col-md-2 control-label">价格：</label>'+
-            '<div class="col-md-10">'+
-            '<input type="text" class="form-control price"/>'+
-            '</div>'+
-            '</div>'+
-            '<div class="form-group">'+
-            '<label class="col-md-2 control-label">库存：</label>'+
-            '<div class="col-md-10">'+
-            '<input type="text" class="form-control stock"/>'+
-            '</div>'+
-            '</div>');
-
-        return div;
-    };
 
     var dom = {
         $form : $('.product-message')
@@ -58,6 +27,7 @@ $(function(){
     dom.$form.on('click','.file',function(){
 
         $(this).on('change',function(){
+
             var imgcontent = $(this).parents('.img-content'),
                 parent = $(this).parent();
 
@@ -82,7 +52,23 @@ $(function(){
                     '<input type="file" accept="image/*" name="files" class="file"/>'+
                     '</div>')
             }
+
+            /*用ajax把数据上传到后台*/
+            var formData = new FormData()
+            // fileInput
+            formData.append('imgfile',this.files[0]);
+            
+            $.ajax({
+                url: './../../uploadImg',
+                type: 'POST',
+                data: formData,
+                processData: false,   // 告诉jquery不要去处理发送的数据
+                contentType: false,   // 告诉jquery不要去设置Content-Type请求头
+            });
+
         });
+
+
     });
 
     dom.$form.on('click','.cancel',function(){

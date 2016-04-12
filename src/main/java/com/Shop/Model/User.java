@@ -13,7 +13,7 @@ import java.util.Date;
 @Table
 public class User implements Serializable {
     private int id;
-    private int OpenId;
+    private String OpenId;
     private String username;
     private String password;
     private String phone;
@@ -21,6 +21,7 @@ public class User implements Serializable {
     private String realName;
     private int sign;
     private int count;
+    private int usecount;
     private Date birthday;
     private Roles roles;
 
@@ -109,11 +110,19 @@ public class User implements Serializable {
         this.roles = roles;
     }
 
-    public int getOpenId() {
+    public String getOpenId() {
         return OpenId;
     }
 
-    public void setOpenId(int openId) {
+    public void setOpenId(String openId) {
         OpenId = openId;
+    }
+
+    public int getUsecount() {
+        return usecount;
+    }
+
+    public void setUsecount(int usecount) {
+        this.usecount = usecount;
     }
 }

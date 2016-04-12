@@ -27,13 +27,7 @@
     <h1>商品详情</h1>
 </header>
 
-<footer class="ui-footer ui-footer-stable ui-border-t">
-    <ul class="ui-tiled">
-        <li class="footerItem active" onclick="window.location.href='./index.html'"><i class="ui-icon-home"></i><div>首页</div></li>
-        <li class="footerItem"><i class="ui-icon-cart" onclick="window.location.href='./shopCart.html'"></i><div>购物车</div></li>
-        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>个人中心</div></li>
-    </ul>
-</footer>
+<%@include file="../footer.jsp" %>
 
 <section class="ui-container">
 
@@ -55,14 +49,14 @@
     <div class="ui-row productSpecBlock">
         <p class="specText"><span>零售价：</span><span class="themeColor">&#165;<%=good.getProductPrices()%></span></p>
         <p class="specText"><span>批发价：</span><span class="themeColor">&#165;<%=good.getWholesalePrices()%></span></p>
+        <p class="specText"><span>批发价：</span><span class="themeColor">&#165;<%=good.getDumpingPrices()%></span></p>
         <p class="specText"><span>运费：</span>0.00</p>
         <p class="specText"><span>库存：</span><span id="stock"><%=good.getNum()%></span></p>
         <p class="specText"><span>起批量：</span><%=good.getWholesaleCount()%></p>
         <p class="specText"><span>销量：</span><%=good.getSaleCount()%></p>
-        <button class="ui-btn productBtn watchPrice">查看倾销价</button>
         <button class="ui-btn addCartBtn" id="addCartBtn"><i class="ui-icon-cart"></i></button>
         <form action = "<%=request.getContextPath()%>/buyGood" method = "post">
-            <input type = "hidden" value = 1 name="count"/>
+            <input type = "number" name="count"/>
             <input type = "hidden" value ="<%=good.getId()%>" name ="good_id"/>
             <%--<div class="ui-poptips ui-poptips-success addTip">--%>
             <%--<div class="ui-poptips-cnt"><i></i>1件商品成功加入购物车</div>--%>

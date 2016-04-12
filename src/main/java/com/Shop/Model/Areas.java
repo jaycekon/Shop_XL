@@ -12,8 +12,9 @@ import javax.persistence.Table;
 @Table
 public class Areas {
     private int id;
-    private int OpenId;
+    private String OpenId;
     private String name;
+    private long flag;
 
     @Id
     @GeneratedValue
@@ -33,11 +34,19 @@ public class Areas {
         this.name = name;
     }
 
-    public int getOpenId() {
+    public String getOpenId() {
         return OpenId;
     }
 
-    public void setOpenId(int openId) {
+    public void setOpenId(String openId) {
         OpenId = openId;
+    }
+
+    public long getFlag() {
+        return flag;
+    }
+
+    public void setFlag(long flag) {
+        this.flag = flag;
     }
 }

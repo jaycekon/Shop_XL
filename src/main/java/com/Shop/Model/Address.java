@@ -14,6 +14,8 @@ public class Address {
     private String phone;
     private String username;
     private User user;
+    private int flag;
+    private Address addresss;
 
     @Id
     @GeneratedValue
@@ -65,5 +67,13 @@ public class Address {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getFlag() {
+        return flag;
+    }
+
+    public void setFlag(int flag) {
+        this.flag = flag;
     }
 }

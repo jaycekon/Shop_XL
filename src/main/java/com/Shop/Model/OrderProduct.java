@@ -17,6 +17,7 @@ public class OrderProduct {
     private String image;
     private Cart cart;
     private Orders orders;
+    private int stauts;
     private float areaProfit;
     private float roleProfit;
 
@@ -112,5 +113,13 @@ public class OrderProduct {
 
     public void setDescribes(String describes) {
         this.describes = describes;
+    }
+
+    public int getStauts() {
+        return stauts;
+    }
+
+    public void setStauts(int stauts) {
+        this.stauts = stauts;
     }
 }
