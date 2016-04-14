@@ -2,46 +2,65 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ddbd9a0-2372-44b1-b729-0649ea3cd92b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/ListArea.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/listRoles.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/listUser.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/AreaCenter.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/RoleCenter.jsp" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/code.jsp" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Dao/AreaDao.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Controller/UserController.class" afterPath="$PROJECT_DIR$/target/classes/com/Shop/Controller/UserController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Dao/RolesDao.class" afterPath="$PROJECT_DIR$/target/classes/com/Shop/Dao/RolesDao.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Dao/UserDao.class" afterPath="$PROJECT_DIR$/target/classes/com/Shop/Dao/UserDao.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Model/Roles.class" afterPath="$PROJECT_DIR$/target/classes/com/Shop/Model/Roles.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Model/User.class" afterPath="$PROJECT_DIR$/target/classes/com/Shop/Model/User.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/com/Shop/Service/UserService.class" afterPath="$PROJECT_DIR$/target/classes/com/Shop/Service/UserService.class" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/iconfont.eot" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/iconfont.ttf" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/iconfont.woff" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/image/address.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/image/code.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/image/loading_sprite.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/AddressDao.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/OrdersDao.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Util/OrderPoJo.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/Orders/listOrders.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/Product/editProduct.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/Product/previewProduct.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/Product/productList.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/Product/productPublish.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/index.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/login.jsp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/lib/jquery/ajaxfileupload.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/financingManage/loadList.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/financingManage/recharge.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/financingManage/taxList.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/productManage/productPublish.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/systemManage/parameter.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/withdrawManage/largeCommission.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/backStage/page/withdrawManage/roleCommission.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/css/address.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/css/product.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/css/withdraw.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/data/products.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/demo.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/demo.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/iconfont.css" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/font/iconfont.svg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/js/product.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/js/shopCart.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/lib/js/frozen.js.mine" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/lib/js/frozen.js.r2032" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/lib/js/frozen.js.r2035" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/addAddress.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/editAddress.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/largeAreaCenter.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/largeExtensionCode.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/logistics.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/memberCertification.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/myDumpingMoney.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/myReceiptAddress.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/recharge.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/roleCenter.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/roleContactWay.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/roleExtensionCode.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/roleList.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/roleWithdraw.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/settleAccount.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/shopCart.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/storeList.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/subCommission.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/withdrawDetail.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/中英文对照表.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/更新说明.txt" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/AreasDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/AreasDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/RolesDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/RolesDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/UserDao.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Dao/UserDao.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Model/Areas.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Model/Areas.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Model/Profit.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Model/Profit.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Model/Roles.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Model/Roles.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Model/User.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Model/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Service/TerraceService.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Service/TerraceService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Service/UserService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Util/AccessTokenUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Util/AccessTokenUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Util/Test.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Util/Test.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/Shop-servlet.xml" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/Shop-servlet.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/myCount.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/myCount.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/recharge.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/recharge.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/storeCenter.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/storeCenter.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/footer.jsp" afterPath="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/footer.jsp" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/css/index.css" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/css/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/js/index.js" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/js/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/index.html" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/orderDetail.html" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/orderDetail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/orderList.html" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/orderList.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/productDetail.html" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/productDetail.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/storecenter.html" afterPath="$PROJECT_DIR$/src/main/webapp/app/frontStage/page/storecenter.html" />
     </list>
     <ignored path="Shop_XL.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -142,8 +161,8 @@
       <file leaf-file-name="AdminController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.84763575">
-              <caret line="294" column="39" selection-start-line="294" selection-start-column="39" selection-end-line="294" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.70546734">
+              <caret line="290" column="50" selection-start-line="290" selection-start-column="50" selection-end-line="290" selection-end-column="50" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -372,9 +391,10 @@
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="ChangesBrowser.SHOW_FLATTEN" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -979,7 +999,7 @@
       <workItem from="1460444147437" duration="14501000" />
       <workItem from="1460514041505" duration="16024000" />
       <workItem from="1460538944722" duration="9385000" />
-      <workItem from="1460613992648" duration="14161000" />
+      <workItem from="1460613992648" duration="14313000" />
     </task>
     <task id="LOCAL-00001" summary="link Good Service">
       <created>1459223977621</created>
@@ -1005,11 +1025,17 @@
       <option name="project" value="LOCAL" />
       <updated>1460459427672</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="接入微信---成功链接">
+      <created>1460628331807</created>
+      <option name="number" value="00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1460628331807</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="182148000" />
+    <option name="totallyTimeSpent" value="182300000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
@@ -1024,8 +1050,8 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3254818" sideWeight="0.4914712" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3254818" sideWeight="0.4914712" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1063,7 +1089,8 @@
     <MESSAGE value="link Order Service" />
     <MESSAGE value="整理业务" />
     <MESSAGE value="接入微信。完成增加大区" />
-    <option name="LAST_COMMIT_MESSAGE" value="接入微信。完成增加大区" />
+    <MESSAGE value="接入微信---成功链接" />
+    <option name="LAST_COMMIT_MESSAGE" value="接入微信---成功链接" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1288,6 +1315,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+          <folding>
+            <element signature="e#328#329#0" expanded="false" />
+            <element signature="e#394#395#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1295,6 +1326,19 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="65" column="74" selection-start-line="65" selection-start-column="74" selection-end-line="65" selection-end-column="74" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#644#645#0" expanded="false" />
+            <element signature="e#694#695#0" expanded="false" />
+            <element signature="e#731#732#0" expanded="false" />
+            <element signature="e#783#784#0" expanded="false" />
+            <element signature="e#826#827#0" expanded="false" />
+            <element signature="e#884#885#0" expanded="false" />
+            <element signature="e#921#922#0" expanded="false" />
+            <element signature="e#973#974#0" expanded="false" />
+            <element signature="e#1011#1012#0" expanded="false" />
+            <element signature="e#1066#1067#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1323,6 +1367,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="15.4">
           <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="83" selection-end-column="7" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1559,8 +1604,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.84763575">
-          <caret line="294" column="39" selection-start-line="294" selection-start-column="39" selection-end-line="294" selection-end-column="39" />
+        <state vertical-scroll-proportion="0.70546734">
+          <caret line="290" column="50" selection-start-line="290" selection-start-column="50" selection-end-line="290" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

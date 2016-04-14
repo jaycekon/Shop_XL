@@ -1,0 +1,19 @@
+.blockInfo {
+    background-color: #fff;
+    padding: 15px;
+    margin-top: 10px;
+    line-height: 1.8;
+    position: relative;
+}
+.icon.RTIcon {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    font-size: 22px;
+    color: #00b3ee;
+}
+
+.ui-checkbox input:checked:before, .ui-checkbox-s input:checked:before {
+    content: "";
+    color: #f69;
+}
