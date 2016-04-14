@@ -71,15 +71,18 @@ public class AccessTokenUtil {
        return accessToken;
     }
 
-    public static String getQrCodePic() {
+    public static String getQrCodePic(int type,long flag) {
         HttpClient client = new DefaultHttpClient();
         String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + getAccessToken();
-
+        StringBuffer flags = new StringBuffer();
+        flags.append(type);
+        flags.append(flag);
+        System.out.println(flags.toString());
         HttpPost post = new HttpPost(url);
         JsonParser jsonParser = new JsonParser();
         post.addHeader(HTTP.CONTENT_TYPE, "application/json");
-        long flag = System.currentTimeMillis();
-        String encoderJson = "{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": 0"+flag+"}}}";
+        String encoderJson = "{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": "+type+flag+"}}}";
+        System.out.println(encoderJson);
         StringEntity se = null;
         StringBuffer sb = new StringBuffer();
         sb.append("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=");
@@ -123,6 +126,58 @@ public class AccessTokenUtil {
         }
         str = SHA1.encode(str);
         return str.equals(signature);
+    }
+
+    public static void getCode(String code,HttpServletRequest request){
+        String rurl="https://api.weixin.qq.com/sns/oauth2/access_token?appid="+APPID+"&secret="+APPSECRET+"&code="+code+"&grant_type=authorization_code";
+        getReToken(rurl,request);
+    }
+
+
+    // 获取refresh_token,openid值
+    private static String getReToken(String rurl, HttpServletRequest req)
+    {
+        HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet(rurl);
+        JsonParser jsonparer = new JsonParser();// 初始化解析json格式的对象
+        String result = "error";
+        try
+        {
+            HttpResponse res = client.execute(get);
+            String responseContent = null; // 响应内容
+            HttpEntity entity = res.getEntity();
+            responseContent = EntityUtils.toString(entity, "UTF-8");
+            JsonObject json = jsonparer.parse(responseContent)
+                    .getAsJsonObject();
+            // 将json字符串转换为json对象
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
+            {
+                if (json.get("errcode") != null)
+                {// 错误时微信会返回错误码等信息，{"errcode":40013,"errmsg":"invalid appid"}
+                    System.out.println("获取refresh_token,openid值失败");
+                    System.out.println(json.get("errcode").toString());
+                }
+                else
+                {
+                    //result = json.get("refresh_token").getAsString();
+                    result = json.get("openid").getAsString();
+                    req.getSession().setAttribute("openId",result);
+                    //String aurl ="https://api.weixin.qq.com/sns/oauth2/refresh_token?appid="+APP_ID+"&grant_type=refresh_token&refresh_token="+result;
+                    //result=getAccess_Token(aurl,req);
+                    return result;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            // 关闭连接 ,释放资源
+            client.getConnectionManager().shutdown();
+            return result;
+        }
     }
 
 }

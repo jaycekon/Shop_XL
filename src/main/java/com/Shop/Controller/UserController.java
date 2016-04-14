@@ -9,6 +9,7 @@ import com.Shop.Util.AccessTokenUtil;
 import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.apache.log4j.Logger;
 import org.apache.poi.ss.formula.functions.Count;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +20,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.persistence.criteria.Order;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,9 +43,37 @@ public class UserController {
     private GoodService goodService;
     @Autowired
     private TerraceService terraceService;
+    Logger log = Logger.getLogger(UserController.class);
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index(Model model,HttpSession session) {
+    public String index(Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
+        if(session.getAttribute("openId") == null){
+            log.info("没有openId");
+            String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx05208e667b03b794&"
+                    + "redirect_uri=http://weijiehuang.productshow.cn/getCode"
+                    +"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+            response.sendRedirect(url);
+        }
+        else{
+            String openId =(String)session.getAttribute("openId");
+            log.info(openId);
+            if(terraceService.findAreasByOpenId(openId)!=null){
+                Areas areas = terraceService.findAreasByOpenId(openId);
+                session.setAttribute("areas",areas);
+                log.info(areas.getImg());
+                return "frontStage/User/AreaCenter";
+            }else if(terraceService.findRolesByOpenId(openId)!=null){
+                Roles roles = terraceService.findRolesByOpenId(openId);
+                session.setAttribute("roles",roles);
+                return "frontStage/User/RoleCenter";
+            }
+            response.sendRedirect("http://weijiehuang.productshow.cn/index");
+        }
+        return null;
+    }
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    public String inde(Model model, HttpSession session, HttpServletResponse response) throws IOException {
         List<Good> goods = goodService.listGood();
         model.addAttribute("goods", goods);
         if(session.getAttribute("loginUser")!=null){
@@ -347,6 +379,20 @@ public class UserController {
     @RequestMapping(value ="personCenter",method = RequestMethod.GET)
     public String personCenter(HttpSession session){
         if(session.getAttribute("loginUser") == null){
+            log.info("找不到用户！");
+            String openId =(String)session.getAttribute("openId");
+            User user = terraceService.findUseByOpenId(openId);
+            session.setAttribute("loginUser",user);
+        }
+        return "frontStage/User/storeCenter";
+    }
+    @RequestMapping(value ="areasCenter",method = RequestMethod.GET)
+    public String areaCenter(HttpSession session){
+        return "frontStage/User/AreaCenter";
+    }
+    @RequestMapping(value ="rolesCenter",method = RequestMethod.GET)
+    public String rolesCenter(HttpSession session){
+        if(session.getAttribute("loginUser") == null){
             return "redirect:/login";
         }
         return "frontStage/User/storeCenter";
@@ -398,7 +444,9 @@ public class UserController {
 
 
     @RequestMapping(value ="recharge",method = RequestMethod.GET)
-    public String recharge(){
+    public String recharge(Model model){
+        Profit profit = terraceService.findProfit();
+        model.addAttribute(profit);
         return "frontStage/User/recharge";
     }
 
@@ -418,13 +466,17 @@ public class UserController {
         user.setCount(num);
         userService.updateUser(user);
         userService.addCountOrder(countOrder);
-        return "redirect:/mycount";
+
+        return "redirect:/myCount";
+
     }
 
     @RequestMapping(value ="addAddress",method = RequestMethod.GET)
     public String addAddress(HttpSession session){
         if(session.getAttribute("loginUser")==null){
-            return "redirect:/login";
+            String openId =(String)session.getAttribute("openId");
+            User user = terraceService.findUseByOpenId(openId);
+            session.setAttribute("loginUser",user);
         }
         return "frontStage/User/addAddress";
     }

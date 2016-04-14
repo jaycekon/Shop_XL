@@ -60,5 +60,11 @@ public class UserDao extends BaseDao implements IGeneralDao<User>{
         return (User)session.createQuery(hql).setParameter("name",username).uniqueResult();
     }
 
+    public User findByOpenId(String openId){
+        Session session = super.openSession();
+        String hql = "from User where openId=:openId";
+        return (User)session.createQuery(hql).setParameter("openId",openId).uniqueResult();
+    }
+
 
 }

@@ -12,6 +12,7 @@ public class Roles {
     private String name;
     private String phone;
     private String EMail;
+    private String img;
     private String OpenId;
     private Areas areas;
 
@@ -64,5 +65,13 @@ public class Roles {
 
     public void setOpenId(String openId) {
         OpenId = openId;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

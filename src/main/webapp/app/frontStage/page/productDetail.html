@@ -10,7 +10,6 @@
     <link rel="stylesheet" type="text/css" href="./../lib/css/frozen.css">
     <link rel="stylesheet" type="text/css" href="./../css/index.css?12">
     <link rel="stylesheet" type="text/css" href="./../css/product.css?12">
-    <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 
 </head>
 <body>
@@ -136,7 +135,7 @@
 </section><!-- 选择商品数量]] -->
 
 <!-- [[点击查看需要倾销 -->
-<div class="ui-dialog">
+<div class="ui-dialog" id="goPayDialog">
     <div class="ui-dialog-cnt">
         <div class="ui-dialog-bd">
             <div>查看需要支付XX倾销币</div>
@@ -152,26 +151,62 @@
 <script src="./../lib/js/frozen.js"></script>
 <script src="./../js/index.js?12"></script>
 <script>
-/*    wx.config({
-    debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-    appId: 'wx0c8e5793aa3e836b', // 必填，公众号的唯一标识
-    timestamp: 1459498527595, // 必填，生成签名的时间戳
-    nonceStr: 'qml', // 必填，生成签名的随机串
-    signature: '8d1a43795fc75a6ac64cbc1698578bdff098d153',// 必填，签名，见附录1
-    jsApiList: ['previewImage'] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-    });*/
+
+    /* 加入购物车 */
+    $('#addCartBtn').tap(function(){
+        $('.ui-actionsheet').addClass('show');
+    });
+    $('#rise_div_close, #addCartSure').tap(function(){
+        $('.ui-actionsheet').removeClass('show');
+    });
+    $('#addCartSure').tap(function(){
+        $('.addTip').show();
+        setTimeout(function(){
+            $('.addTip').hide()
+        },2000);
+    });
+
+    /* 商品数量选择组件 */
+    var max = 100/*parseInt( $('#stock').text() )*/;   /*库存量*/
+
+    $('.minus').tap(function(){
+        var $num = $(this).siblings('input');
+        var num =  parseFloat( $num.val() );
+        if ( num >= 2 ) {          // 修改数量显示
+            $num.val( num-1 );
+        }
+
+    });
+
+    $('.plus').tap(function(){
+        var $num = $(this).siblings('input');
+        var num =  parseFloat( $num.val() );
+        if( num < max ) {
+            $num.val( num+1 );
+        }
+    });
+
+    $('.selectNum input').keyup(function(){
+        if( parseInt( $(this).val() ) > max ) {
+            $(this).val(max);
+        }
+        if( parseInt( $(this).val() ) < 1 ) {
+            $(this).val(1);
+        }
+    });
 
 
-/*    $('#productDetailSlider img').tap(function(){
-        wx.previewImage({
-            current: 'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/page/productDetail.html', // 当前显示图片的http链接
-            urls: [
-                'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/1.jpg',
-                'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/2.jpg',
-                'http://lanlan.tunnel.qydev.com/multipleShop/frontStage/image/3.jpg',
-            ] // 需要预览的图片http链接列表
+    /* tab 《商品介绍和评价》 */
+    window.addEventListener('load', function(){
+
+        var tab = new fz.Scroll('.bottomBlock', {
+            role: 'tab',
+            interval: 3000
         });
-    })*/
+
+    });
+
+
 
 </script>
 

@@ -50,10 +50,10 @@ public class AreasDao extends BaseDao implements IGeneralDao<Areas> {
     public void flush() {
 
     }
-    public Areas findByName(String name){
+    public Areas findByOpenId(String openId){
         Session session = super.openSession();
-        String hql = "from Areas where name=:name";
-        return (Areas) session.createQuery(hql).setParameter("name",name).uniqueResult();
+        String hql = "from Areas where openId=:openId";
+        return (Areas) session.createQuery(hql).setParameter("openId",openId).uniqueResult();
     }
 
     public Areas findByFlag(long flag){

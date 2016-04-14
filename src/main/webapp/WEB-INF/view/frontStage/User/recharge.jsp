@@ -1,4 +1,4 @@
-<%--
+<%@ page import="com.Shop.Model.Profit" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/6 0006
@@ -36,9 +36,12 @@
                 <button type="submit" class="ui-border-l">确定充值</button>
             </div>
         </form>
-        <%--<div class="ui-tips ui-tips-info" style="text-align: left;">--%>
-            <%--<i></i><span>所需金额<b class="themeColor"> xx </b>元</span>--%>
-        <%--</div>--%>
+        <%
+            Profit profit =(Profit)request.getAttribute("profit");
+        %>
+        <div class="ui-tips ui-tips-info" style="text-align: left;">
+            <i></i><span>倾销币价格:<b class="themeColor"> <%=profit.getCountPrices()%></b>个/元</span>
+        </div>
     </div>
 
 

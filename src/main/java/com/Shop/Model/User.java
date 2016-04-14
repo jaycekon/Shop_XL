@@ -18,6 +18,7 @@ public class User implements Serializable {
     private String password;
     private String phone;
     private String idcard;
+    private String img;
     private String realName;
     private int sign;
     private int count;
@@ -124,5 +125,13 @@ public class User implements Serializable {
 
     public void setUsecount(int usecount) {
         this.usecount = usecount;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

@@ -84,7 +84,7 @@ public class UserService {
         return rolesDao.findAll();
     }
     public boolean addArea(Areas areas){
-        Areas a = areasDao.findByName(areas.getName());
+        Areas a = areasDao.findByOpenId(areas.getOpenId());
         if(a == null){
             areasDao.save(areas);
             return true;

@@ -1,7 +1,5 @@
 $(function(){
 
-
-
     /*轮播图比例*/
     $('#carouselContainer').height( $('body').width()*0.3 );
 
@@ -31,72 +29,14 @@ $(function(){
 
     });
 
-    /*点击查看倾销币*/
+    /* 点击查看倾销价 */
     $('.watchPrice').click(function(){
-        $(".ui-dialog").dialog("show");
-        return false;
-    });
-
-
-    /* tab 《商品介绍和评价》 */
-    window.addEventListener('load', function(){
-
-        var tab = new fz.Scroll('.bottomBlock', {
-            role: 'tab',
-            interval: 3000
-        });
-
-        /* 滑动开始前 */
-        tab.on('beforeScrollStart', function(from, to) {
-            // from 为当前页，to 为下一页
-        });
-
-        /* 滑动结束 */
-        tab.on('scrollEnd', function(curPage) {
-            // curPage 当前页
-        });
-
-    });
-
-    /* 加入购物车 */
-    $('#addCartBtn').tap(function(){
-        $('.ui-actionsheet').addClass('show');
-    });
-    $('#rise_div_close, #addCartSure').tap(function(){
-        $('.ui-actionsheet').removeClass('show');
-        $('.addTip').show();
-        setTimeout(function(){
-            $('.addTip').hide()
-        },2000);
-    });
-
-    /*商品数量编辑《商品详情页》*/
-    var max = 100/*parseInt( $('#stock').text() )*/;   /*库存量*/
-
-    $('.minus').tap(function(){
-        var $num = $(this).siblings('input');
-        var num =  parseFloat( $num.val() );
-        if ( num >= 2 ) {          // 修改数量显示
-            $num.val( num-1 );
-        }
-
-    });
-
-    $('.plus').tap(function(){
-       var $num = $(this).siblings('input');
-        var num =  parseFloat( $num.val() );
-        if( num < max ) {
-            $num.val( num+1 );
-        }
-    });
-
-    $('.selectNum input').keyup(function(){
-        if( parseInt( $(this).val() ) > max ) {
-            $(this).val(max);
-        }
-        if( parseInt( $(this).val() ) < 1 ) {
-            $(this).val(1);
-        }
+        var goPayDialog =  $("#goPayDialog").dialog("show");
+        goPayDialog.on('dialog:action',function(e){
+            if(e.index == 1) {
+                window.location.href= "recharge.html";
+            }
+        })
     });
 
 

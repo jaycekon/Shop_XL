@@ -1,11 +1,7 @@
 package com.Shop.Service;
 
-import com.Shop.Dao.AreasDao;
-import com.Shop.Dao.ProfitDao;
-import com.Shop.Dao.TerraceDao;
-import com.Shop.Model.Areas;
-import com.Shop.Model.Profit;
-import com.Shop.Model.Terrace;
+import com.Shop.Dao.*;
+import com.Shop.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +16,10 @@ public class TerraceService {
     private ProfitDao profitDao;
     @Autowired
     private AreasDao areasDao;
+    @Autowired
+    private RolesDao rolesDao;
+    @Autowired
+    private UserDao userDao;
 
     public void addTerrace(Terrace terrace){
         terraceDao.save(terrace);
@@ -54,7 +54,41 @@ public class TerraceService {
         return profitDao.findById();
     }
 
+    public Areas findAreasById(int id){
+        return areasDao.findById(id);
+    }
     public Areas findAreasByFlag(Long flag){
         return areasDao.findByFlag(flag);
     }
+
+    public Areas findAreasByOpenId(String openId){
+        return areasDao.findByOpenId(openId);
+    }
+
+    public Roles findROlesById(int id){
+        return rolesDao.findById(id);
+    }
+
+    public Roles findRolesByOpenId(String openId){
+        return rolesDao.findByOpenId(openId);
+    }
+
+    public User findUseByOpenId(String openId){
+        return userDao.findByOpenId(openId);
+    }
+
+    public boolean checkOpenId(String openId){
+        if(findAreasByOpenId(openId)!=null){
+            return false;
+        }
+        if(findRolesByOpenId(openId)!=null){
+            return false;
+        }
+        if(findUseByOpenId(openId)!=null){
+            return false;
+        }
+        return true;
+
+    }
+
 }

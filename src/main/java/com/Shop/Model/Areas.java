@@ -14,6 +14,7 @@ public class Areas {
     private int id;
     private String OpenId;
     private String name;
+    private String img;
     private long flag;
 
     @Id
@@ -48,5 +49,13 @@ public class Areas {
 
     public void setFlag(long flag) {
         this.flag = flag;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

@@ -45,11 +45,11 @@
     <ul class="ui-list ui-border-tb commissionTop">
         <li class="ui-border-t">
             <div class="ui-avatar">
-                <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
+                <img src="<%=user.getImg()%>" alt="">
             </div>
             <div class="ui-list-info">
                 <h4 class="ui-nowrap">可使用：<span class="themeColor"><%=user.getCount()%></span></h4>
-                <h4 class="ui-nowrap">已使用：<span class="themeColor">4</span></h4>
+                <h4 class="ui-nowrap">已使用：<span class="themeColor"><%=user.getUsecount()%></span></h4>
             </div>
             <div>
                 <a href="<%=request.getContextPath()%>/recharge" class="ui-btn productBtn" id="toRechargeBtn">去充值</a>

@@ -16,7 +16,7 @@ public class Profit {
     private int Role_count;        //角色比率
     private float recordPrices;         //认证费用
     private int dumpingCount;           //赠送倾销币
-
+    private float countPrices;          //倾销币价格
 
     @Id
     @GeneratedValue
@@ -59,5 +59,13 @@ public class Profit {
 
     public void setRole_count(int role_count) {
         Role_count = role_count;
+    }
+
+    public float getCountPrices() {
+        return countPrices;
+    }
+
+    public void setCountPrices(float countPrices) {
+        this.countPrices = countPrices;
     }
 }

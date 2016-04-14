@@ -58,4 +58,10 @@ public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
         return (Roles) session.createQuery(hql).setParameter("name",name).uniqueResult();
     }
 
+    public Roles findByOpenId(String openId){
+        Session session = super.openSession();
+        String hql = "from Roles where openId=:openId";
+        return (Roles) session.createQuery(hql).setParameter("openId",openId).uniqueResult();
+    }
+
 }

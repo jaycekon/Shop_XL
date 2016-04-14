@@ -96,6 +96,23 @@ header, footer, section, div, li, i {
     margin-top: 20px;
 }
 
+/* 两块内容之间的间距 */
+.gapT {
+    margin-top: 10px;
+}
+.gapB {
+    margin-bottom: 10px;
+}
+.gapTB {
+     margin: 10px 0;
+ }
+.block {
+    background-color: #fff;
+    padding: 10px;
+    padding: 15px;
+    line-height: 1.8;
+}
+
 /* header */
 .ui-header {
     border-bottom: 1px solid rgb(224, 224, 224);
@@ -119,6 +136,10 @@ header, footer, section, div, li, i {
 }
 .ui-tiled > li.active i {
     color: #f69;
+}
+/* ui-container */
+.ui-container {
+    padding-bottom: 10px;
 }
 
 /* slider 轮播图 */

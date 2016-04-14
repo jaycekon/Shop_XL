@@ -5,6 +5,6 @@ package com.Shop.Util;
  */
 public class Test {
     public static void main(String[] args){
-        System.out.println(AccessTokenUtil.getQrCodePic());
+        System.out.println(AccessTokenUtil.getQrCodePic(9,System.currentTimeMillis()));
     }
 }
