@@ -37,6 +37,12 @@ public class WebChatController {
     private final static String wechatName ="xiaoguozhushou";
     Logger log = Logger.getLogger(WebChatController.class);
 
+    /**
+     * 接收微信传送过来的信息
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value ="getInfo",method = RequestMethod.POST)
     public void getInfo(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");

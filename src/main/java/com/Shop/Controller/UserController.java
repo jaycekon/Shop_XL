@@ -45,6 +45,15 @@ public class UserController {
     private TerraceService terraceService;
     Logger log = Logger.getLogger(UserController.class);
 
+    /**
+     *
+     * @param model
+     * @param session
+     * @param response
+     * @param request
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
         if(session.getAttribute("openId") == null){

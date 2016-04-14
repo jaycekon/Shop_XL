@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2ddbd9a0-2372-44b1-b729-0649ea3cd92b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/WebChatController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Util/AccessTokenUtil.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Util/AccessTokenUtil.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/WebChatController.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/Controller/WebChatController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java" afterPath="$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java" />
     </list>
     <ignored path="Shop_XL.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -36,14 +36,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="UserController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.1">
-              <caret line="483" column="67" selection-start-line="483" selection-start-column="63" selection-end-line="483" selection-end-column="67" />
+            <state vertical-scroll-proportion="0.3997175">
+              <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#3712#3713#0" expanded="true" />
+                <element signature="e#3758#3759#0" expanded="true" />
+                <element signature="e#16390#16391#0" expanded="true" />
+                <element signature="e#16441#16442#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WechatInterceptor.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -53,16 +67,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="42" column="87" selection-start-line="42" selection-start-column="87" selection-end-line="42" selection-end-column="87" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="code.jsp" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/code.jsp">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="21" selection-start-line="20" selection-start-column="21" selection-end-line="20" selection-end-column="21" />
               <folding />
             </state>
           </provider>
@@ -126,11 +130,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="WebChatController.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WebChatController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/WebChatController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-0.4826176">
-              <caret line="37" column="59" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="40" column="18" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="18" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -244,7 +248,6 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/ListArea.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/listArea.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/Shop-servlet.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/RoleCenter.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/listRoles.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/backStage/User/listUser.jsp" />
@@ -254,12 +257,13 @@
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/myCount.jsp" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/footer.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/Shop/Model/Profit.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java" />
         <option value="$PROJECT_DIR$/src/main/webapp/WEB-INF/view/frontStage/User/recharge.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/com/Shop/Util/Test.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/Shop/Util/AccessTokenUtil.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/Shop/Controller/AdminController.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/Shop/Controller/WebChatController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java" />
       </list>
     </option>
   </component>
@@ -405,10 +409,6 @@
               <option name="myItemId" value="Shop" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Util" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
           </PATH>
           <PATH>
             <PATH_ELEMENT>
@@ -433,6 +433,10 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Shop" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="interceptor" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1103,7 +1107,7 @@
       <workItem from="1460538944722" duration="9385000" />
       <workItem from="1460613992648" duration="16377000" />
       <workItem from="1460638414939" duration="21000" />
-      <workItem from="1460647898164" duration="1325000" />
+      <workItem from="1460647898164" duration="1772000" />
     </task>
     <task id="LOCAL-00001" summary="link Good Service">
       <created>1459223977621</created>
@@ -1147,11 +1151,17 @@
       <option name="project" value="LOCAL" />
       <updated>1460648873312</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="接入微信---将微信控制台转移">
+      <created>1460649242485</created>
+      <option name="number" value="00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1460649242485</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="185710000" />
+    <option name="totallyTimeSpent" value="186157000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1167,7 +1177,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="CDI" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32995737" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32464147" sideWeight="0.4914712" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32464147" sideWeight="0.4914712" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Spring" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32976446" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1207,7 +1217,8 @@
     <MESSAGE value="接入微信。完成增加大区" />
     <MESSAGE value="接入微信---成功链接" />
     <MESSAGE value="接入微信---修改菜单栏，增加删除菜单栏" />
-    <option name="LAST_COMMIT_MESSAGE" value="接入微信---修改菜单栏，增加删除菜单栏" />
+    <MESSAGE value="接入微信---将微信控制台转移" />
+    <option name="LAST_COMMIT_MESSAGE" value="接入微信---将微信控制台转移" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1410,13 +1421,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="25" column="20" selection-start-line="25" selection-start-column="20" selection-end-line="25" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/Shop-servlet.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-7.1896553">
@@ -1608,16 +1612,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-5.1">
-          <caret line="483" column="67" selection-start-line="483" selection-start-column="63" selection-end-line="483" selection-end-column="67" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Util/AccessTokenUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1642,10 +1636,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/WebChatController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.4826176">
-          <caret line="37" column="59" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="40" column="18" selection-start-line="40" selection-start-column="18" selection-end-line="40" selection-end-column="18" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/interceptor/WechatInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="47" column="0" selection-start-line="47" selection-start-column="0" selection-end-line="47" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/Shop/Controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3997175">
+          <caret line="79" column="9" selection-start-line="79" selection-start-column="9" selection-end-line="79" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3712#3713#0" expanded="true" />
+            <element signature="e#3758#3759#0" expanded="true" />
+            <element signature="e#16390#16391#0" expanded="true" />
+            <element signature="e#16441#16442#0" expanded="true" />
           </folding>
         </state>
       </provider>
