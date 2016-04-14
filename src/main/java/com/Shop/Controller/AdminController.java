@@ -465,6 +465,15 @@ public class AdminController {
     }
 
 
+    public static void initMenu(){
+        Logger log = Logger.getLogger(AdminController.class);
+        String jsonStr=" {\"button\":[";
+        jsonStr+=",{\"type\":\"view\",\"name\":\"商城\",\"url\":\"http://weijiehuang.productshow.cn/\"}]}";
+        String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+AccessTokenUtil.getAccessToken();
+        log.info(url);
+        System.out.println("访问url!");
+        post(url,jsonStr);
+    }
 
     //发送文本消息
     private static void sendText(String toUser,String content){
@@ -505,6 +514,7 @@ public class AdminController {
                 }
                 else
                 {
+                    System.out.println("成功！");
                     log.info("成功");
                     result=true;
                 }

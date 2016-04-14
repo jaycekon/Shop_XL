@@ -33,6 +33,8 @@ public class AccessTokenUtil {
     // 获取access_token值
     private static String getAccess_Token(String aurl)
     {
+        Logger log  =Logger.getLogger(AccessTokenUtil.class);
+        log.info("获取Access_token");
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(aurl);
         JsonParser jsonparer = new JsonParser();// 初始化解析json格式的对象
@@ -45,9 +47,9 @@ public class AccessTokenUtil {
             responseContent = EntityUtils.toString(entity, "UTF-8");
             JsonObject json = jsonparer.parse(responseContent)
                     .getAsJsonObject();
-            System.out.println(json);
             if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 String access_token = json.get("access_token").getAsString();
+                log.info("成功获取Access_token");
                 result = access_token;
             }
 
@@ -59,6 +61,7 @@ public class AccessTokenUtil {
         }
         finally
         {
+            log.info("获取Access_token失败!");
             // 关闭连接 ,释放资源
             client.getConnectionManager().shutdown();
             return result;
