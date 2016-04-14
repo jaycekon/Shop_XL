@@ -192,7 +192,7 @@ public class AccessTokenUtil {
         String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+AccessTokenUtil.getAccessToken();
         log.info(url);
         System.out.println("访问url!");
-        AdminController.post(url,jsonStr);
+        post(url,jsonStr);
     }
 
     //删除菜单
@@ -225,5 +225,59 @@ public class AccessTokenUtil {
             client.getConnectionManager().shutdown();
         }
     }
+
+    //用post的方法像指定url发送json请求
+    public static boolean post(String url, String json)
+    {
+        Logger log = Logger.getLogger(AdminController.class);
+        DefaultHttpClient client = new DefaultHttpClient();
+        HttpPost post = new HttpPost(url);
+        boolean result=false;
+        try
+        {
+            String json2=new String(json.getBytes("UTF-8"), "ISO8859_1");
+            StringEntity s = new StringEntity(json2);
+            s.setContentEncoding("UTF-8");
+            s.setContentType("application/json");
+            post.setEntity(s);
+
+            HttpResponse res = client.execute(post);
+            HttpEntity entity = res.getEntity();
+            String responseContent= EntityUtils.toString(entity, "UTF-8");
+            JsonParser jsonparer = new JsonParser();
+            JsonObject json1 = jsonparer.parse(responseContent).getAsJsonObject();
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK)
+            {
+                if (json1.get("errcode").toString() .equals("-1") )
+                {
+                    log.info(json1.get("errcode").toString());
+                }
+                else
+                {
+                    System.out.println("成功！");
+                    log.info("成功");
+                    result=true;
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException(e);
+        }
+        return result;
+    }
+
+
+    //发送文本消息
+    public static void sendText(String toUser,String content){
+        String strJson = "{\"touser\" :\""+toUser+"\",";
+        strJson += "\"msgtype\":\"text\",";
+        strJson += "\"text\":{";
+        strJson += "\"content\":\""+content+"\"";
+        strJson += "}}";
+        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token="+AccessTokenUtil.getAccessToken();
+        AccessTokenUtil.post(url,strJson);
+    }
+
 
 }
