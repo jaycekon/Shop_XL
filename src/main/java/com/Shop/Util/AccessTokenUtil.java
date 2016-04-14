@@ -1,5 +1,6 @@
 package com.Shop.Util;
 
+import com.Shop.Controller.AdminController;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -29,11 +30,11 @@ public class AccessTokenUtil {
     private static String  APPID = "wx05208e667b03b794";
     private static String  APPSECRET = "d6ee7f14c7481fee93cbd4f569564dd7";
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-
+    static Logger  log  =Logger.getLogger(AccessTokenUtil.class);
     // 获取access_token值
     private static String getAccess_Token(String aurl)
     {
-        Logger log  =Logger.getLogger(AccessTokenUtil.class);
+
         log.info("获取Access_token");
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(aurl);
@@ -180,6 +181,48 @@ public class AccessTokenUtil {
             // 关闭连接 ,释放资源
             client.getConnectionManager().shutdown();
             return result;
+        }
+    }
+
+
+    //创建自定义菜单
+    public static void initMenu(){
+        String jsonStr=" {\"button\":[";
+        jsonStr+="{\"type\":\"view\",\"name\":\"商城\",\"url\":\"http://weijiehuang.productshow.cn/\"}]}";
+        String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+AccessTokenUtil.getAccessToken();
+        log.info(url);
+        System.out.println("访问url!");
+        AdminController.post(url,jsonStr);
+    }
+
+    //删除菜单
+    public static void deleteMenu(){
+        String url = "https://api.weixin.qq.com/cgi-bin/menu/delete?access_token="+getAccessToken();
+        log.info("删除自定义菜单");
+        HttpClient client = new DefaultHttpClient();
+        HttpGet get = new HttpGet(url);
+        String result = "error";
+        try
+        {
+            HttpResponse res = client.execute(get);
+            HttpEntity entity = res.getEntity();
+            if(res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                log.info("成功删除自定义菜单");
+                System.out.println("成功");
+            }
+
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            log.info("获取Access_token失败!");
+            System.out.println("成功");
+            // 关闭连接 ,释放资源
+            client.getConnectionManager().shutdown();
         }
     }
 

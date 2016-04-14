@@ -465,18 +465,9 @@ public class AdminController {
     }
 
 
-    public static void initMenu(){
-        Logger log = Logger.getLogger(AdminController.class);
-        String jsonStr=" {\"button\":[";
-        jsonStr+=",{\"type\":\"view\",\"name\":\"商城\",\"url\":\"http://weijiehuang.productshow.cn/\"}]}";
-        String url = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token="+AccessTokenUtil.getAccessToken();
-        log.info(url);
-        System.out.println("访问url!");
-        post(url,jsonStr);
-    }
 
     //发送文本消息
-    private static void sendText(String toUser,String content){
+    public static void sendText(String toUser,String content){
         String strJson = "{\"touser\" :\""+toUser+"\",";
         strJson += "\"msgtype\":\"text\",";
         strJson += "\"text\":{";
@@ -487,7 +478,7 @@ public class AdminController {
     }
 
     //用post的方法像指定url发送json请求
-    private static boolean post(String url, String json)
+    public static boolean post(String url, String json)
     {
         Logger log = Logger.getLogger(AdminController.class);
         DefaultHttpClient client = new DefaultHttpClient();

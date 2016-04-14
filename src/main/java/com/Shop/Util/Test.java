@@ -7,7 +7,8 @@ import com.Shop.Controller.AdminController;
  */
 public class Test {
     public static void main(String[] args){
-        AdminController.initMenu();
+//       AccessTokenUtil.deleteMenu();
+        AccessTokenUtil.initMenu();
 //        System.out.println(AccessTokenUtil.getQrCodePic(9,System.currentTimeMillis()));
     }
 }
