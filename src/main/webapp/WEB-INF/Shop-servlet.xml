@@ -26,7 +26,7 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/123"></mvc:mapping>
+            <mvc:mapping path="/"></mvc:mapping>
             <bean class="com.Shop.interceptor.WechatInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

@@ -58,28 +58,28 @@
                     <div class="row">
 
                         <div class="col-xs-6 col-md-4">
-                            <a class="selet_block selet_block1 row">
+                            <a class="selet_block selet_block1 row" href="<%=request.getContextPath()%>/listAreas">
                                 <div class="col1 col-xs-4"><span class="glyphicon glyphicon-globe "></span></div>
                                 <div class="col2 col-xs-8">大区</div>
                             </a>
                         </div>
 
                         <div class="col-xs-6 col-md-4">
-                            <a class="selet_block selet_block2">
+                            <a class="selet_block selet_block2" href="<%=request.getContextPath()%>/listRoles">
                                 <div class="col1 col-xs-4"><span class="glyphicon glyphicon-log-in"></span></div>
                                 <div class="col2 col-xs-8">角色</div>
                             </a>
                         </div>
 
                         <div class="col-xs-6 col-md-4">
-                            <a class="selet_block selet_block3">
+                            <a class="selet_block selet_block3" href="<%=request.getContextPath()%>/listUser">
                                 <div class="col1 col-xs-4"><span class="glyphicon glyphicon-user "></span></div>
                                 <div class="col2 col-xs-8">店家</div>
                             </a>
                         </div>
 
                         <div class="col-xs-6 col-md-4">
-                            <a class="selet_block selet_block4">
+                            <a class="selet_block selet_block4" href="<%=request.getContextPath()%>/listOrder">
                                 <div class="col1 col-xs-4"><span class="glyphicon glyphicon-list-alt"></span></div>
                                 <div class="col2 col-xs-8">订单列表</div>
                             </a>

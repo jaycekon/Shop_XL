@@ -49,7 +49,15 @@
     <div class="ui-row productSpecBlock">
         <p class="specText"><span>零售价：</span><span class="themeColor">&#165;<%=good.getProductPrices()%></span></p>
         <p class="specText"><span>批发价：</span><span class="themeColor">&#165;<%=good.getWholesalePrices()%></span></p>
-        <p class="specText"><span>批发价：</span><span class="themeColor">&#165;<%=good.getDumpingPrices()%></span></p>
+
+        <p class="specText"><span>倾销价：
+        <%
+            if(request.getAttribute("watchProduct")!=null){
+        %>
+        </span><span class="themeColor">&#165;<%=good.getDumpingPrices()%></span></p>
+        <%
+            }
+        %>
         <p class="specText"><span>运费：</span>0.00</p>
         <p class="specText"><span>库存：</span><span id="stock"><%=good.getNum()%></span></p>
         <p class="specText"><span>起批量：</span><%=good.getWholesaleCount()%></p>

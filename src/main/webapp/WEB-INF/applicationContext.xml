@@ -103,6 +103,7 @@
     
     <bean id="userDao" class="com.Shop.Dao.UserDao" parent="daoTemplate"/>
     <bean id="areasDao" class="com.Shop.Dao.AreasDao" parent="daoTemplate"/>
+    <bean id="areaDao" class="com.Shop.Dao.AreaDao" parent="daoTemplate"/>
     <bean id="rolesDao" class="com.Shop.Dao.RolesDao" parent="daoTemplate"/>
     <bean id="goodDao" class="com.Shop.Dao.GoodDao" parent="daoTemplate"/>
     <bean id="cartDao" class="com.Shop.Dao.CartDao" parent="daoTemplate"/>
@@ -134,6 +135,9 @@
     </bean>
 
     <bean id="ordersService" class="com.Shop.Service.OrdersService">
+    </bean>
+
+    <bean id="AddressService" class="com.Shop.Service.AddressService">
     </bean>
 
 

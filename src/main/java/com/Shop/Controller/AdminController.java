@@ -1,6 +1,7 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
+import com.Shop.Service.AddressService;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.*;
@@ -44,10 +45,20 @@ public class AdminController {
     private TerraceService terraceService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AddressService addressService;
 
     Logger log = Logger.getLogger(AdminController.class);
 
+    @RequestMapping(value="backStage")
+    public String backStage(){
+        return "backStage/index";
+    }
 
+    @RequestMapping(value ="indexCarousel")
+    public String indexCarousel(){
+        return "backStage/SystemManage/indexCarousel";
+    }
 
     @RequestMapping(value ="getCode")
     public String getCode(HttpServletRequest request){
@@ -127,7 +138,7 @@ public class AdminController {
     public String updateProfit(Model model){
         Profit profit = terraceService.findProfit();
         model.addAttribute(profit);
-        return null;
+        return "backStage/SystemManage/parameter";
     }
     @RequestMapping(value = "updateProfit",method = RequestMethod.POST)
     public String updateProfit(Profit profit,Model model){
@@ -139,7 +150,7 @@ public class AdminController {
         p.setRole_count(profit.getRole_count());
         terraceService.updateProfit(p);
         model.addAttribute(profit);
-        return null;
+        return "backStage/SystemManage/parameter";
     }
 
     @RequestMapping(value ="listOrder",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
@@ -339,6 +350,31 @@ public class AdminController {
         return "frontStage/code";
     }
 
+    @RequestMapping(value ="addTopArea",method =RequestMethod.GET)
+    public String addTopArea(){
+        return "";
+    }
+
+    @RequestMapping(value ="addTopArea",method =RequestMethod.POST)
+    public String addTopArea(Area area){
+        addressService.addArea(area);
+        return "";
+    }
+
+    @RequestMapping(value ="addSecondArea",method =RequestMethod.GET)
+    public String addSecondArea(Model model){
+        List<Area> areas = addressService.findTopArea();
+        model.addAttribute("areas",areas);
+        return "";
+    }
+
+    @RequestMapping(value ="addSecondArea",method =RequestMethod.POST)
+    public String addSecondArea(Area area,String area_name){
+        Area a = addressService.findAreaByAreaName(area_name);
+        area.setArea(a);
+        addressService.addArea(area);
+        return "";
+    }
 
 
 }

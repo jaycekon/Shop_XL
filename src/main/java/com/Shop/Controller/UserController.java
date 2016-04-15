@@ -1,10 +1,7 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
-import com.Shop.Service.CartService;
-import com.Shop.Service.GoodService;
-import com.Shop.Service.TerraceService;
-import com.Shop.Service.UserService;
+import com.Shop.Service.*;
 import com.Shop.Util.AccessTokenUtil;
 import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
@@ -43,6 +40,8 @@ public class UserController {
     private GoodService goodService;
     @Autowired
     private TerraceService terraceService;
+    @Autowired
+    private AddressService addressService;
     Logger log = Logger.getLogger(UserController.class);
 
     /**
@@ -56,27 +55,43 @@ public class UserController {
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(Model model, HttpSession session, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        if(session.getAttribute("openId") == null){
-            log.info("没有openId");
-            String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx05208e667b03b794&"
-                    + "redirect_uri=http://weijiehuang.productshow.cn/getCode"
-                    +"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
-            response.sendRedirect(url);
-        }
-        else{
-            String openId =(String)session.getAttribute("openId");
-            log.info(openId);
-            if(terraceService.findAreasByOpenId(openId)!=null){
-                Areas areas = terraceService.findAreasByOpenId(openId);
-                session.setAttribute("areas",areas);
-                log.info(areas.getImg());
-                return "frontStage/User/AreaCenter";
-            }else if(terraceService.findRolesByOpenId(openId)!=null){
-                Roles roles = terraceService.findRolesByOpenId(openId);
-                session.setAttribute("roles",roles);
-                return "frontStage/User/RoleCenter";
+//        if(session.getAttribute("openId") == null){
+//            log.info("没有openId");
+//            String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx05208e667b03b794&"
+//                    + "redirect_uri=http://weijiehuang.productshow.cn/getCode"
+//                    +"&response_type=code&scope=snsapi_base&state=STATE#wechat_redirect";
+//            response.sendRedirect(url);
+//        }
+//        else{
+//            String openId =(String)session.getAttribute("openId");
+//            log.info(openId);
+//            if(terraceService.findAreasByOpenId(openId)!=null){
+//                Areas areas = terraceService.findAreasByOpenId(openId);
+//                session.setAttribute("areas",areas);
+//                log.info(areas.getImg());
+//                return "frontStage/User/AreaCenter";
+//            }else if(terraceService.findRolesByOpenId(openId)!=null){
+//                Roles roles = terraceService.findRolesByOpenId(openId);
+//                session.setAttribute("roles",roles);
+//                return "frontStage/User/RoleCenter";
+//            }
+//            response.sendRedirect("http://weijiehuang.productshow.cn/index");
+//        }
+//        return null;
+        log.info("进入主页！/");
+        if(session.getAttribute("loginUser")!=null) {
+            List<Good> goods = goodService.listGood();
+            model.addAttribute("goods", goods);
+            if (session.getAttribute("loginUser") != null) {
+                User user = (User) session.getAttribute("loginUser");
+                List<WatchProduct> watchProducts = userService.findAllWatchProduct(user.getId());
+                model.addAttribute("watchProducts", watchProducts);
             }
-            response.sendRedirect("http://weijiehuang.productshow.cn/index");
+            return "frontStage/index";
+        }else if(session.getAttribute("areas")!=null){
+            return "frontStage/User/AreaCenter";
+        }else if(session.getAttribute("roles")!=null){
+            return "frontStage/User/RoleCenter";
         }
         return null;
     }
@@ -90,7 +105,8 @@ public class UserController {
      * @throws IOException
      */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
-    public String inde(Model model, HttpSession session, HttpServletResponse response) throws IOException {
+    public String index(Model model, HttpSession session, HttpServletResponse response) throws IOException {
+        log.info("进入主页！index");
         List<Good> goods = goodService.listGood();
         model.addAttribute("goods", goods);
         if(session.getAttribute("loginUser")!=null){
@@ -100,12 +116,6 @@ public class UserController {
         }
         return "frontStage/index";
     }
-
-
-
-
-
-
 
 
 
@@ -124,15 +134,15 @@ public class UserController {
             cart.setUser(user);
             cartService.addCart(cart);
         }
-        int num = cart.getCount();
-        num += count;
-        cart.setCount(num);
-        double prices = cart.getTotalPrices();
-        Good good = goodService.findGoodById(good_id);
-        prices += good.getDumpingPrices() * count;
-        cart.setTotalPrices(prices);
-        cartService.updateCart(cart);
-        if (userService.findWatchProductByUIdAndGId(user.getId(), good_id)) {
+        if (userService.findWatchProductByUIdAndGId(user.getId(), good_id)!=null) {
+            int num = cart.getCount();
+            num += count;
+            cart.setCount(num);
+            double prices = cart.getTotalPrices();
+            Good good = goodService.findGoodById(good_id);
+            prices += good.getDumpingPrices() * count;
+            cart.setTotalPrices(prices);
+            cartService.updateCart(cart);
             List<String> images = goodService.findImageByGoodId(good_id);
             String imageAddress = null;
             if (images.size() > 0) {
@@ -373,18 +383,6 @@ public class UserController {
         }
         return "frontStage/User/storeCenter";
     }
-    @RequestMapping(value ="areasCenter",method = RequestMethod.GET)
-    public String areaCenter(HttpSession session){
-        return "frontStage/User/AreaCenter";
-    }
-    @RequestMapping(value ="rolesCenter",method = RequestMethod.GET)
-    public String rolesCenter(HttpSession session){
-        if(session.getAttribute("loginUser") == null){
-            return "redirect:/login";
-        }
-        return "frontStage/User/storeCenter";
-    }
-
 
     @RequestMapping(value ="personSign",method = RequestMethod.GET)
     public String memberSign(Model model,HttpSession session){
@@ -459,12 +457,15 @@ public class UserController {
     }
 
     @RequestMapping(value ="addAddress",method = RequestMethod.GET)
-    public String addAddress(HttpSession session){
+    public String addAddress(HttpSession session,Model model){
         if(session.getAttribute("loginUser")==null){
             String openId =(String)session.getAttribute("openId");
             User user = terraceService.findUseByOpenId(openId);
+
             session.setAttribute("loginUser",user);
         }
+        List<Area> areas = addressService.findTopArea();
+        model.addAttribute("areas",areas);
         return "frontStage/User/addAddress";
     }
 
@@ -494,5 +495,31 @@ public class UserController {
         a.setArea(address.getArea());
         userService.updateAddress(address);
         return "frontStage/User/addAddress";
+    }
+
+    @RequestMapping(value ="roleCenter",method = RequestMethod.GET)
+    public String roleCenter(){
+        return "frontStage/User/RoleCenter";
+    }
+
+    @RequestMapping(value ="areaCenter",method = RequestMethod.GET)
+    public String areaCenter(){
+        return "frontStage/User/AreaCenter";
+    }
+
+    @RequestMapping(value = "roleList",method = RequestMethod.GET)
+    public String roleList(HttpSession session,Model model){
+        Areas areas =(Areas)session.getAttribute("areas");
+        List<Roles> roles = userService.listRolesByAreas(areas.getId());
+        model.addAttribute("roles",roles);
+        return "frontStage/User/roleList";
+    }
+
+    @RequestMapping(value = "userList",method = RequestMethod.GET)
+    public String userList(HttpSession session ,Model model){
+        Roles roles =(Roles)session.getAttribute("roles");
+        List<User> users = userService.listUserByRolesId(roles.getId());
+        model.addAttribute("users",users);
+        return "frontStage/User/userList";
     }
 }

@@ -65,6 +65,10 @@ public class UserService {
         return userDao.findAll();
     }
 
+    public List<User> listUserByRolesId(int roles_id){
+        return userDao.findAllByRolesId(roles_id);
+    }
+
     public boolean addRoles(Roles roles){
         Roles roles1 = rolesDao.findByName(roles.getName());
         if(roles1 ==null){
@@ -83,6 +87,11 @@ public class UserService {
     public List<Roles> listRoles(){
         return rolesDao.findAll();
     }
+
+    public List<Roles> listRolesByAreas(int areas_id){
+        return rolesDao.findAllByAreasId(areas_id);
+    }
+
     public boolean addArea(Areas areas){
         Areas a = areasDao.findByOpenId(areas.getOpenId());
         if(a == null){
@@ -121,13 +130,12 @@ public class UserService {
         return watchProductDao.findAllByUserId(id);
     }
 
-    public boolean findWatchProductByUIdAndGId(int user_id,int good_id){
+    public WatchProduct findWatchProductByUIdAndGId(int user_id,int good_id){
         WatchProduct watchProduct = watchProductDao.findByUIdAndPId(user_id,good_id);
         if(watchProduct == null){
-            return false;
+            return null;
         }else{
-            System.out.println(watchProduct.getGood().getName());
-            return true;
+            return watchProduct;
         }
     }
 

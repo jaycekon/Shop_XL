@@ -29,7 +29,7 @@
 
 <footer class="ui-footer ui-footer-stable ui-border-t">
     <ul class="ui-tiled">
-        <li class="footerItem active"><i class="ui-icon-personal" onclick="window.location.href='./largeAreaCenter.html'"></i><div>大区中心</div></li>
+        <li class="footerItem active"><i class="ui-icon-personal" onclick="window.location.href='<%=request.getContextPath()%>/areaCenter'"></i><div>大区中心</div></li>
     </ul>
 </footer>
 
@@ -65,15 +65,14 @@
     </ul>
 
     <ul class="ui-list ui-list-text ui-list-link ui-border-tb  ui-list-active ui-list-cover gapT">
-        <li class="ui-border-t">
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleList'">
             <h4>我的店家</h4>
-            <div class="ui-txt-info">10086</div>
         </li>
         <li class="ui-border-t">
             <h4>我的佣金</h4>
         </li>
-        <li class="ui-border-t">
-            <a href="<%=request.getContextPath()%>/roleCrod/<%=areas.getId()%>"><h4>角色推广码</h4></a>
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleCrod/<%=areas.getId()%>'">
+           <h4>角色推广码</h4>
         </li>
         <li class="ui-border-t">
             <h4>联系信息</h4>

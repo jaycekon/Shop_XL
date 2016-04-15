@@ -22,6 +22,13 @@ public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
         return roles;
     }
 
+    public List<Roles> findAllByAreasId(int areas_id) {
+        Session session = super.openSession();
+        String hql = "from Roles where areas_id=:areas_id";
+        List<Roles> roles = session.createQuery(hql).setParameter("areas_id",areas_id).list();
+        return roles;
+    }
+
     public void save(Roles roles) {
         super.hibernateTemplate.save(roles);
     }

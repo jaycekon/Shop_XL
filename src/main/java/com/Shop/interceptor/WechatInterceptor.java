@@ -37,7 +37,6 @@ public class WechatInterceptor implements HandlerInterceptor {
                 Areas areas = terraceService.findAreasByOpenId(openId);
                 session.setAttribute("areas",areas);
                 log.info(areas.getImg());
-
             }else if(terraceService.findRolesByOpenId(openId)!=null){
                 Roles roles = terraceService.findRolesByOpenId(openId);
                 session.setAttribute("roles",roles);

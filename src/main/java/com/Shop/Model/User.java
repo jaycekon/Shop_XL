@@ -25,6 +25,7 @@ public class User implements Serializable {
     private int usecount;
     private Date birthday;
     private Roles roles;
+    private Date date;
 
 
     @Id
@@ -133,5 +134,13 @@ public class User implements Serializable {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 }

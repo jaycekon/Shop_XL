@@ -9,7 +9,7 @@
 <!-- [[ 左边导航 -->
 <ul class="col-md-3 col-lg-2 navigation" aria-expanded="true">
     <li>
-        <div class="navItem"><a href="./../index.html"><span class="glyphicon glyphicon-home"></span>首页</a></div>
+        <div class="navItem"><a href="<%=request.getContextPath()%>/backStage"><span class="glyphicon glyphicon-home"></span>首页</a></div>
     </li>
     <li>
         <div class="navItem"><span class="glyphicon glyphicon-user"></span>用户管理</div>
@@ -29,8 +29,8 @@
     </li>
     <li>
         <div class="navItem"><span class="glyphicon glyphicon-file"></span>订单管理</div>
-        <ul class="subNav" style="display: block;">
-            <li class="active"><a href="<%=request.getContextPath()%>/listOrder">订单列表</a></li>
+        <ul class="subNav">
+            <li><a href="<%=request.getContextPath()%>/listOrder">订单列表</a></li>
             <li><a href="<%=request.getContextPath()%>/orderCheck">订单查询</a></li>
         </ul>
     </li>
@@ -52,8 +52,8 @@
     <li>
         <div class="navItem"><span class="glyphicon glyphicon-wrench"></span>系统设置</div>
         <ul class="subNav">
-            <li><a href="./../systemManage/indexCarousel.html">首页轮播</a></li>
-            <li><a href="./../systemManage/parameter.html">参数设置</a></li>
+            <li><a href="<%=request.getContextPath()%>/indexCarousel">首页轮播</a></li>
+            <li><a href="<%=request.getContextPath()%>/updateProfit">参数设置</a></li>
         </ul>
     </li>
 </ul> <!-- 左边导航]] -->

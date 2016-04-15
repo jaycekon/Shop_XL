@@ -1,12 +1,11 @@
 package com.Shop.Controller;
 
-import com.Shop.Model.Areas;
-import com.Shop.Model.Good;
-import com.Shop.Model.Roles;
-import com.Shop.Model.User;
+import com.Shop.Model.*;
+import com.Shop.Service.AddressService;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/4/15.
@@ -29,6 +29,8 @@ public class InsertMessageController {
     UserService userService;
     @Autowired
     GoodService goodService;
+    @Autowired
+    AddressService addressService;
 
     /**
      * 测试使用接口，添加角色
@@ -106,6 +108,15 @@ public class InsertMessageController {
         JsonObject object = new JsonObject();
         object.addProperty("status",status);
         return object.toString();
+    }
+
+
+    @RequestMapping(value ="listTopArea",method = RequestMethod.GET)
+    @ResponseBody
+    public String listTopArea(){
+        List<Area> areas =addressService.findTopArea();
+        Gson gson = new Gson();
+        return gson.toJson(areas);
     }
 
 }

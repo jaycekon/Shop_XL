@@ -26,6 +26,13 @@ public class UserDao extends BaseDao implements IGeneralDao<User>{
         return users;
     }
 
+    public List<User> findAllByRolesId(int roles_id) {
+        Session session = super.openSession();
+        String hql = "from User where roles_id=:roles_id";
+        List<User> users = session.createQuery(hql).setParameter("roles_id",roles_id).list();
+        return users;
+    }
+
     public void save(User user) {
         super.hibernateTemplate.save(user);
     }

@@ -154,7 +154,7 @@ public class WebChatController {
                                 String nickname = new String(json.get("nickname").getAsString());
                                 areas.setName(nickname);
                                 areas.setImg(json.get("headimgurl").getAsString());
-
+                                areas.setDate(new Date());
                                 areas.setFlag(Long.parseLong(flags));
                                 Areas a = terraceService.findAreasByFlag(oi);
                                 if (a != null) {
@@ -175,6 +175,7 @@ public class WebChatController {
                                 roles.setOpenId(openId);
                                 roles.setName(json.get("nickname").getAsString());
                                 roles.setImg(json.get("headimgurl").getAsString());
+                                roles.setDate(new Date());
                                 roles.setAreas(areas);
                                 Roles role = terraceService.findRolesByOpenId(openId);
                                 if (role != null) {

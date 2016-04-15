@@ -1,4 +1,6 @@
-<%--
+<%@ page import="com.Shop.Model.Areas" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Model.Area" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/7 0007
@@ -32,6 +34,9 @@
 <section class="ui-container">
 
     <div class="ui-form ui-border-t">
+        <%
+            List<Area> areas= (List<Area>)request.getAttribute("areas");
+        %>
         <form action="<%=request.getContextPath()%>/addAddress" method = "post">
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label for="#">姓名</label>
@@ -42,8 +47,17 @@
                 <input type="text" name ="phone" value="" placeholder="填写联系人电话">
             </div>
             <div class="ui-form-item ui-form-item-show ui-border-b">
-                <label>省市</label>
-                <input type="text" value="" name ="area" placeholder="填写收货省城市">
+                <label>省</label>
+                <select name="area_id">
+                    <% for (Area area:areas){
+                    %>
+                    <option name="area_id" value="<%=area.getId()%>">
+                        <%=area.getName()%>
+                    </option>
+                    <%
+                        }
+                    %>
+                </select>
             </div>
 
             <div class="ui-form-item ui-form-item-show ui-border-b">

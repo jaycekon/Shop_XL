@@ -1,6 +1,7 @@
 package com.Shop.Model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2016/3/21 0021.
@@ -15,6 +16,9 @@ public class Roles {
     private String img;
     private String OpenId;
     private Areas areas;
+    private Date date;
+    private int totalCommission;
+    private int exitCommission;
 
     @Id
     @GeneratedValue
@@ -73,5 +77,29 @@ public class Roles {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getTotalCommission() {
+        return totalCommission;
+    }
+
+    public void setTotalCommission(int totalCommission) {
+        this.totalCommission = totalCommission;
+    }
+
+    public int getExitCommission() {
+        return exitCommission;
+    }
+
+    public void setExitCommission(int exitCommission) {
+        this.exitCommission = exitCommission;
     }
 }

@@ -3,6 +3,7 @@ package com.Shop.Model;
 import javax.persistence.*;
 
 /**
+ * 地区类，用于生成地区信息，主要用于用户创建地址时使用
  * Created by Administrator on 2016/3/21 0021.
  */
 @Entity
@@ -10,7 +11,7 @@ import javax.persistence.*;
 public class Area {
     private int id;
     private String name;
-    private Area area;
+    private Area area;      //子级地址
 
     @Id
     @GeneratedValue

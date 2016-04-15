@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * Created by Administrator on 2016/3/21 0021.
@@ -16,6 +17,9 @@ public class Areas {
     private String name;
     private String img;
     private long flag;
+    private Date date;
+    private int totalCommission;
+    private int exitCommission;
 
     @Id
     @GeneratedValue
@@ -57,5 +61,29 @@ public class Areas {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public int getTotalCommission() {
+        return totalCommission;
+    }
+
+    public void setTotalCommission(int totalCommission) {
+        this.totalCommission = totalCommission;
+    }
+
+    public int getExitCommission() {
+        return exitCommission;
+    }
+
+    public void setExitCommission(int exitCommission) {
+        this.exitCommission = exitCommission;
     }
 }

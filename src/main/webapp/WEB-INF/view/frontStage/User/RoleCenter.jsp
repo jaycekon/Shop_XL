@@ -29,7 +29,7 @@
 
 <footer class="ui-footer ui-footer-stable ui-border-t">
     <ul class="ui-tiled">
-        <li class="footerItem active"><i class="ui-icon-personal" onclick="window.location.href='./storecenter.html'"></i><div>角色中心</div></li>
+        <li class="footerItem active"><i class="ui-icon-personal" onclick="window.location.href='<%=request.getContextPath()%>/roleCenter'"></i><div>角色中心</div></li>
     </ul>
 </footer>
 
@@ -65,15 +65,14 @@
     </ul>
 
     <ul class="ui-list ui-list-text ui-list-link ui-border-tb  ui-list-active ui-list-cover gapT">
-        <li class="ui-border-t">
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userList'">
             <h4>我的店家</h4>
-            <div class="ui-txt-info">10086</div>
         </li>
         <li class="ui-border-t">
             <h4>我的佣金</h4>
         </li>
-        <li class="ui-border-t">
-            <a href="<%=request.getContextPath()%>/userCrod/<%=roles.getId()%>"><h4>店家推广码</h4></a>
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userCrod/<%=roles.getId()%>'">
+            <h4>店家推广码</h4>
         </li>
         <li class="ui-border-t">
             <h4>联系信息</h4>
