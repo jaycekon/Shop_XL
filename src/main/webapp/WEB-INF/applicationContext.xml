@@ -133,5 +133,8 @@
     <bean id="terraceService" class="com.Shop.Service.TerraceService">
     </bean>
 
+    <bean id="ordersService" class="com.Shop.Service.OrdersService">
+    </bean>
+
 
 </beans>

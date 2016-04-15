@@ -46,7 +46,7 @@ public class UserController {
     Logger log = Logger.getLogger(UserController.class);
 
     /**
-     *
+     *商城入口，判断有没有openId，如果没有，请求获得openId，然后从数据库中取出相应的身份
      * @param model
      * @param session
      * @param response
@@ -81,6 +81,14 @@ public class UserController {
         return null;
     }
 
+    /**
+     * 商城主页，主要展示所有商品
+     * @param model
+     * @param session
+     * @param response
+     * @return
+     * @throws IOException
+     */
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String inde(Model model, HttpSession session, HttpServletResponse response) throws IOException {
         List<Good> goods = goodService.listGood();
@@ -93,43 +101,13 @@ public class UserController {
         return "frontStage/index";
     }
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login() {
-        return "frontStage/User/login";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String registe(User user, HttpSession session) {
-        String json = userService.addUser(user);
-        return json;
-    }
 
 
-    @RequestMapping(value = "addRoles", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String addRoles(Roles roles) {
-        JsonObject object = new JsonObject();
-        userService.addRoles(roles);
-        object.addProperty("status", true);
-        return object.toString();
-    }
 
-    @RequestMapping(value = "addAreas", method = RequestMethod.POST)
-    @ResponseBody
-    public String addAreas(Areas areas) {
-        JsonObject object = new JsonObject();
-        userService.addArea(areas);
-        object.addProperty("status", true);
-        return object.toString();
-    }
 
-    @RequestMapping(value = "loginUser", method = RequestMethod.POST)
-    public String login(User user, HttpSession session) {
-        User u = userService.loginUser(user);
-        session.setAttribute("loginUser", u);
-        return "redirect:/";
-    }
+
+
+
 
     @RequestMapping(value = "buyGood", method = RequestMethod.POST)
     public String buyGood(int good_id, int count, HttpSession session) {

@@ -30,12 +30,23 @@ public class GoodController {
     @Autowired
     private UserService userService;
 
-
+    /**
+     * 跳转到添加商品页面
+     * @return
+     */
     @RequestMapping(value ="addGood" ,method = RequestMethod.GET)
     public String addGood(){
         return "backStage/Product/productPublish";
     }
 
+
+    /**
+     * 添加商品进入数据库，默认显示已下架
+     * @param good
+     * @param session
+     * @param files
+     * @return
+     */
     @RequestMapping(value = "addGoodDown",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     public String addGoodDown(Good good,HttpSession session,@RequestParam("files")MultipartFile[] files){
 //        if(session.getAttribute("loginTerrace") == null){
@@ -78,27 +89,13 @@ public class GoodController {
     }
 
 
-    @RequestMapping(value = "updateGood/{id}",method = RequestMethod.GET)
-    public String updateGood(@PathVariable(value ="id") int id,HttpSession session,HttpServletRequest request){
-        if(session.getAttribute("loginTerrace") == null){
-            JsonObject jsonObject = new JsonObject();
-            jsonObject.addProperty("status",false);
-            return jsonObject.toString();
-        }
-        Good good = goodService.findGoodById(id);
-        request.setAttribute("good",good);
-        return "backStage/Product/previewProduct";
-    }
 
-    @RequestMapping(value = "updateGood",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String updateGood(Good good){
-        boolean status = goodService.updateGood(good);
-        JsonObject object = new JsonObject();
-        object.addProperty("status",status);
-        return object.toString();
-    }
-
+    /**
+     * 显示所有商品，从数据库中获取所有商品
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "listGood",method = RequestMethod.GET)
     public String listGood(Model model,HttpSession session){
 //        if(session.getAttribute("loginTerrace") == null){
@@ -109,6 +106,11 @@ public class GoodController {
         return "backStage/Product/productList";
     }
 
+    /**
+     * 通过姓名查找商品
+     * @param name
+     * @return
+     */
     @RequestMapping(value = "findGoodByName",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     @ResponseBody
     public List<Good> listGoodByName(String name){
@@ -117,8 +119,12 @@ public class GoodController {
     }
 
 
-
-
+    /**
+     * 更改商品状态
+     * @param id
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "changeStatus/{id}",method = RequestMethod.GET)
     public String changeStatus(@PathVariable(value = "id") int id,HttpSession session){
 //        if(session.getAttribute("loginTerrace") == null){
@@ -135,6 +141,13 @@ public class GoodController {
         return "redirect:/listGood";
     }
 
+    /**
+     * 查看商品信息详情(后台）
+     * @param id
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "goodDetail/{id}",method = RequestMethod.GET)
     public String goodDetail(@PathVariable(value ="id")int id,HttpSession session,Model model){
         Good good= goodService.findGoodById(id);
@@ -144,6 +157,13 @@ public class GoodController {
         return "backStage/Product/previewProduct";
     }
 
+    /**
+     * 用户查看商品详情，需要判断是否已认证，是否已查看
+     * @param id
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "Detail/{id}",method = RequestMethod.GET)
     public String detail(@PathVariable(value ="id")int id,HttpSession session,Model model){
         if(session.getAttribute("loginUser")==null){
@@ -164,6 +184,13 @@ public class GoodController {
         return "frontStage/Good/productDetail";
     }
 
+    /**
+     * 编辑商品
+     * @param id
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "editGood/{id}",method = RequestMethod.GET)
     public String editGood(@PathVariable(value = "id") int id,HttpSession session,Model model){
         Good good = goodService.findGoodById(id);
@@ -171,6 +198,14 @@ public class GoodController {
         return "backStage/Product/editProduct";
     }
 
+    /**
+     * 编辑商品后将商品信息存入数据库
+     * @param id
+     * @param session
+     * @param good
+     * @param files
+     * @return
+     */
     @RequestMapping(value = "editGood/{id}",method = RequestMethod.POST)
     public String editGood(@PathVariable(value = "id") int id,HttpSession session,Good good,@RequestParam("files")MultipartFile[] files){
         Good g = goodService.findGoodById(id);
@@ -218,11 +253,21 @@ public class GoodController {
         return "redirect:/listGood";
     }
 
+    /**
+     * 通过ID查找商品
+     * @return
+     */
     @RequestMapping(value = "checkGood",method = RequestMethod.GET)
     public String findGoodById(){
         return "backStage/Product/productQuery";
     }
 
+    /**
+     * 通过ID查找商品
+     * @param id
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "checkGood",method = RequestMethod.POST)
     public String findGoodById(int id,Model model){
         Good good = goodService.findGoodById(id);
@@ -231,6 +276,11 @@ public class GoodController {
         return "backStage/Product/productQuery";
     }
 
+    /**
+     * 查看所有已上架的商品
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "listGoodUp",method = RequestMethod.GET)
     public String listGoodUp(Model model){
         List<Good> goods = goodService.listGoodUp(1);
@@ -238,6 +288,11 @@ public class GoodController {
         return "backStage/Product/productList";
     }
 
+    /**
+     * 查看所有已下架的商品
+     * @param model
+     * @return
+     */
     @RequestMapping(value = "listGoodDown",method = RequestMethod.GET)
     public String listGoodDown(Model model){
         List<Good> goods = goodService.listGoodUp(0);
