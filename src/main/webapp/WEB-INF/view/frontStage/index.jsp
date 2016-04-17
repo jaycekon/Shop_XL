@@ -70,14 +70,14 @@
                     }if(flag == 1){
                         %>
                     <p class="ui-col ui-flex  ui-flex-align-center">
-                        <button class="ui-btn productBtn watchPrice">查看倾销价</button>
+                        <button class="ui-btn productBtn watchPrice" onclick="window.location.href='<%=request.getContextPath()%>/watchGood/<%=good.getId()%>'">查看倾销价</button>
                     </p>
                     <%
                     }
                 } else {
                 %>
                     <p class="ui-col ui-flex  ui-flex-align-center">
-                        <button class="ui-btn productBtn watchPrice">查看倾销价</button>
+                        <button class="ui-btn productBtn watchPrice" onclick="window.location.href='<%=request.getContextPath()%>/watchGood/<%=good.getId()%>'">查看倾销价</button>
                     </p>
                     <%
 

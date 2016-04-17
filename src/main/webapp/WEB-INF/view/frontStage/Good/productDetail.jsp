@@ -56,6 +56,12 @@
         %>
         </span><span class="themeColor">&#165;<%=good.getDumpingPrices()%></span></p>
         <%
+            }else{
+                %>
+        <p class="ui-col ui-flex  ui-flex-align-center">
+            <button class="ui-btn productBtn watchPrice" onclick="window.location.href='<%=request.getContextPath()%>/watchGood/<%=good.getId()%>'">查看倾销价</button>
+        </p>
+        <%
             }
         %>
         <p class="specText"><span>运费：</span>0.00</p>
