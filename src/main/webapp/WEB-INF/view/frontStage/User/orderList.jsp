@@ -36,25 +36,25 @@
     <!-- [[订单类别 -->
     <ul class="tab">
         <li>
-            <a href="" class="ui-btn productBtn">待付款</a>
+            <a href="<%=request.getContextPath()%>/repayOrders" class="ui-btn productBtn">待付款</a>
         </li>
         <li>
-            <a href="" class="ui-btn">待发货</a>
+            <a href="<%=request.getContextPath()%>/resendOrders" class="ui-btn">待发货</a>
         </li>
         <li>
-            <a href="" class="ui-btn">待收货</a>
+            <a href="<%=request.getContextPath()%>/sendOrders" class="ui-btn">待收货</a>
         </li>
         <li>
-            <a href="" class="ui-btn">已完成</a>
+            <a href="<%=request.getContextPath()%>/endOrders" class="ui-btn">已完成</a>
         </li>
         <li>
-            <a href="" class="ui-btn">待评价</a>
+            <a href="<%=request.getContextPath()%>/reCommentOrders" class="ui-btn">待评价</a>
         </li>
         <li>
-            <a href="" class="ui-btn">退款中</a>
+            <a href="<%=request.getContextPath()%>/exitOrders" class="ui-btn">退款中</a>
         </li>
         <li>
-            <a href="" class="ui-btn">已关闭</a>
+            <a href="<%=request.getContextPath()%>" class="ui-btn">已关闭</a>
         </li>
     </ul>
     <!-- 订单类别]] -->

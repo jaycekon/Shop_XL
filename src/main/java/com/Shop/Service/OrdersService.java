@@ -19,6 +19,15 @@ public class OrdersService {
     @Autowired
     OrderProductDao orderProductDao;
 
+    public Orders findOrdersById(int id){
+        return ordersDao.findById(id);
+    }
+
+    public void updateOrders(Orders orders){
+        ordersDao.update(orders);
+    }
+
+
     /**
      * 通过订单支付状态获取订单
      * @param f
