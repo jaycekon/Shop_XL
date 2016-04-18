@@ -68,7 +68,7 @@
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userList'">
             <h4>我的店家</h4>
         </li>
-        <li class="ui-border-t">
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleListOrders'">
             <h4>我的佣金</h4>
         </li>
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userCrod/<%=roles.getId()%>'">

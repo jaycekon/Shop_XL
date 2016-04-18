@@ -41,7 +41,7 @@ public class UserService {
 
 
     public String addUser(User user){
-        User u = userDao.findByName(user.getUsername());
+        User u = userDao.findByOpenId(user.getOpenId());
         JsonObject object = new JsonObject();
         if(u != null){
             object.addProperty("status",false);

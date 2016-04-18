@@ -83,13 +83,29 @@ public class OrdersService {
         return orderses;
     }
 
+    /**
+     * 更新订单项信息
+     * @param orderProduct
+     */
     public void updateOrderProduct(OrderProduct orderProduct){
         orderProductDao.update(orderProduct);
     }
 
+    /**
+     * 通过ID获取订单项
+     * @param id
+     * @return
+     */
     public OrderProduct findOrderProductById(int id){
         return  orderProductDao.findById(id);
     }
 
 
+    public List<Orders> findOrdersByAreaId(int area_id){
+        return ordersDao.findAllByAreaId(area_id);
+    }
+
+    public List<Orders> findOrdersByRoleId(int role_id){
+        return ordersDao.findAllByRoleId(role_id);
+    }
 }

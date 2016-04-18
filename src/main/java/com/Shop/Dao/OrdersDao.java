@@ -203,4 +203,31 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         session.close();
         return orders;
     }
+
+    /**
+     * 大区获取所有子级订单
+     * @param area_id
+     * @return
+     */
+    public List<Orders> findAllByAreaId(int area_id) {
+        Session session = super.openSession();
+        String hql ="from Orders where area_id=:area_id order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("area_id",area_id).list();
+        session.close();
+        return orders;
+    }
+
+
+    /**
+     * 角色获取所有子级订单
+     * @param role_id
+     * @return
+     */
+    public List<Orders> findAllByRoleId(int role_id) {
+        Session session = super.openSession();
+        String hql ="from Orders where role_id=:role_id order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("role_id",role_id).list();
+        session.close();
+        return orders;
+    }
 }

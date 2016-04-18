@@ -1,10 +1,11 @@
 package com.Shop.Controller;
 
-import com.Shop.Model.OrderProduct;
-import com.Shop.Model.Orders;
-import com.Shop.Model.User;
+import com.Shop.Model.*;
 import com.Shop.Service.OrdersService;
 import com.Shop.Service.UserService;
+import com.Shop.Util.OrderPoJo;
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
@@ -12,8 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,7 +28,7 @@ public class OrdersController {
     UserService userService;
     @Autowired
     OrdersService ordersService;
-
+    Logger log = Logger.getLogger(OrdersController.class);
     /**
      * 获取未付款订单(后台）
      * @param model
@@ -36,7 +39,7 @@ public class OrdersController {
         User user=(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByFAndUserId(0,user.getId());
         model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -48,7 +51,7 @@ public class OrdersController {
     public String listOrdersByF1(Model model){
         List<Orders> orderses = userService.listOrdersByF(1);
         model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -60,7 +63,7 @@ public class OrdersController {
     public String listOrdersByC0(Model model){
         List<Orders> orderses = userService.listOrdersByF(0);
         model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -95,7 +98,7 @@ public class OrdersController {
         }
         List<Orders> orderses = ordersService.findOrdersByTAndUserId(1,user.getId());
         model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -108,8 +111,14 @@ public class OrdersController {
     public String endOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByDAndUserId(1,user.getId());
-        model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -122,8 +131,14 @@ public class OrdersController {
     public String repayOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByFAndUserId(0,user.getId());
-        model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -135,10 +150,19 @@ public class OrdersController {
     @RequestMapping(value = "/resendOrders",method = RequestMethod.GET)
     public String resendOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
-        List<Orders> orderses = ordersService.findOrdersByPAndUserId(0,user.getId());
-        model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+    List<Orders> orderses = ordersService.findOrdersByPAndUserId(0,user.getId());
+    List<OrderPoJo> orderPoJos = new ArrayList<>();
+    for(Orders orders :orderses){
+        List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+        if(orderProducts!=null) {
+            log.info(orderProducts.get(0).getDescribes());
+        }
+        OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+        orderPoJos.add(orderPoJo);
     }
+    model.addAttribute("orderPoJos",orderPoJos);
+    return "frontStage/User/orderList";
+}
 
     /**
      * 获取已发货订单（前台）
@@ -150,8 +174,14 @@ public class OrdersController {
     public String sendOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByPAndUserId(1,user.getId());
-        model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -164,8 +194,14 @@ public class OrdersController {
     public String reCommentOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByCAndUserId(0,user.getId());
-        model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
     }
 
     /**
@@ -178,10 +214,59 @@ public class OrdersController {
     public String exitOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByTAndUserId(1,user.getId());
-        model.addAttribute("orderses",orderses);
-        return "frontStage/user/orderList";
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
     }
 
+
+    @RequestMapping(value ="/areaListOrders",method = RequestMethod.GET)
+    public String areaOrders(HttpSession session,Model model){
+        Areas areas =(Areas)session.getAttribute("areas");
+        List<Orders> orderses = ordersService.findOrdersByAreaId(areas.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
+    }
+
+
+    @RequestMapping(value ="/roleListOrders",method = RequestMethod.GET)
+    public String roleOrders(HttpSession session,Model model){
+        Roles roles = (Roles)session.getAttribute("roles");
+        List<Orders> orderses = ordersService.findOrdersByRoleId(roles.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
+    }
+
+    @RequestMapping(value = "/testGson",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String listOrders(){
+        Gson gson = new Gson();
+        List<Orders> orderses = userService.listOrders();
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        return gson.toJson(orderPoJos);
+    }
 
 
 

@@ -7,14 +7,6 @@ import com.Shop.Service.UserService;
 import com.Shop.Util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,15 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Administrator on 2016/3/25 0025.
@@ -64,7 +50,7 @@ public class AdminController {
     public String getCode(HttpServletRequest request){
         String code=request.getParameter("code");
         log.info("获取code成功---------->"+code);
-        AccessTokenUtil.getCode(code,request);
+        WebChatUtil.getCode(code,request);
         String openId =(String)request.getSession().getAttribute("openId");
         log.info("获取openId成功------------->"+openId);
         if(terraceService.findAreasByOpenId(openId)!=null){
@@ -329,7 +315,7 @@ public class AdminController {
     @RequestMapping(value = "myCrod",method =RequestMethod.GET)
     public String myCrod(Model model){
         int flag =(int)((1+Math.random())*10000);
-        String code = AccessTokenUtil.getQrCodePic(9,flag);
+        String code = WebChatUtil.getQrCodePic(9,flag);
         log.info("申请生成角色二维码成功："+code);
         model.addAttribute("code",code);
         return "frontStage/code";
@@ -337,14 +323,14 @@ public class AdminController {
 
     @RequestMapping(value = "roleCrod/{id}",method =RequestMethod.GET)
     public String roleCrod(@PathVariable(value ="id") int id,Model model){
-        String code = AccessTokenUtil.getQrCodePic(1,id);
+        String code = WebChatUtil.getQrCodePic(1,id);
         log.info("申请生成角色二维码成功："+code);
         model.addAttribute("code",code);
         return "frontStage/code";
     }
     @RequestMapping(value = "userCrod/{id}",method =RequestMethod.GET)
     public String userCrod(@PathVariable(value ="id") int id,Model model){
-        String code = AccessTokenUtil.getQrCodePic(2,id);
+        String code = WebChatUtil.getQrCodePic(2,id);
         log.info("申请生成店家二维码成功："+code);
         model.addAttribute("code",code);
         return "frontStage/code";

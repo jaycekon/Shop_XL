@@ -10,6 +10,8 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/4/12 0012.
@@ -43,5 +45,30 @@ public class XMLUtil {
         XStream xstream = new XStream();
         xstream.alias("xml", object.getClass());
         return xstream.toXML(object);
+    }
+
+    public static String mapToStr(Map<String,Object> map){
+        String str="";
+        Set<String> keySet = map.keySet();
+
+        Iterator<String> iter = keySet.iterator();
+
+        while (iter.hasNext()) {
+            String key = iter.next();
+            str+=key+"="+map.get(key)+"&";
+        }
+        return str.substring(0, str.length()-1);
+    }
+
+    public static String mapToXml(Map<String,Object> map){
+        String str="";
+        Set<String> keySet = map.keySet();
+        Iterator<String> iter = keySet.iterator();
+
+        while (iter.hasNext()) {
+            String key = iter.next();
+            str+="<"+key+">"+map.get(key)+"</"+key+">";
+        }
+        return "<xml>"+str+"</xml>";
     }
 }

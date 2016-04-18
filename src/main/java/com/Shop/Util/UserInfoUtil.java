@@ -15,7 +15,7 @@ import org.apache.http.util.EntityUtils;
  */
 public class UserInfoUtil {
     public static JsonObject getUserInfo(String openId){
-        String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+AccessTokenUtil.getAccessToken()+"&openid="+openId+"&lang=zh_CN";
+        String url="https://api.weixin.qq.com/cgi-bin/user/info?access_token="+ WebChatUtil.getAccessToken()+"&openid="+openId+"&lang=zh_CN";
         HttpClient client = new DefaultHttpClient();
         HttpGet get = new HttpGet(url);
         JsonParser jsonparer = new JsonParser();// 初始化解析json格式的对象
