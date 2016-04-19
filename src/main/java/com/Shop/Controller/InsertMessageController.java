@@ -5,6 +5,7 @@ import com.Shop.Service.AddressService;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
+import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -117,6 +119,25 @@ public class InsertMessageController {
         List<Area> areas =addressService.findTopArea();
         Gson gson = new Gson();
         return gson.toJson(areas);
+    }
+
+
+    /**
+     * 测试获取订单信息 json格式
+     * @return
+     */
+    @RequestMapping(value = "/testGson",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public String listOrders(){
+        Gson gson = new Gson();
+        List<Orders> orderses = userService.listOrders();
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        return gson.toJson(orderPoJos);
     }
 
 }

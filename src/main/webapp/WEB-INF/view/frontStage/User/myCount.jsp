@@ -99,39 +99,39 @@
 
 </section>
 
-<!-- [[充值-->
-<div class="ui-dialog">
-    <div class="ui-dialog-cnt">
-        <header class="ui-dialog-hd ui-border-b">
-            <h3>确定付款</h3>
-            <i class="ui-dialog-close" data-role="button"></i>
-        </header>
-        <div class="ui-dialog-bd uiDialogBdL">
-            <div>
-                <p>倾销币数量：<span class="themeColor">123</span></p>
-                <p>充值金额：<span class="themeColor">&#165;12.22</span></p>
-                <ul class="ui-list ui-list-text ui-list-radio">
-                    <li class="ui-border-t">
-                        <label class="ui-radio" for="radio">
-                            <input type="radio" name="radio">
-                        </label>
-                        <p>微信支付</p>
-                    </li>
-                    <li class="ui-border-t">
-                        <label class="ui-radio" for="radio">
-                            <input type="radio" checked name="radio">
-                        </label>
-                        <p>银联支付</p>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="ui-dialog-ft">
-            <button type="button" data-role="button">取消</button>
-            <button type="button" data-role="button">付款</button>
-        </div>
-    </div>
-</div><!-- 充值]] -->
+<%--<!-- [[充值-->--%>
+<%--<div class="ui-dialog">--%>
+    <%--<div class="ui-dialog-cnt">--%>
+        <%--<header class="ui-dialog-hd ui-border-b">--%>
+            <%--<h3>确定付款</h3>--%>
+            <%--<i class="ui-dialog-close" data-role="button"></i>--%>
+        <%--</header>--%>
+        <%--<div class="ui-dialog-bd uiDialogBdL">--%>
+            <%--<div>--%>
+                <%--<p>倾销币数量：<span class="themeColor">123</span></p>--%>
+                <%--<p>充值金额：<span class="themeColor">&#165;12.22</span></p>--%>
+                <%--<ul class="ui-list ui-list-text ui-list-radio">--%>
+                    <%--<li class="ui-border-t">--%>
+                        <%--<label class="ui-radio" for="radio">--%>
+                            <%--<input type="radio" name="radio">--%>
+                        <%--</label>--%>
+                        <%--<p>微信支付</p>--%>
+                    <%--</li>--%>
+                    <%--<li class="ui-border-t">--%>
+                        <%--<label class="ui-radio" for="radio">--%>
+                            <%--<input type="radio" checked name="radio">--%>
+                        <%--</label>--%>
+                        <%--<p>银联支付</p>--%>
+                    <%--</li>--%>
+                <%--</ul>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+        <%--<div class="ui-dialog-ft">--%>
+            <%--<button type="button" data-role="button">取消</button>--%>
+            <%--<button type="button" data-role="button">付款</button>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div><!-- 充值]] -->--%>
 
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/zepto.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>

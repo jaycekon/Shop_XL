@@ -17,9 +17,9 @@
 		<%
 			Map<String,Object> payMap =(Map<String,Object>)request.getAttribute("payMap");
 			System.out.println("paySign:"+payMap.get("paySign"));
-			System.out.println("thePackage:"+payMap.get("thePackage"));
+			System.out.println("Package:"+payMap.get("Package"));
 			System.out.println("nonceStr:"+payMap.get("nonceStr"));
-			System.out.println("timeStamp:"+payMap.get("timeStamp"));
+			System.out.println("timestamp:"+payMap.get("timestamp"));
 		%>
 		$(function(){
 			var urlStr = "<%=request.getContextPath()%>/weixin/signature?url="+location.href.split('#')[0];

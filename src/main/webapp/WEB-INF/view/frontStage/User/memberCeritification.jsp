@@ -44,35 +44,35 @@
 </section>
 
 <!-- [[认证 -->
-<div class="ui-dialog">
-    <div class="ui-dialog-cnt">
-        <header class="ui-dialog-hd ui-border-b">
-            <h3>认证会员</h3>
-            <i class="ui-dialog-close" data-role="button"></i>
-        </header>
-        <div class="ui-dialog-bd uiDialogBdL">
-            <div>认证金额： <span class="themeColor">&#165; 12.22</span></div>
-            <ul class="ui-list ui-list-text ui-list-radio ui-border-tb">
-                <li class="ui-border-t">
-                    <label class="ui-radio" for="wechat">
-                        <input type="radio" name="radio" id="wechat">
-                    </label>
-                    <p>微信支付</p>
-                </li>
-                <li class="ui-border-t">
-                    <label class="ui-radio" for="unionpay">
-                        <input type="radio" checked name="radio" id="unionpay">
-                    </label>
-                    <p>银联支付</p>
-                </li>
-            </ul>
-        </div>
-        <div class="ui-dialog-ft">
-            <button type="button" data-role="button">取消</button>
-            <button type="button" data-role="button">确定</button>
-        </div>
-    </div>
-</div><!-- [[认证 -->
+<%--<div class="ui-dialog">--%>
+    <%--<div class="ui-dialog-cnt">--%>
+        <%--<header class="ui-dialog-hd ui-border-b">--%>
+            <%--<h3>认证会员</h3>--%>
+            <%--<i class="ui-dialog-close" data-role="button"></i>--%>
+        <%--</header>--%>
+        <%--<div class="ui-dialog-bd uiDialogBdL">--%>
+            <%--<div>认证金额： <span class="themeColor">&#165; 12.22</span></div>--%>
+            <%--<ul class="ui-list ui-list-text ui-list-radio ui-border-tb">--%>
+                <%--<li class="ui-border-t">--%>
+                    <%--<label class="ui-radio" for="wechat">--%>
+                        <%--<input type="radio" name="radio" id="wechat">--%>
+                    <%--</label>--%>
+                    <%--<p>微信支付</p>--%>
+                <%--</li>--%>
+                <%--<li class="ui-border-t">--%>
+                    <%--<label class="ui-radio" for="unionpay">--%>
+                        <%--<input type="radio" checked name="radio" id="unionpay">--%>
+                    <%--</label>--%>
+                    <%--<p>银联支付</p>--%>
+                <%--</li>--%>
+            <%--</ul>--%>
+        <%--</div>--%>
+        <%--<div class="ui-dialog-ft">--%>
+            <%--<button type="button" data-role="button">取消</button>--%>
+            <%--<button type="button" data-role="button">确定</button>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div><!-- [[认证 -->--%>
 
 <script class="demo-script">
     $(".ui-dialog").dialog("show");

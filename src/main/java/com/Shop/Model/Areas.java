@@ -17,9 +17,9 @@ public class Areas {
     private String name;
     private String img;
     private long flag;
-    private Date date;
-    private int totalCommission;
-    private int exitCommission;
+    private Date date;                  //注册时间
+    private float totalCommission;                //全部佣金
+    private float exitCommission;             //剩余佣金
 
     @Id
     @GeneratedValue
@@ -71,19 +71,19 @@ public class Areas {
         this.date = date;
     }
 
-    public int getTotalCommission() {
+    public float getTotalCommission() {
         return totalCommission;
     }
 
-    public void setTotalCommission(int totalCommission) {
+    public void setTotalCommission(float totalCommission) {
         this.totalCommission = totalCommission;
     }
 
-    public int getExitCommission() {
+    public float getExitCommission() {
         return exitCommission;
     }
 
-    public void setExitCommission(int exitCommission) {
+    public void setExitCommission(float exitCommission) {
         this.exitCommission = exitCommission;
     }
 }

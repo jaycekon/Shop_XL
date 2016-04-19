@@ -79,6 +79,9 @@ public class UserService {
         }
 
     }
+    public void updateRoles(Roles roles){
+        rolesDao.update(roles);
+    }
 
     public Roles getRoles(int id){
         return rolesDao.findById(id);
@@ -103,10 +106,13 @@ public class UserService {
 
     }
 
-    public Areas getArea(int id){
+    public Areas getAreas(int id){
         return areasDao.findById(id);
     }
 
+    public void updateAreas(Areas areas){
+        areasDao.update(areas);
+    }
     public List<Areas> listAreas(){
         return areasDao.findAll();
     }

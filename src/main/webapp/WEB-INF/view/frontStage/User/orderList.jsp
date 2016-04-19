@@ -112,7 +112,7 @@
 
     <div class="ui-border-b block operateBlock">
         <button class="ui-btn">取消订单</button>
-        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/weixin/preparePayOrder'">去付款</button>
+        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/weixin/preparePayOrder/<%=orders.getId()%>'">去付款</button>
     </div>
     <!-- 待付款]] -->
 
@@ -153,7 +153,7 @@
 // 订单状态页面url解析
 switch(window.location.pathname.split("/").pop())  {  // 条件根据具体情况设定
     /*待付款*/
-    case "url":
+    case "repayOrders":
         $daifukuan = $('#daifukuan');
         setActive($daifukuan);
         break;
@@ -163,22 +163,22 @@ switch(window.location.pathname.split("/").pop())  {  // 条件根据具体情�
         setActive($daifahuo);
         break;
     /*待收货*/
-    case "url":
+    case "sendOrders":
         $daishouhuo = $('#daishouhuo');
         setActive($daishouhuo);
         break;
     /*已完成*/
-    case "url":
+    case "endOrders":
         $yiwancheng = $('#yiwancheng');
         setActive($yiwancheng);
         break;
     /*待评价*/
-    case "url":
+    case "reCommentOrders":
         $daipingjia = $('#daipingjia');
         setActive($daipingjia);
         break;
     /*退款中*/
-    case "url":
+    case "exitOrders":
         $tuikuanzhong = $('#tuikuanzhong');
         setActive($tuikuanzhong);
         break;

@@ -1,6 +1,7 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.Areas;
+import com.Shop.Model.Orders;
 import com.Shop.Model.Roles;
 import com.Shop.Model.User;
 import com.Shop.Service.TerraceService;
@@ -11,10 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -35,6 +33,7 @@ public class WebChatController {
     private TerraceService terraceService;
     @Autowired
     private UserService userService;
+
     private final static String wechatName ="xiaoguozhushou";
     Logger log = Logger.getLogger(WebChatController.class);
 
@@ -226,12 +225,12 @@ public class WebChatController {
 
 
     //模拟支付
-    @RequestMapping("/weixin/preparePayOrder")
-    public String addOrder(HttpServletRequest request,Model model) throws Exception{
-        Long payId = 123456789L;
-        String prepayId=WebChatUtil.placeOrdersJSAPI(payId,request);
+    @RequestMapping("/weixin/preparePayOrder/{id}")
+    public String addOrder(HttpServletRequest request, Model model, @PathVariable(value="id")int id) throws Exception{
+        Orders orders = userService.findOrdersById(id);
+        String prepayId=WebChatUtil.placeOrdersJSAPI(id,0.01f,request);
         Map<String,Object> payMap = WebChatUtil.generatePaySign(prepayId);
-        payMap.put("payId", payId.toString());
+        payMap.put("payId", id);
         model.addAttribute("payMap",payMap);
         return "Pay/pay";
     }

@@ -259,7 +259,7 @@ public class UserController {
         if (user.getRoles() != null) {
             Roles roles = userService.getRoles(user.getRoles().getId());
             orders.setRoles(roles);
-            Areas areas = userService.getArea(roles.getAreas().getId());
+            Areas areas = userService.getAreas(roles.getAreas().getId());
             orders.setAreas(areas);
         }
         cartService.deleteCart(cart);

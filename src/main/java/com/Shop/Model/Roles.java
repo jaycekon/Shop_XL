@@ -14,11 +14,11 @@ public class Roles {
     private String phone;
     private String EMail;
     private String img;
-    private String OpenId;
-    private Areas areas;
-    private Date date;
-    private int totalCommission;
-    private int exitCommission;
+    private String OpenId;              //微信ID
+    private Areas areas;                //上级大区
+    private Date date;                  //关注日期
+    private float totalCommission;         //总佣金
+    private float exitCommission;             //剩余佣金
 
     @Id
     @GeneratedValue
@@ -87,19 +87,19 @@ public class Roles {
         this.date = date;
     }
 
-    public int getTotalCommission() {
+    public float getTotalCommission() {
         return totalCommission;
     }
 
-    public void setTotalCommission(int totalCommission) {
+    public void setTotalCommission(float totalCommission) {
         this.totalCommission = totalCommission;
     }
 
-    public int getExitCommission() {
+    public float getExitCommission() {
         return exitCommission;
     }
 
-    public void setExitCommission(int exitCommission) {
+    public void setExitCommission(float exitCommission) {
         this.exitCommission = exitCommission;
     }
 }

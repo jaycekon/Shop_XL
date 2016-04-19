@@ -7,6 +7,7 @@ import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Role;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -254,18 +255,31 @@ public class OrdersController {
         return "frontStage/User/orderList";
     }
 
-    @RequestMapping(value = "/testGson",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String listOrders(){
-        Gson gson = new Gson();
-        List<Orders> orderses = userService.listOrders();
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders orders :orderses){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
-            orderPoJos.add(orderPoJo);
+
+
+
+    @RequestMapping(value ="/paySuccess/{id}",method = RequestMethod.GET)
+    public String paySuccess(@PathVariable(value = "id")int id){
+        Orders orders = ordersService.findOrdersById(id);
+        orders.setF(1);
+        ordersService.updateOrders(orders);
+        if(orders.getRoles()!=null){
+            Roles roles = orders.getRoles();
+            float totalcommission = roles.getTotalCommission() +orders.getRolesProfit();
+            float exitcommission = roles.getExitCommission() +orders.getRolesProfit();
+            Roles r = userService.getRoles(roles.getId());
+            r.setTotalCommission(totalcommission);
+            r.setExitCommission(exitcommission);
+            userService.updateRoles(r);
+            Areas areas = orders.getAreas();
+            totalcommission =areas.getTotalCommission() + orders.getAreaProfit();
+            exitcommission = areas.getExitCommission() +orders.getAreaProfit();
+            Areas a = userService.getAreas(areas.getId());
+            a.setTotalCommission(totalcommission);
+            a.setExitCommission(exitcommission);
+            userService.updateAreas(a);
         }
-        return gson.toJson(orderPoJos);
+        return "redirect:/userOrders";
     }
 
 

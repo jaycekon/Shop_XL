@@ -31,7 +31,7 @@ public class WebChatUtil {
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
     public static final String TENANT_ID = "1272412901";
     public static final String KEY = "huanlingkejihuangbianfenbu2016ph";
-    public static final String notify_url ="http://weijiehuang.productshow.cn/paySuccess";
+
     static Logger  log  =Logger.getLogger(WebChatUtil.class);
     // 获取access_token值
     private static String getAccess_Token(String aurl)
@@ -291,10 +291,11 @@ public class WebChatUtil {
     }
 
     //调用统一下单接口,类型为网页支付，包含多张订单
-    public static String placeOrdersJSAPI(long payId,HttpServletRequest request) throws Exception{
+    public static String placeOrdersJSAPI(long payId,float money,HttpServletRequest request) throws Exception{
         //统计要付的钱
-        float payMoney=0.1f;
-
+        float payMoney=money;
+        //付款成功后跳转url
+        String notify_url ="http://weijiehuang.productshow.cn/paySuccess/"+payId;
         String nonce_str = generateStr(32);
         String ip = getIpAddr(request);
         Date startDate = new Date();
