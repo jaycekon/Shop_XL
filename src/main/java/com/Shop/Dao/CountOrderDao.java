@@ -50,7 +50,7 @@ public class CountOrderDao extends BaseDao implements IGeneralDao<CountOrder> {
 
     @Override
     public void update(CountOrder countOrder) {
-
+        super.hibernateTemplate.update(countOrder);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class CountOrderDao extends BaseDao implements IGeneralDao<CountOrder> {
 
     @Override
     public void delete(CountOrder countOrder) {
-
+        super.hibernateTemplate.delete(countOrder);
     }
 
     @Override
@@ -76,5 +76,13 @@ public class CountOrderDao extends BaseDao implements IGeneralDao<CountOrder> {
     @Override
     public void flush() {
 
+    }
+
+    public CountOrder findCountOrderByUuid(String uuid){
+        Session session = super.openSession();
+        String hql ="from CountOrder where uuid like:uuid order by date desc";
+        CountOrder countOrder =(CountOrder)session.createQuery(hql).setParameter("uuid","%"+uuid+"%").uniqueResult();
+        session.close();
+        return countOrder;
     }
 }

@@ -14,6 +14,7 @@ public class CountOrder {
     private int count;
     private String type;
     private int status;
+    private float prices;
     private Date date;
     private String uuid;
 
@@ -75,5 +76,13 @@ public class CountOrder {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public float getPrices() {
+        return prices;
+    }
+
+    public void setPrices(float prices) {
+        this.prices = prices;
     }
 }

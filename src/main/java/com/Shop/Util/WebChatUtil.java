@@ -291,11 +291,11 @@ public class WebChatUtil {
     }
 
     //调用统一下单接口,类型为网页支付，包含多张订单
-    public static String placeOrdersJSAPI(long payId,float money,HttpServletRequest request,String uuid) throws Exception{
+    public static String placeOrdersJSAPI(long payId,float money,HttpServletRequest request,String uuid,String notify_url) throws Exception{
         //统计要付的钱
         float payMoney=money;
         //付款成功后跳转url
-        String notify_url ="http://weijiehuang.productshow.cn/paySuccess";
+
         String nonce_str = generateStr(32);
         String ip = getIpAddr(request);
         Date startDate = new Date();

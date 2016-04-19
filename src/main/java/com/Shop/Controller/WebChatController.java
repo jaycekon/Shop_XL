@@ -1,9 +1,6 @@
 package com.Shop.Controller;
 
-import com.Shop.Model.Areas;
-import com.Shop.Model.Orders;
-import com.Shop.Model.Roles;
-import com.Shop.Model.User;
+import com.Shop.Model.*;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.*;
@@ -228,12 +225,28 @@ public class WebChatController {
     @RequestMapping("/weixin/preparePayOrder/{id}")
     public String addOrder(HttpServletRequest request, Model model, @PathVariable(value="id")int id) throws Exception{
         Orders orders = userService.findOrdersById(id);
-        String prepayId=WebChatUtil.placeOrdersJSAPI(id,orders.getPrices(),request,orders.getUuid());
+        String notify_url ="http://weijiehuang.productshow.cn/paySuccess";
+        String prepayId=WebChatUtil.placeOrdersJSAPI(id,orders.getPrices(),request,orders.getUuid(),notify_url);
         Map<String,Object> payMap = WebChatUtil.generatePaySign(prepayId);
         payMap.put("payId", id);
         model.addAttribute("payMap",payMap);
         return "Pay/pay";
     }
+
+    //模拟支付
+    @RequestMapping("/weixin/preparePayCountOrder/{id}")
+    public String addCountOrder(HttpServletRequest request, Model model, @PathVariable(value="id")int id) throws Exception{
+        CountOrder countOrder = userService.findCountOrderById(id);
+        String notify_url ="http://weijiehuang.productshow.cn/personSignSuccess";
+        String prepayId=WebChatUtil.placeOrdersJSAPI(id,countOrder.getPrices(),request,countOrder.getUuid(),notify_url);
+        Map<String,Object> payMap = WebChatUtil.generatePaySign(prepayId);
+        payMap.put("payId", id);
+        model.addAttribute("payMap",payMap);
+        log.info("success");
+        return "Pay/payCountOrder";
+    }
+
+
 
 
     @RequestMapping("/weixin/signature")

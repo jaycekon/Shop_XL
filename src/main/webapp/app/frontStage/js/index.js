@@ -30,14 +30,19 @@ $(function(){
     });
 
     /* 点击查看倾销价 */
-    $('.watchPrice').click(function(){
+    $('.watchPrice').on('click',function(e){
+        // 获取商品id
+        var shopId = $(this).parent().parent().find('input').val();
+
         var goPayDialog =  $("#goPayDialog").dialog("show");
         goPayDialog.on('dialog:action',function(e){
             if(e.index == 1) {
-                window.location.href= "recharge.html";
+                window.location.href= "recharge.html?id="+ shopId;
             }
         })
     });
+
+
 
 
 });

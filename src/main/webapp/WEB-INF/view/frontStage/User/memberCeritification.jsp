@@ -1,4 +1,5 @@
-<%@ page import="com.Shop.Model.Profit" %><%--
+<%@ page import="com.Shop.Model.Profit" %>
+<%@ page import="com.Shop.Model.CountOrder" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/6 0006
@@ -31,13 +32,14 @@
 
     <%
         Profit profit =(Profit) request.getAttribute("profit");
+        CountOrder countOrder =(CountOrder) request.getAttribute("countOrder");
     %>
     <section class="ui-notice noticeClear">
         <i></i>
         <p>您还未认证会员，请交 <span class="themeColor">&#165; <%=profit.getRecordPrices()%></span>认证费用</p>
         <p>会员认证成功将赠送 <span class="themeColor"><%=profit.getDumpingCount()%></span>倾销币</p>
         <div class="ui-notice-btn ui-btn-wrap">
-            <a href="<%=request.getContextPath()%>/personSignSuccess" class=" ui-btn-lg productBtn" id="certificationBtn">认证</a>
+            <a href="<%=request.getContextPath()%>/weixin/preparePayCountOrder/<%=countOrder.getId()%>" class=" ui-btn-lg productBtn" id="certificationBtn">认证</a>
         </div>
     </section>
 

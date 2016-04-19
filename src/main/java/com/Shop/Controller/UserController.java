@@ -4,6 +4,7 @@ import com.Shop.Model.*;
 import com.Shop.Service.*;
 import com.Shop.Util.OrderPoJo;
 import com.Shop.Util.Page;
+import com.Shop.Util.XMLUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -399,26 +402,55 @@ public class UserController {
             return "redirect:/";
         }
         Profit profit = terraceService.findProfit();
-        model.addAttribute("profit",profit);
-        return "frontStage/User/memberCeritification";
-    }
-
-    @RequestMapping(value ="personSignSuccess",method = RequestMethod.GET)
-    public String memberSign(HttpSession session){
-        User user =(User)session.getAttribute("loginUser");
-        Profit profit = terraceService.findProfit();
         int count = user.getCount()+profit.getDumpingCount();
         CountOrder countOrder = new CountOrder();
         countOrder.setDate(new Date());
         countOrder.setType("会员认证");
         countOrder.setCount(profit.getDumpingCount());
-        countOrder.setStatus(1);
+        countOrder.setStatus(0);
+        countOrder.setPrices(profit.getRecordPrices());
+        countOrder.setUuid(UUID.randomUUID().toString());
         countOrder.setUser(user);
-        user.setCount(count);
-        user.setSign(1);
         userService.addCountOrder(countOrder);
-        userService.updateUser(user);
-        return "redirect:/personCenter";
+        model.addAttribute("profit",profit);
+        model.addAttribute("countOrder",countOrder);
+        return "frontStage/User/memberCeritification";
+    }
+
+    @RequestMapping(value ="personSignSuccess",method = RequestMethod.POST)
+    public String memberSign(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        System.out.println("回调url");
+
+        BufferedReader reader = request.getReader();
+        String line = "";
+        StringBuffer inputString = new StringBuffer();
+        try{
+            while ((line = reader.readLine()) != null) {
+                inputString.append(line);
+            }
+            request.getReader().close();
+            System.out.println("----接收到的报文---"+inputString.toString());
+            Map<String, Object> map = XMLUtil.parseXML(inputString.toString());
+
+            String resXml="<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA]></return_msg></xml>";   //告诉微信服务器，我收到信息了，不要在调用回调action了
+            BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+            out.write(resXml.getBytes());
+            out.flush();
+            out.close();
+
+            //支付成功，可以再次进行对数据库的操作
+            if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
+                    User user =(User)request.getSession().getAttribute("loginUser");
+                    user.setSign(1);
+                    String uuid= (String)map.get("out_trade_no");
+                    CountOrder countOrder = userService.findCountOrderByUUid(uuid);
+                    countOrder.setStatus(1);
+                    userService.updateCountOrder(countOrder);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "success";
     }
 
     @RequestMapping(value ="myCount/{count}",method = RequestMethod.GET)

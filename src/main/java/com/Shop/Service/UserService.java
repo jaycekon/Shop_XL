@@ -289,4 +289,17 @@ public class UserService {
     public List<CountOrder> listCountOrderByUserId(Page page,int user_id){
         return countOrderDao.findAllByUserId(page,user_id);
     }
+
+    public CountOrder findCountOrderById(int id){
+        return countOrderDao.findById(id);
+    }
+
+    public CountOrder findCountOrderByUUid(String uuid){
+        return countOrderDao.findCountOrderByUuid(uuid);
+    }
+
+    public void updateCountOrder(CountOrder countOrder){
+        countOrderDao.update(countOrder);
+    }
+
 }
