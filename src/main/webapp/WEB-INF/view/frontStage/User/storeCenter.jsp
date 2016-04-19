@@ -73,7 +73,7 @@
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/listAddress'">
             <h4>我的收货地址</h4>
         </li>
-        <li class="ui-border-t"  onclick="window.location.href='<%=request.getContextPath()%>/myCount'">
+        <li class="ui-border-t"  onclick="window.location.href='<%=request.getContextPath()%>/myCount/0'">
             <h4 >我的倾销币</h4>
             <div class="ui-txt-info"><%=user.getCount()%></div>
         </li>

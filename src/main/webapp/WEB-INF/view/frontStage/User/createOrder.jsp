@@ -45,7 +45,7 @@
     <!-- 若没有收货地址-->
 
     <ul class="ui-list ui-border-tb ui-list-link ui-list-active">
-        <li class="ui-list-info" onclick="window.location.href='<%=request.getContextPath()%>/listAddress'">选择收货地址</li>
+        <li class="ui-list-info" onclick="window.location.href='<%=request.getContextPath()%>/myAddress'">选择收货地址</li>
     </ul>
     <%
         }
@@ -76,7 +76,7 @@
 
             <div class="col describeCol">
                 <h4 class="intwoline productName"><%=orderProduct.getName()%></h4>
-                <p class="setBottom"><span class="unMarjorColor">x<%=orderProduct.getCount()%></span><span>&#165; 345.00</span></p>
+                <p class="setBottom"><span class="unMarjorColor">x<%=orderProduct.getCount()%></span><span>&#165; <%=orderProduct.getPrices()%></span></p>
             </div>
 
         </div><!-- 单个商品]] -->
@@ -95,9 +95,9 @@
         <%
             if(address ==null){
                 %>
-        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/createOrder'" >
-            提交订单
-        </button>
+        <%--<button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/createOrder'" >--%>
+            <%--提交订单--%>
+        <%--</button>--%>
         <%
             }else{
         %>

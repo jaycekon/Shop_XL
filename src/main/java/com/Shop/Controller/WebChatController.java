@@ -228,7 +228,7 @@ public class WebChatController {
     @RequestMapping("/weixin/preparePayOrder/{id}")
     public String addOrder(HttpServletRequest request, Model model, @PathVariable(value="id")int id) throws Exception{
         Orders orders = userService.findOrdersById(id);
-        String prepayId=WebChatUtil.placeOrdersJSAPI(id,0.01f,request);
+        String prepayId=WebChatUtil.placeOrdersJSAPI(id,orders.getPrices(),request,orders.getUuid());
         Map<String,Object> payMap = WebChatUtil.generatePaySign(prepayId);
         payMap.put("payId", id);
         model.addAttribute("payMap",payMap);

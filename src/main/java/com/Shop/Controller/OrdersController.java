@@ -4,6 +4,8 @@ import com.Shop.Model.*;
 import com.Shop.Service.OrdersService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.OrderPoJo;
+import com.Shop.Util.WebChatUtil;
+import com.Shop.Util.XMLUtil;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/4/15.
@@ -122,6 +131,27 @@ public class OrdersController {
         return "frontStage/User/orderList";
     }
 
+
+    /**
+     * 获取已关闭的订单
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/closeOrders",method = RequestMethod.GET)
+    public String closeOrders(HttpSession session,Model model){
+        User user =(User)session.getAttribute("loginUser");
+        List<Orders> orderses = ordersService.findOrdersByDAndUserId(2,user.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders :orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
+    }
+
     /**
      * 获取未付款订单（前台）
      * @param session
@@ -185,6 +215,8 @@ public class OrdersController {
         return "frontStage/User/orderList";
     }
 
+
+
     /**
      * 获取待评价订单（前台）
      * @param session
@@ -225,6 +257,46 @@ public class OrdersController {
         return "frontStage/User/orderList";
     }
 
+    /**
+     * 取消订单
+     * @param id
+     * @return
+     */
+    @RequestMapping(value ="/deleteOrders/{id}",method = RequestMethod.GET)
+    public String deleteOrders(@PathVariable("id")int id){
+        Orders orders = ordersService.findOrdersById(id);
+        orders.setD(2);
+        ordersService.updateOrders(orders);
+        return "redirect:/userOrders";
+    }
+
+    /**
+     * 申请退款
+     * @param id
+     * @return
+     */
+    @RequestMapping(value ="/exitOrders/{id}",method = RequestMethod.GET)
+    public String exitOrders(@PathVariable("id")int id){
+        Orders orders = ordersService.findOrdersById(id);
+        orders.setT(1);
+        ordersService.updateOrders(orders);
+        return "redirect:/exitOrders";
+    }
+
+
+    /**
+     * 取消申请退款
+     * @param id
+     * @return
+     */
+    @RequestMapping(value ="/cancleOrders/{id}",method = RequestMethod.GET)
+    public String cancleOrders(@PathVariable("id")int id){
+        Orders orders = ordersService.findOrdersById(id);
+        orders.setT(0);
+        ordersService.updateOrders(orders);
+        return "redirect:/resendOrders";
+    }
+
 
     @RequestMapping(value ="/areaListOrders",method = RequestMethod.GET)
     public String areaOrders(HttpSession session,Model model){
@@ -255,33 +327,116 @@ public class OrdersController {
         return "frontStage/User/orderList";
     }
 
+    @RequestMapping(value = "/withDraw",method = RequestMethod.GET)
+    public String withDraw(){
+        return "frontStage/User/roleWithdraw";
+    }
 
-
-
-    @RequestMapping(value ="/paySuccess/{id}",method = RequestMethod.GET)
-    public String paySuccess(@PathVariable(value = "id")int id){
-        Orders orders = ordersService.findOrdersById(id);
-        orders.setF(1);
-        ordersService.updateOrders(orders);
-        if(orders.getRoles()!=null){
-            Roles roles = orders.getRoles();
-            float totalcommission = roles.getTotalCommission() +orders.getRolesProfit();
-            float exitcommission = roles.getExitCommission() +orders.getRolesProfit();
-            Roles r = userService.getRoles(roles.getId());
-            r.setTotalCommission(totalcommission);
-            r.setExitCommission(exitcommission);
-            userService.updateRoles(r);
-            Areas areas = orders.getAreas();
-            totalcommission =areas.getTotalCommission() + orders.getAreaProfit();
-            exitcommission = areas.getExitCommission() +orders.getAreaProfit();
-            Areas a = userService.getAreas(areas.getId());
-            a.setTotalCommission(totalcommission);
-            a.setExitCommission(exitcommission);
-            userService.updateAreas(a);
+    @RequestMapping(value = "/withdrawDetail",method = RequestMethod.GET)
+    public String profitDetail(HttpSession session,Model model){
+        List<Orders> orderses = new ArrayList<>();
+        if(session.getAttribute("roles")!=null){
+            Roles roles = (Roles) session.getAttribute("roles");
+            orderses = ordersService.findOrdersByRoleId(roles.getId());
+        }else if(session.getAttribute("areas")!=null){
+            Areas areas = (Areas) session.getAttribute("areas");
+            orderses = ordersService.findOrdersByAreaId(areas.getId());
         }
-        return "redirect:/userOrders";
+        model.addAttribute("orderses",orderses);
+        return "frontStage/User/withdrawDetail";
+    }
+
+    @RequestMapping(value = "/roleCommission",method = RequestMethod.GET)
+    public String roleCommission(HttpSession session,Model model){
+        List<Orders> orderses = new ArrayList<>();
+            Roles roles = (Roles) session.getAttribute("roles");
+            orderses = ordersService.findOrdersByRoleId(roles.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders:orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/roleCommission";
+    }
+
+    @RequestMapping(value = "/areaCommission",method = RequestMethod.GET)
+    public String areaCommission(HttpSession session,Model model){
+        List<Orders> orderses = new ArrayList<>();
+        Areas areas = (Areas) session.getAttribute("areas");
+        orderses = ordersService.findOrdersByAreaId(areas.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders orders:orderses){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/areaCommission";
     }
 
 
+
+//    @RequestMapping(value ="/paySuccess/{id}",method = RequestMethod.POST)
+//    public String paySuccess(@PathVariable(value = "id")int id){
+//        Orders orders = ordersService.findOrdersById(id);
+//        orders.setF(1);
+//        orders.setPayTime(new Date());
+//        ordersService.updateOrders(orders);
+//        if(orders.getRoles()!=null){
+//            Roles roles = orders.getRoles();
+//            float totalcommission = roles.getTotalCommission() +orders.getRolesProfit();
+//            float exitcommission = roles.getExitCommission() +orders.getRolesProfit();
+//            Roles r = userService.getRoles(roles.getId());
+//            r.setTotalCommission(totalcommission);
+//            r.setExitCommission(exitcommission);
+//            userService.updateRoles(r);
+//            Areas areas = orders.getAreas();
+//            totalcommission =areas.getTotalCommission() + orders.getAreaProfit();
+//            exitcommission = areas.getExitCommission() +orders.getAreaProfit();
+//            Areas a = userService.getAreas(areas.getId());
+//            a.setTotalCommission(totalcommission);
+//            a.setExitCommission(exitcommission);
+//            userService.updateAreas(a);
+//        }
+//        return "redirect:/userOrders";
+//    }
+
+
+    @RequestMapping(value = "/paySuccess",method = RequestMethod.POST)
+    public String getPayNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        System.out.println("回调url");
+
+        BufferedReader reader = request.getReader();
+        String line = "";
+        StringBuffer inputString = new StringBuffer();
+        try{
+            while ((line = reader.readLine()) != null) {
+                inputString.append(line);
+            }
+            request.getReader().close();
+            System.out.println("----接收到的报文---"+inputString.toString());
+            Map<String, Object> map = XMLUtil.parseXML(inputString.toString());
+
+            String resXml="<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA]></return_msg></xml>";   //告诉微信服务器，我收到信息了，不要在调用回调action了
+            BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+            out.write(resXml.getBytes());
+            out.flush();
+            out.close();
+
+            //支付成功，可以再次进行对数据库的操作
+            if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
+                String uuid = (String)map.get("out_trade_no");
+                Orders orders = ordersService.findOrdersByUid(uuid);
+                log.info("更新数据库中订单的信息："+orders.getUuid());
+                orders.setF(1);
+                ordersService.updateOrders(orders);
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return "success";
+    }
 
 }

@@ -2,6 +2,7 @@ package com.Shop.Service;
 
 import com.Shop.Dao.*;
 import com.Shop.Model.*;
+import com.Shop.Util.Page;
 import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,6 +152,20 @@ public class UserService {
 
     public OrderProduct addOrderProduct(Cart cart,Good good,String imageAddress,int count){
         OrderProduct orderProduct = new OrderProduct();
+        Profit profit = profitDao.findById();
+        List<OrderProduct> orderProducts = orderProductDao.findAllByCartId(cart.getId());
+        for(OrderProduct orderProduct1:orderProducts){
+            if(orderProduct1.getGood_id()==good.getId()){
+                int c = orderProduct1.getCount()+count;
+                orderProduct1.setCount(c);
+                float areaProfit = good.getPv() * count * profit.getArea_count();
+                orderProduct1.setAreaProfit(areaProfit/100);
+                float roleProfit = good.getPv() * count * profit.getRole_count();
+                orderProduct1.setRoleProfit(roleProfit/100);
+                orderProductDao.update(orderProduct1);
+                return orderProduct1;
+            }
+        }
         orderProduct.setCart(cart);
         orderProduct.setGood_id(good.getId());
         orderProduct.setCount(count);
@@ -158,7 +173,6 @@ public class UserService {
         orderProduct.setImage(imageAddress);
         orderProduct.setPrices(good.getDumpingPrices());
         orderProduct.setDescribes(good.getDescribes());
-        Profit profit = profitDao.findById();
         float areaProfit = good.getPv() * count * profit.getArea_count();
         orderProduct.setAreaProfit(areaProfit/100);
         float roleProfit = good.getPv() * count * profit.getRole_count();
@@ -270,5 +284,9 @@ public class UserService {
 
     public List<CountOrder> listCountOrderByUserId(int user_id){
         return countOrderDao.findAllByUserId(user_id);
+    }
+
+    public List<CountOrder> listCountOrderByUserId(Page page,int user_id){
+        return countOrderDao.findAllByUserId(page,user_id);
     }
 }

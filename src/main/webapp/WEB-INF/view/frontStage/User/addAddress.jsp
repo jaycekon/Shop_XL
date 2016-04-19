@@ -48,16 +48,18 @@
             </div>
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label>省</label>
-                <select name="area_id">
-                    <% for (Area area:areas){
-                    %>
-                    <option name="area_id" value="<%=area.getId()%>">
-                        <%=area.getName()%>
-                    </option>
-                    <%
-                        }
-                    %>
-                </select>
+                <div class="ui-select">
+                    <select name = "area_id">
+                        <option value="">--请选择省份--</option>
+                        <%
+                            for(Area area:areas){
+                        %>
+                        <option name ="area_id" value ="<%=area.getId()%>"><%=area.getName()%></option>
+                        <%
+                            }
+                        %>
+                    </select>
+                </div>
             </div>
 
             <div class="ui-form-item ui-form-item-show ui-border-b">

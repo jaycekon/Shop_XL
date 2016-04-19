@@ -36,7 +36,7 @@
     <!-- [[订单类别 -->
     <ul class="tab">
         <li>
-            <a href="<%=request.getContextPath()%>/repayOrders"  id="daifukuan" class="ui-btn productBtn">待付款</a>
+            <a href="<%=request.getContextPath()%>/repayOrders"  id="daifukuan" class="ui-btn">待付款</a>
         </li>
         <li>
             <a href="<%=request.getContextPath()%>/resendOrders" id="daifahuo" class="ui-btn">待发货</a>
@@ -54,7 +54,7 @@
             <a href="<%=request.getContextPath()%>/exitOrders" id="tuikuanzhong" class="ui-btn">退款中</a>
         </li>
         <li>
-            <a href="<%=request.getContextPath()%>"  id="yiguanbi" class="ui-btn">已关闭</a>
+            <a href="<%=request.getContextPath()%>/closeOrders"  id="yiguanbi" class="ui-btn">已关闭</a>
         </li>
     </ul>
 
@@ -79,9 +79,29 @@
         <!-- [[订单头部 -->
         <li class="ui-border-t">
             <div class="ui-list-info">
-                <h4 class="ui-nowrap">订单编号：<%=orders.getId()%></h4>
+                <h4 class="ui-nowrap">订单编号：<%=orders.getUuid()%></h4>
             </div>
-            <div class="ui-list-action themeColor">待付款</div>
+            <div class="ui-list-action themeColor"><%
+                if(orders.getD()==0){
+                    if(orders.getF()==0){
+                        out.println("未付款");
+                    }else if(orders.getT()==1){
+                        out.println("申请退款");
+                    }else if(orders.getT()==2){
+                        out.println("已退款");
+                    }
+                    else if(orders.getP()==0){
+                        out.println("未发货");
+                    }else if(orders.getP()==1){
+                        out.println("未收货");
+                    }
+                }else if(orders.getD()==1){
+                    out.println("已完成");
+                }else{
+                    out.println("已关闭");
+                }
+            %>
+            </div>
         </li><!-- 订单头部]] -->
         <!-- [[订单商品 -->
         <%
@@ -110,11 +130,36 @@
         <p>运费合计： <span class="themeColor">&#165; 0.00</span></p>
     </div>
 
+
+    <%
+        if(orders.getD()==0){
+            if(orders.getF()==0){
+    %>
     <div class="ui-border-b block operateBlock">
-        <button class="ui-btn">取消订单</button>
+        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/deleteOrders/<%=orders.getId()%>'">取消订单</button>
         <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/weixin/preparePayOrder/<%=orders.getId()%>'">去付款</button>
     </div>
     <!-- 待付款]] -->
+    <%
+            }else{
+                if(orders.getP()==0){
+                    if(orders.getT()==0){
+    %>
+    <div class="ui-border-b block operateBlock">
+        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/exitOrders/<%=orders.getId()%>'">申请退款</button>
+    </div>
+    <%
+                    }else{
+    %>
+    <div class="ui-border-b block operateBlock">
+        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/cancleOrders/<%=orders.getId()%>'">取消申请</button>
+    </div>
+    <%
+                    }
+                }
+            }
+        }
+    %>
 
 
 <%
@@ -183,7 +228,7 @@ switch(window.location.pathname.split("/").pop())  {  // 条件根据具体情�
         setActive($tuikuanzhong);
         break;
     /*已关闭*/
-    case "url":
+    case "closeOrders":
         $yiguanbi = $('#yiguanbi');
         setActive($yiguanbi);
         break;

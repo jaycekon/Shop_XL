@@ -88,7 +88,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByFAndUserId(int f,int user_id) {
         Session session = super.openSession();
-        String hql ="from Orders where f=:f and user_id=:user_id order by setTime desc";
+        String hql ="from Orders where f=:f and d=1 and user_id=:user_id order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("f",f).setParameter("user_id",user_id).list();
         session.close();
         return orders;
@@ -115,7 +115,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByPAndUserId(int p,int user_id) {
         Session session = super.openSession();
-        String hql ="from Orders where  f=1 and p=:p and user_id=:user_id order by setTime desc";
+        String hql ="from Orders where  f=1 and p=:p and d=0 and user_id=:user_id order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("p",p).setParameter("user_id",user_id).list();
         session.close();
         return orders;
@@ -142,7 +142,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByTAndUserId(int t,int user_id) {
         Session session = super.openSession();
-        String hql ="from Orders where t=:t and user_id=:user_id order by setTime desc";
+        String hql ="from Orders where t=:t and f=1 and c=0 and user_id=:user_id order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("t",t).setParameter("user_id",user_id).list();
         session.close();
         return orders;
@@ -171,7 +171,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
 
     public List<Orders> findAllByCAndUserId(int c,int user_id) {
         Session session = super.openSession();
-        String hql ="from Orders where c=:c and user_id=:user_id order by setTime desc";
+        String hql ="from Orders where c=:c and d=1 and user_id=:user_id order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("c",c).setParameter("user_id",user_id).list();
         session.close();
         return orders;
@@ -211,7 +211,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByAreaId(int area_id) {
         Session session = super.openSession();
-        String hql ="from Orders where area_id=:area_id order by setTime desc";
+        String hql ="from Orders where areas_id=:area_id order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("area_id",area_id).list();
         session.close();
         return orders;
@@ -225,9 +225,21 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByRoleId(int role_id) {
         Session session = super.openSession();
-        String hql ="from Orders where role_id=:role_id order by setTime desc";
+        String hql ="from Orders where roles_id=:role_id order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("role_id",role_id).list();
         session.close();
         return orders;
     }
+
+
+
+    public Orders findOrdersByUid(String uuid){
+        Session session = super.openSession();
+        String hql ="from Orders where uuid like:uuid order by setTime desc";
+        Orders orders =(Orders)session.createQuery(hql).setParameter("uuid","%"+uuid+"%").uniqueResult();
+        session.close();
+        return orders;
+    }
+
+
 }

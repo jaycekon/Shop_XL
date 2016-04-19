@@ -3,6 +3,7 @@ package com.Shop.Controller;
 import com.Shop.Model.*;
 import com.Shop.Service.*;
 import com.Shop.Util.OrderPoJo;
+import com.Shop.Util.Page;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -165,7 +163,7 @@ public class UserController {
             }
         }
         if(user.getCount()<good.getwPrices()){
-            return "redirect:/myCount";
+            return "redirect:/myCount/0";
         }
         CountOrder countOrder = new CountOrder();
         countOrder.setUser(user);
@@ -237,9 +235,10 @@ public class UserController {
         orders.setName(address.getUsername());
         orders.setPhone(address.getPhone());
         orders.setUser(user);
+        orders.setUuid(UUID.randomUUID().toString());
         orders.setSetTime(new Date());
         int count = 0;
-        double prices = 0;
+        float prices = 0;
         float areaProfit = 0;
         float roleProfit = 0;
         userService.addOrders(orders);
@@ -264,7 +263,7 @@ public class UserController {
         }
         cartService.deleteCart(cart);
         userService.updateOrders(orders);
-        return "redirect:/userOrders";
+        return "redirect:/weixin/preparePayOrder/"+orders.getId();
     }
 
     @RequestMapping(value = "easyBuy", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
@@ -286,6 +285,17 @@ public class UserController {
 
     @RequestMapping(value = "listAddress", method = RequestMethod.GET)
     public String listAddress(Model model, HttpSession session) {
+        if (session.getAttribute("loginUser") == null) {
+            return "redirect:/login";
+        }
+        User user = (User) session.getAttribute("loginUser");
+        List<Address> addresses = userService.listAddress(user.getId());
+        model.addAttribute("addresses", addresses);
+        return "frontStage/User/listAddress";
+    }
+
+    @RequestMapping(value = "myAddress", method = RequestMethod.GET)
+    public String myAddress(Model model, HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
             return "redirect:/login";
         }
@@ -411,14 +421,22 @@ public class UserController {
         return "redirect:/personCenter";
     }
 
-    @RequestMapping(value ="myCount",method = RequestMethod.GET)
-    public String myCount(HttpSession session,Model model){
+    @RequestMapping(value ="myCount/{count}",method = RequestMethod.GET)
+    public String myCount(HttpSession session,Model model,@PathVariable("count")int count){
         if(session.getAttribute("loginUser")==null){
             return "redirect:/login";
         }
         User user =(User)session.getAttribute("loginUser");
+        Page page = new Page();
+
         List<CountOrder> countOrders = userService.listCountOrderByUserId(user.getId());
-        model.addAttribute("countOrders",countOrders);
+        page.setBeginIndex(count+count*10);
+        page.setEveryPage(10);
+        page.setTotalPage(countOrders.size()/10+1);
+        page.setTotalCount(countOrders.size());
+        List<CountOrder> countOrder = userService.listCountOrderByUserId(page,user.getId());
+        model.addAttribute("countOrders",countOrder);
+        model.addAttribute("page",page);
         return "frontStage/User/myCount";
     }
 
@@ -447,7 +465,7 @@ public class UserController {
         userService.updateUser(user);
         userService.addCountOrder(countOrder);
 
-        return "redirect:/myCount";
+        return "redirect:/myCount/0";
 
     }
 
@@ -517,4 +535,12 @@ public class UserController {
         model.addAttribute("users",users);
         return "frontStage/User/userList";
     }
+
+
+    @RequestMapping(value ="/withdrawProfit",method =RequestMethod.GET)
+    public String areaProfit(){
+        return "frontStage/User/roleWithdraw";
+    }
+
+
 }

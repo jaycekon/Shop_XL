@@ -1,6 +1,8 @@
 <%@ page import="com.Shop.Model.User" %>
 <%@ page import="com.Shop.Model.CountOrder" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/6 0006
@@ -40,6 +42,9 @@
     <%
         User user =(User)session.getAttribute("loginUser");
         List<CountOrder> countOrders = (List<CountOrder>)request.getAttribute("countOrders");
+        String model = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat format=new SimpleDateFormat(model);
+        Page p = (Page) request.getAttribute("page");
     %>
     <!-- [[统计 -->
     <ul class="ui-list ui-border-tb commissionTop">
@@ -72,7 +77,7 @@
         %>
         <tbody>
         <tr>
-            <td><%=countOrder.getDate()%></td>
+            <td><%=format.format(countOrder.getDate())%></td>
             <td><%=countOrder.getType()%></td>
             <td><%=countOrder.getCount()%></td>
             <td><%
@@ -93,8 +98,18 @@
     </table><!-- 倾销币使用记录]] -->
 
     <div class="paging">
-        <button class="ui-btn">上一頁</button>
-        <button class="ui-btn">下一頁</button>
+        <%
+            if(p.getBeginIndex()!=0){
+        %>
+        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/myCount/<%=p.getBeginIndex()/10-1%>'">上一頁</button>
+        <%
+            }
+            if(p.getBeginIndex()*10 <p.getTotalCount()){
+        %>
+        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/myCount/<%=p.getBeginIndex()+1%>'">下一頁</button>
+        <%
+            }
+        %>
     </div>
 
 </section>

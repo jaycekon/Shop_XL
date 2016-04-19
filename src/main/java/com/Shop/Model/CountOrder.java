@@ -15,6 +15,7 @@ public class CountOrder {
     private String type;
     private int status;
     private Date date;
+    private String uuid;
 
 
     @Id
@@ -66,5 +67,13 @@ public class CountOrder {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

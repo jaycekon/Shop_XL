@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.CountOrder;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -33,6 +34,13 @@ public class CountOrderDao extends BaseDao implements IGeneralDao<CountOrder> {
         return countOrders;
     }
 
+    public List<CountOrder> findAllByUserId(Page page,int user_id) {
+        Session session = super.openSession();
+        String hql ="from CountOrder where user_id=:user_id order by date desc";
+        List<CountOrder> countOrders =session.createQuery(hql).setParameter("user_id",user_id).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
+        return countOrders;
+    }
 
 
     @Override

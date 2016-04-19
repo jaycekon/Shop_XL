@@ -68,7 +68,7 @@
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userList'">
             <h4>我的店家</h4>
         </li>
-        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleListOrders'">
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/withDraw'">
             <h4>我的佣金</h4>
         </li>
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userCrod/<%=roles.getId()%>'">
@@ -77,7 +77,10 @@
         <li class="ui-border-t">
             <h4>联系信息</h4>
         </li>
-        <li class="ui-border-t">
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleCommission'">
+            <h4>分佣订单</h4>
+        </li>
+        <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/withdrawDetail'">
             <h4>提现明细</h4>
         </li>
     </ul>

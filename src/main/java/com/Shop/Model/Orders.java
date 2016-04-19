@@ -12,7 +12,7 @@ public class Orders {
     private int id;             //订单号
     private int number;             //商品数量
     private int status;             //订单状态
-    private double prices;              //订单总额
+    private float prices;              //订单总额
     private Date setTime;               //下单时间
     private Date payTime;               //付款时间
     private Date sentTime;              //发货时间
@@ -25,6 +25,7 @@ public class Orders {
     private int P;                      //配送状态
     private int T;                      //退货状态
     private int C;                      //评价状态
+    private String uuid;                //订单编号
     private Roles roles;
     private float rolesProfit;
     private Areas areas;
@@ -62,11 +63,11 @@ public class Orders {
         this.status = status;
     }
 
-    public double getPrices() {
+    public float getPrices() {
         return prices;
     }
 
-    public void setPrices(double prices) {
+    public void setPrices(float prices) {
         this.prices = prices;
     }
 
@@ -211,5 +212,13 @@ public class Orders {
 
     public void setSentTime(Date sentTime) {
         this.sentTime = sentTime;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

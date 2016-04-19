@@ -1,10 +1,7 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
-import com.Shop.Service.AddressService;
-import com.Shop.Service.GoodService;
-import com.Shop.Service.TerraceService;
-import com.Shop.Service.UserService;
+import com.Shop.Service.*;
 import com.Shop.Util.OrderPoJo;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -33,6 +30,8 @@ public class InsertMessageController {
     GoodService goodService;
     @Autowired
     AddressService addressService;
+    @Autowired
+    OrdersService ordersService;
 
     /**
      * 测试使用接口，添加角色
@@ -130,14 +129,10 @@ public class InsertMessageController {
     @ResponseBody
     public String listOrders(){
         Gson gson = new Gson();
-        List<Orders> orderses = userService.listOrders();
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders orders :orderses){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        return gson.toJson(orderPoJos);
+        Orders orders = ordersService.findOrdersByUid("89a9f347-edd6");
+        System.out.println(orders.getPrices());
+        return gson.toJson(orders);
     }
+
 
 }

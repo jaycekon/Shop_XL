@@ -108,4 +108,8 @@ public class OrdersService {
     public List<Orders> findOrdersByRoleId(int role_id){
         return ordersDao.findAllByRoleId(role_id);
     }
+
+    public Orders findOrdersByUid(String uid){
+        return ordersDao.findOrdersByUid(uid);
+    }
 }

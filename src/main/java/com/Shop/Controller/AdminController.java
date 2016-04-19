@@ -66,6 +66,9 @@ public class AdminController {
         }else{
             log.info("成功获取角色信息！");
             User user = terraceService.findUseByOpenId(openId);
+            if(user==null){
+
+            }
             request.getSession().setAttribute("loginUser",user);
             return "redirect:/index";
         }
