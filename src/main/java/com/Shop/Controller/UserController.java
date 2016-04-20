@@ -488,17 +488,13 @@ public class UserController {
         User user =(User)session.getAttribute("loginUser");
         CountOrder countOrder =new CountOrder();
         countOrder.setCount(count);
-        countOrder.setStatus(1);
+        countOrder.setStatus(0);
         countOrder.setType("充值");
         countOrder.setUser(user);
         countOrder.setDate(new Date());
-        int num = user.getCount()+count;
-        user.setCount(num);
-        userService.updateUser(user);
+        countOrder.setUuid(UUID.randomUUID().toString());
         userService.addCountOrder(countOrder);
-
-        return "redirect:/myCount/0";
-
+        return "redirect:/weixin/preparePayCountOrder/"+countOrder.getId();
     }
 
     @RequestMapping(value ="addAddress",method = RequestMethod.GET)

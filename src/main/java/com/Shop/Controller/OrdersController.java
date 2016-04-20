@@ -378,32 +378,6 @@ public class OrdersController {
 
 
 
-//    @RequestMapping(value ="/paySuccess/{id}",method = RequestMethod.POST)
-//    public String paySuccess(@PathVariable(value = "id")int id){
-//        Orders orders = ordersService.findOrdersById(id);
-//        orders.setF(1);
-//        orders.setPayTime(new Date());
-//        ordersService.updateOrders(orders);
-//        if(orders.getRoles()!=null){
-//            Roles roles = orders.getRoles();
-//            float totalcommission = roles.getTotalCommission() +orders.getRolesProfit();
-//            float exitcommission = roles.getExitCommission() +orders.getRolesProfit();
-//            Roles r = userService.getRoles(roles.getId());
-//            r.setTotalCommission(totalcommission);
-//            r.setExitCommission(exitcommission);
-//            userService.updateRoles(r);
-//            Areas areas = orders.getAreas();
-//            totalcommission =areas.getTotalCommission() + orders.getAreaProfit();
-//            exitcommission = areas.getExitCommission() +orders.getAreaProfit();
-//            Areas a = userService.getAreas(areas.getId());
-//            a.setTotalCommission(totalcommission);
-//            a.setExitCommission(exitcommission);
-//            userService.updateAreas(a);
-//        }
-//        return "redirect:/userOrders";
-//    }
-
-
     @RequestMapping(value = "/paySuccess",method = RequestMethod.POST)
     public String getPayNotify(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("回调url");
