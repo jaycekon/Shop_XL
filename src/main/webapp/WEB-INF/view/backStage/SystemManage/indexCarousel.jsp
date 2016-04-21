@@ -1,4 +1,5 @@
-<%--
+<%@ page import="com.Shop.Model.Image" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/15 0015
@@ -64,48 +65,24 @@
                 </div><!-- 图片上传要求]] -->
 
                 <div class="row">
-                    <form class="col-md-6 img-form">
-                        <img src="<%=request.getContextPath()%>/app/backStage/image/carousel2.jpg" alt=""/>
+                    <%
+                        List<Image> images = (List<Image>)request.getAttribute("images");
+                        for(Image image:images){
+                    %>
+                    <form class="col-md-6 img-form" action="<%=request.getContextPath()%>/setImage/<%=image.getId()%>" enctype="multipart/form-data" method="post">
+                        <img src="<%=image.getAddress()%>" alt=""/>
                         <div class="oprate clearfix">
-                            <input type="file" accept="image/*" class="col-md-4 selFile" />
+                            <input type="file" accept="image/*" name ="files" class="col-md-4 selFile" />
                             <span class="col-md-4">图一</span>
                             <span class="col-md-4 text-right">
                                 <button type="submit" class="btn btn-primary">更新</button>
                             </span>
                         </div>
                     </form>
-                    <form class="col-md-6 img-form">
-                        <img src="<%=request.getContextPath()%>/app/backStage/image/carousel2.jpg" alt=""/>
-                        <div class="oprate clearfix">
-                            <input type="file" accept="image/*" class="col-md-4 selFile"/>
-                            <span class="col-md-4">图二</span>
-                            <span class="col-md-4 text-right">
-                                <button type="submit" class="btn btn-primary">更新</button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-                <div class="row">
-                    <form class="col-md-6 img-form">
-                        <img src="<%=request.getContextPath()%>/app/backStage/image/carousel2.jpg" alt=""/>
-                        <div class="oprate clearfix">
-                            <input type="file" accept="image/*" class="col-md-4 selFile"/>
-                            <span class="col-md-4">图三</span>
-                            <span class="col-md-4 text-right">
-                                <button type="submit" class="btn btn-primary">更新</button>
-                            </span>
-                        </div>
-                    </form>
-                    <form class="col-md-6 img-form">
-                        <img src="<%=request.getContextPath()%>/app/backStage/image/carousel2.jpg" alt=""/>
-                        <div class="oprate clearfix">
-                            <input type="file" accept="image/*" class="col-md-4 selFile"/>
-                            <span class="col-md-4">图四</span>
-                            <span class="col-md-4 text-right">
-                                <button type="submit" class="btn btn-primary">更新</button>
-                            </span>
-                        </div>
-                    </form>
+
+                    <%
+                        }
+                    %>
                 </div>
             </div>
             <!-- 右边操作页面]] -->

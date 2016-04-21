@@ -1,9 +1,12 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
+import com.Shop.Service.AddressService;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.UserService;
 import com.google.gson.JsonObject;
+import org.apache.commons.io.FileUtils;
+import org.aspectj.util.FileUtil;
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 
 /**
@@ -29,6 +33,8 @@ public class GoodController {
     private GoodService goodService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private AddressService addressService;
 
     /**
      * 跳转到添加商品页面
@@ -55,34 +61,30 @@ public class GoodController {
 //            return jsonObject.toString();
 //        }
         good.setStatus(0);
+        String fileName =UUID.randomUUID().toString()+".jpg";
+        String file = "http://115.29.141.108/Shop_XL_war/"+fileName;
+        good.setImg(file);
         goodService.addGood(good);
-
-        String path="D:/XAMPP/xamp/htdocs/Shop_XL/";
+        System.out.println(files.length);
+        String path=File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
         for(int i = 0;i<files.length;i++){
             System.out.println(i);
             if(!files[i].isEmpty()){
-                String fileName = path + new Date().getTime() + good.getId()+".jpg";
+
                 try {
-                    //拿到输出流，同时重命名上传的文件
-                    FileOutputStream os = new FileOutputStream(fileName);
-                    //拿到上传文件的输入流
-                    FileInputStream in = (FileInputStream) files[i].getInputStream();
-                    //以写字节的方式写文件
-                    int b = 0;
-                    while((b=in.read()) != -1){
-                        os.write(b);
-                    }
-                    os.flush();
-                    os.close();
-                    in.close();
+                    FileUtils.copyInputStreamToFile(files[i].getInputStream(),new File(path,fileName));
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.out.println("上传出错");
                 }
                 Image image = new Image();
-                image.setAddress(fileName);
+                image.setAddress(file);
                 image.setGood(good);
                 goodService.addImage(image);
+
+                fileName =UUID.randomUUID().toString()+".jpg";
+                file = "http://115.29.141.108/Shop_XL_war/"+fileName;
             }
         }
         return "redirect:/listGood";
@@ -152,8 +154,8 @@ public class GoodController {
     public String goodDetail(@PathVariable(value ="id")int id,HttpSession session,Model model){
         Good good= goodService.findGoodById(id);
         model.addAttribute("good",good);
-        List<String> address = goodService.findImageByGoodId(good.getId());
-        model.addAttribute("address",address);
+        List<Image> images = goodService.findImageByGoodId(good.getId());
+        model.addAttribute("images",images);
         return "backStage/Product/previewProduct";
     }
 
@@ -173,10 +175,12 @@ public class GoodController {
         WatchProduct watchProduct = userService.findWatchProductByUIdAndGId(user.getId(),id);
         Good good= goodService.findGoodById(id);
         model.addAttribute("good",good);
-        List<String> address = goodService.findImageByGoodId(good.getId());
-        model.addAttribute("address",address);
+        List<Image> images = goodService.findImageByGoodId(good.getId());
+        List<Comment> comments = addressService.findCommentByGoodId(good.getId());
+        model.addAttribute("images",images);
+        model.addAttribute("comments",comments);
         model.addAttribute("watchProduct",watchProduct);
-        return "frontStage/Good/productDetail";
+        return "frontStage/Good/detail";
     }
 
     /**
@@ -214,35 +218,27 @@ public class GoodController {
         g.setSaleCount(good.getSaleCount());
         g.setPv(good.getPv());
         g.setwPrices(good.getwPrices());
+        String fileName =UUID.randomUUID().toString()+".jpg";
+        String file = "http://115.29.141.108/Shop_XL_war/"+fileName;
+        g.setImg(file);
         goodService.updateGood(g);
-        if(files.length>0){
-            goodService.clearImage(good.getId());
-            String path="D:/XAMPP/xamp/htdocs/Shop_XL/";
-            for(int i = 0;i<files.length;i++){
-                if(!files[i].isEmpty()){
-                    String fileName = path + new Date().getTime() + good.getId()+".jpg";
-                    try {
-                        //拿到输出流，同时重命名上传的文件
-                        FileOutputStream os = new FileOutputStream(fileName);
-                        //拿到上传文件的输入流
-                        FileInputStream in = (FileInputStream) files[i].getInputStream();
-                        //以写字节的方式写文件
-                        int b = 0;
-                        while((b=in.read()) != -1){
-                            os.write(b);
-                        }
-                        os.flush();
-                        os.close();
-                        in.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        System.out.println("上传出错");
-                    }
-                    Image image = new Image();
-                    image.setAddress(fileName);
-                    image.setGood(good);
-                    goodService.addImage(image);
+        goodService.clearImage(g.getId());
+        String path=File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
+        for(int i = 0;i<files.length;i++){
+            if(!files[i].isEmpty()){
+                try {
+                    FileUtils.copyInputStreamToFile(files[i].getInputStream(),new File(path,fileName));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("上传出错");
                 }
+                Image image = new Image();
+                image.setAddress(file);
+                image.setGood(good);
+                goodService.addImage(image);
+                fileName =UUID.randomUUID().toString()+".jpg";
+                file = "http://115.29.141.108/Shop_XL_war/"+fileName;
             }
         }
         return "redirect:/listGood";
@@ -294,4 +290,11 @@ public class GoodController {
         model.addAttribute("goods",goods);
         return "backStage/Product/productList";
     }
+
+
+    @RequestMapping(value = "/testGood",method = RequestMethod.GET)
+    public String testGood(){
+        return "frontStage/Good/detail";
+    }
+
 }

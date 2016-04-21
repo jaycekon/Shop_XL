@@ -35,7 +35,7 @@
 <footer class="ui-footer ui-footer-stable ui-border-t">
     <ul class="ui-tiled">
 
-        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='<%=request.getContextPath()%>/areaCenter'"></i><div>角色中心</div></li>
+        <li class="footerItem"><i class="ui-icon-personal" onclick="window.location.href='<%=request.getContextPath()%>/areaCenter'"></i><div>大区中心</div></li>
 
 
     </ul>
@@ -43,7 +43,7 @@
 
 <section class="ui-container">
 <%
-    Areas areas = (Areas)session.getAttribute("roles");
+    Areas areas = (Areas)session.getAttribute("areas");
 %>
     <!-- [[佣金统计 -->
     <ul class="ui-list ui-border-tb commissionTop">
@@ -71,7 +71,7 @@
                 <h4 class="ui-nowrap">时间：<%=orders.getSetTime()%></h4>
             </div>
             <div class="ui-list-info" style="text-align: right;">
-                <div class="ui-list-action">佣金状态：<span class="themeColor"><%
+                <div class="ui-list-action"><span class="themeColor"><%
                     if(orders.getD()==1){
                         out.println("已结算");
                     }else{

@@ -168,6 +168,7 @@ public class UserService {
         }
         orderProduct.setCart(cart);
         orderProduct.setGood_id(good.getId());
+        orderProduct.setImage(good.getImg());
         orderProduct.setCount(count);
         orderProduct.setName(good.getName());
         orderProduct.setImage(imageAddress);

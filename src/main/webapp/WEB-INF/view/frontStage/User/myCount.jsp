@@ -101,12 +101,12 @@
         <%
             if(p.getBeginIndex()!=0){
         %>
-        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/myCount/<%=p.getBeginIndex()/10-1%>'">上一頁</button>
+        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/myCount/<%=p.getBeginIndex()-10%>'">上一頁</button>
         <%
             }
-            if(p.getBeginIndex()*10 <p.getTotalCount()){
+            if(p.getBeginIndex()+10<p.getTotalCount()){
         %>
-        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/myCount/<%=p.getBeginIndex()+1%>'">下一頁</button>
+        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/myCount/<%=p.getBeginIndex()+10%>'">下一頁</button>
         <%
             }
         %>

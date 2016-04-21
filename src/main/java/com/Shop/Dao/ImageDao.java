@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.Image;
+import org.hibernate.Session;
 
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class ImageDao extends BaseDao implements IGeneralDao<Image> {
     @Override
     public Image findById(int id) {
-        return null;
+        return super.hibernateTemplate.get(Image.class,id);
     }
 
     @Override
@@ -57,5 +58,14 @@ public class ImageDao extends BaseDao implements IGeneralDao<Image> {
     public List<Image> findAllByGoodId(int id){
         String hql ="from Image where good_Id =:id";
         return super.openSession().createQuery(hql).setParameter("id",id).list();
+    }
+
+
+    public List<Image> findImage(){
+        Session session = super.openSession();
+        String hql ="from Image where good_Id = null ";
+        List<Image> images = session.createQuery(hql).list();
+        session.close();
+        return images;
     }
 }

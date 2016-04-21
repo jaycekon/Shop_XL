@@ -51,7 +51,7 @@
 				            paySign: "<%=payMap.get("paySign")%>", // 支付签名
 				            complete: function (res) {
 				                // 支付成功后的回调函数
-				                	   <%--window.location.href="<%=request.getContextPath()%>/myCount/0";--%>
+				                	   window.location.href="<%=request.getContextPath()%>/myCount/0";
 				            }
 				        }); 
 				    });

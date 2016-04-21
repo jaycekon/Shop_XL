@@ -49,7 +49,7 @@ $(function(){
                     '<div class="col-xs-2 add">'+
                     '<span class="addIcon">+</span>'+
                     '<span class="cancel">X</span>'+
-                    '<input type="file" accept="image/*" name="" class="file"/>'+
+                    '<input type="file" accept="image/*" name="files" class="file"/>'+
                     '</div>')
             }
 

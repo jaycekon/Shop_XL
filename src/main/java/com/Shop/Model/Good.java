@@ -20,6 +20,7 @@ public class Good {
     private Timestamp subTime;      //上架时间
     private Timestamp downTime;         //下架时间
     private int status;                 //商品状态 1.上架 0.下架
+    private String img;                     //图片地址
     private String firm;                    //商品厂家
     private float pv;                       //pv值
     private float wholesalePrices;          //促销价
@@ -150,5 +151,13 @@ public class Good {
 
     public void setwPrices(int wPrices) {
         this.wPrices = wPrices;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 }

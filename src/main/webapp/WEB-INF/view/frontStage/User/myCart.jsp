@@ -90,7 +90,7 @@
                 <li>商品合计： <span class="themeColor"
                                 id="amount">&#165; <%=cart.getTotalPrices()%></span>（共<%=cart.getCount()%>件）
                 </li>
-                <li>运费合计： <span class="themeColor" id="freight">&#165; 10.00</span></li>
+                <li>运费合计： <span class="themeColor" id="freight">&#165; 0.00</span></li>
             </ul><!-- 价格合计]] -->
 
         <div class="ui-btn-wrap">

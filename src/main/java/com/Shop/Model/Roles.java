@@ -19,6 +19,7 @@ public class Roles {
     private Date date;                  //关注日期
     private float totalCommission;         //总佣金
     private float exitCommission;             //剩余佣金
+    private float waitCommission;             //待结算佣金
 
     @Id
     @GeneratedValue
@@ -101,5 +102,13 @@ public class Roles {
 
     public void setExitCommission(float exitCommission) {
         this.exitCommission = exitCommission;
+    }
+
+    public float getWaitCommission() {
+        return waitCommission;
+    }
+
+    public void setWaitCommission(float waitCommission) {
+        this.waitCommission = waitCommission;
     }
 }

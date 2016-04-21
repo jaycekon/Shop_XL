@@ -1,10 +1,18 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
+import com.Shop.Service.OrdersService;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.*;
 import com.google.gson.JsonObject;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +25,11 @@ import javax.servlet.http.HttpSession;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Created by Administrator on 2016/4/14.
@@ -30,6 +40,8 @@ public class WebChatController {
     private TerraceService terraceService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrdersService ordersService;
 
     private final static String wechatName ="xiaoguozhushou";
     Logger log = Logger.getLogger(WebChatController.class);
@@ -159,7 +171,7 @@ public class WebChatController {
                                     WebChatUtil.sendText(openId, "该二维码已失效，你已成为普通用户：" + areas.getName());
                                     break;
                                 }
-                                if (!userService.addArea(areas)) {
+                                if (userService.addArea(areas)) {
                                     WebChatUtil.sendText(openId, "用户已成为大区，用户名：" + areas.getName());
                                     break;
                                 }
@@ -220,6 +232,26 @@ public class WebChatController {
         }
     }
 
+    public String sign(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.setCharacterEncoding("UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        log.info("验证服务器");
+        //验证服务器地址
+		String signature=request.getParameter("signature");
+		String timestamp = request.getParameter("timestamp");
+		String nonce=request.getParameter("nonce");
+		String echostr=request.getParameter("echostr");
+		PrintWriter out = response.getWriter();
+
+		if(WebChatUtil.checkSignature(signature,timestamp,nonce)){
+            log.info("check success");
+			out.write(echostr);
+			out.flush();
+			out.close();
+		}
+        return null;
+    }
+
 
     //模拟支付
     @RequestMapping("/weixin/preparePayOrder/{id}")
@@ -267,6 +299,70 @@ public class WebChatController {
         String signature = SHA1.encode(stringB);
         sMap.put("signature", signature);
         return sMap;
+    }
+
+
+    @RequestMapping(value="refund/{id}")
+    public String refund(HttpSession session,@PathVariable("id") int order_id) throws Exception{
+        //统计要付的钱
+        WithdrawalsOrder withdrawalsOrder  = ordersService.findWithdrawalsOrderById(order_id);
+        int money = (int)(withdrawalsOrder.getPrices()*100);
+        String openId =(String)session.getAttribute("openId");
+        String nonce_str = WebChatUtil.generateStr(32);
+        String ip = "131.25.0.7";
+        int orderId = order_id;
+
+        //组装参数
+        Map<String, Object> map = new TreeMap<String, Object>();
+        map.put("amount", String.valueOf(money));
+        map.put("check_name", "NO_CHECK");
+        map.put("desc", "拿去花");
+        map.put("mch_appid", WebChatUtil.getAPPID());
+        map.put("mchid", WebChatUtil.getTenantId());
+        map.put("nonce_str", nonce_str);
+        map.put("openid", openId);
+        map.put("partner_trade_no", withdrawalsOrder.getUuid());
+        map.put("spbill_create_ip",ip);
+
+
+        String stringA=XMLUtil.mapToStr(map);
+        String stringSignTemp=stringA+"&key="+WebChatUtil.getKEY();
+        String sign = MD5.toMD5(stringSignTemp).toUpperCase();
+
+        map.put("sign", sign);
+        String xml=XMLUtil.mapToXml(map);
+
+        System.out.println("stringA"+stringA);
+        System.out.println("xml-"+xml);
+        String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+        CloseableHttpClient client = WebChatUtil.loadCert();
+
+        HttpPost post = new HttpPost(url);
+        boolean result=false;
+        try{
+            String xml2=new String(xml.getBytes("UTF-8"), "ISO8859_1");
+            StringEntity s = new StringEntity(xml2);
+            s.setContentEncoding("UTF-8");
+            s.setContentType("text/xml");
+            post.setEntity(s);
+
+            HttpResponse res = client.execute(post);
+            HttpEntity entity = res.getEntity();
+            String responseContent= EntityUtils.toString(entity, "UTF-8");
+            Map<String,Object> resultMap = XMLUtil.parseXML(responseContent);
+            System.out.println(responseContent);
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                if(resultMap.get("return_code").equals("FAIL")){
+                }else{
+                    log.info(resultMap.get("prepay_id"));
+                }
+            }
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }finally{
+            return "redirect:/withdrawDetail";
+        }
     }
 
 }

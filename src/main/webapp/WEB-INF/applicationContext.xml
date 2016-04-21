@@ -115,7 +115,8 @@
     <bean id="ordersDao" class="com.Shop.Dao.OrdersDao" parent="daoTemplate"/>
     <bean id="profitDao" class="com.Shop.Dao.ProfitDao" parent="daoTemplate"/>
     <bean id="countOrderDao" class="com.Shop.Dao.CountOrderDao" parent="daoTemplate"/>
-
+    <bean id="withdrawalsDao" class="com.Shop.Dao.WithdrawalsOrderDao" parent="daoTemplate"/>
+    <bean id="commentDao" class="com.Shop.Dao.CommentDao" parent="daoTemplate"/>
 
 
     <bean id="userService" class="com.Shop.Service.UserService">

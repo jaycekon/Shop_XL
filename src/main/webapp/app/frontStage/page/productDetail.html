@@ -65,8 +65,15 @@
         <p class="specText"><span>库存：</span><span id="stock">3</span></p>
         <p class="specText"><span>起批量：</span>123</p>
         <p class="specText"><span>销量：</span>123</p>
+
         <button class="ui-btn productBtn watchPrice">查看倾销价</button>
         <button class="ui-btn addCartBtn" id="addCartBtn"><i class="ui-icon-cart"></i></button>
+
+        <div class="selectNum">
+            <button class="reduce minus">&#45;</button>
+            <input type="number" value="1" />
+            <button class="add plus">&#43;</button>
+        </div>
 
         <div class="ui-poptips ui-poptips-success addTip">
             <div class="ui-poptips-cnt"><i></i>1件商品成功加入购物车</div>
@@ -112,27 +119,6 @@
     <button class="ui-btn" onclick="location.reload()">刷新</button>-->
 
 </section>
-
-<!-- [[选择商品数量-->
-<section class="ui-actionsheet">
-    <div class="rise_div">
-        <div class="rise_div_top">
-            <span class="ui-icon-close-page fr" id="rise_div_close"></span>
-        </div>
-        <div class="rise_div_mid ui-border-tb">
-            <span>购买数量</span>
-            <div class="selectNum">
-                <button class="reduce minus">&#45;</button>
-                <input type="number" value="1" />
-                <button class="add plus">&#43;</button>
-            </div>
-        </div>
-        <div class="rise_div_bottom">
-            <button class="lg_btn" id="addCartSure">确定</button>
-        </div>
-    </div>
-
-</section><!-- 选择商品数量]] -->
 
 <!-- [[点击查看需要倾销 -->
 <div class="ui-dialog" id="goPayDialog">

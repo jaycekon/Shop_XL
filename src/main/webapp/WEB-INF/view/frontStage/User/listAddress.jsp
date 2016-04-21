@@ -39,7 +39,7 @@
             for(Address address:addresses){
 
         %>
-        <a href="<%=request.getContextPath()%>/editAddress/<%=address.getId()%>"><li class="addressInfo blockInfo ui-border-tb addressList">
+        <a href="<%=request.getContextPath()%>/editAddress/<%=address.getId()%>/?flagt=0"><li class="addressInfo blockInfo ui-border-tb addressList">
             <%--<input type="hidden" value="<%=address.getId()%>" class="addressId"/>--%>
             <p>姓名：<%=address.getUsername()%></p>
             <p>电话：<%=address.getPhone()%></p>
@@ -52,7 +52,7 @@
     </ul>
 
     <div class="ui-btn-wrap">
-        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/addAddress'">
+        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/addAddress/0'">
             新增收货地址
         </button>
     </div>

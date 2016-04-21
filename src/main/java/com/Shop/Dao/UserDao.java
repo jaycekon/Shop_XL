@@ -30,6 +30,7 @@ public class UserDao extends BaseDao implements IGeneralDao<User>{
         Session session = super.openSession();
         String hql = "from User where roles_id=:roles_id";
         List<User> users = session.createQuery(hql).setParameter("roles_id",roles_id).list();
+        session.close();
         return users;
     }
 

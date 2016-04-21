@@ -30,19 +30,14 @@ $(function(){
     });
 
     /* 点击查看倾销价 */
-    $('.watchPrice').on('click',function(e){
-        // 获取商品id
-        var shopId = $(this).parent().parent().find('input').val();
-
+    $('.watchPrice').click(function(){
         var goPayDialog =  $("#goPayDialog").dialog("show");
         goPayDialog.on('dialog:action',function(e){
             if(e.index == 1) {
-                window.location.href= "recharge.html?id="+ shopId;
+                window.location.href= "../watchGood/"+$("#id").val();
             }
         })
     });
-
-
 
 
 });

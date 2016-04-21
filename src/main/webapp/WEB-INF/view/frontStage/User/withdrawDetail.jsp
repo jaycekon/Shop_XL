@@ -1,6 +1,8 @@
 <%@ page import="com.Shop.Model.Orders" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.Shop.Model.Roles" %><%--
+<%@ page import="com.Shop.Model.Roles" %>
+<%@ page import="com.Shop.Model.WithdrawalsOrder" %>
+<%@ page import="java.text.SimpleDateFormat" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/19 0019
@@ -31,7 +33,18 @@
 
 <footer class="ui-footer ui-footer-stable ui-border-t">
     <ul class="ui-tiled">
+        <%
+            if(session.getAttribute("roles")!=null){
+        %>
         <li class="footerItem active"><i class="ui-icon-personal" onclick="window.location.href='<%=request.getContextPath()%>/roleCenter'"></i><div>角色中心</div></li>
+        <%
+        }
+        else if(session.getAttribute("areas")!=null){
+        %>
+        <li class="footerItem active"><i class="ui-icon-personal" onclick="window.location.href='<%=request.getContextPath()%>/areaCenter'"></i><div>大区中心</div></li>
+        <%
+            }
+        %>
     </ul>
 </footer>
 
@@ -49,16 +62,18 @@
         </thead>
         <tbody>
         <%
-            List<Orders> orderses = (List<Orders>)request.getAttribute("orderses");
-            for(Orders orders:orderses){
-                if(session.getAttribute("roles")!=null){
+           List<WithdrawalsOrder> withdrawalsOrders =(List<WithdrawalsOrder>)request.getAttribute("withdrawalsOrders");
+            String model = "yyyy-MM-dd HH:mm:ss";
+            SimpleDateFormat format=new SimpleDateFormat(model);
+            if(withdrawalsOrders !=null){
+            for(WithdrawalsOrder withdrawalsOrder:withdrawalsOrders){
         %>
         <tr>
-            <td><%=orders.getUuid()%></td>
-            <td><%=orders.getRolesProfit()%></td>
-            <td><%=orders.getSetTime()%></td>
+            <td><%=withdrawalsOrder.getUuid()%></td>
+            <td><%=withdrawalsOrder.getPrices()%></td>
+            <td><%=format.format(withdrawalsOrder.getDate())%></td>
             <td><%
-                if(orders.getD()==1){
+                if(withdrawalsOrder.getStatus()==1){
                     out.println("已结算");
                 }else{
                     out.println("待结算");

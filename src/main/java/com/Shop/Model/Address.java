@@ -15,7 +15,6 @@ public class Address {
     private String username;
     private User user;
     private int flag;
-    private Address addresss;
 
     @Id
     @GeneratedValue

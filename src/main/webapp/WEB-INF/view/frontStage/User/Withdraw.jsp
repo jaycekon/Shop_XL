@@ -66,14 +66,16 @@
     <%
         }
     %>
-    <section class="inputWithdraw">
+ <form action ="<%=request.getContextPath()%>/witdraw" method="post">
+    <section class="inputWithdraw" >
         <div class="ui-input ui-border-radius">
-            <input type="text" name="" value="" placeholder="输入提现金额">
+            <input type="text" name="cout" value="" placeholder="输入提现金额">
         </div>
         <div class="ui-btn-wrap">
-            <button class="ui-btn-lg">提现</button>
+            <button class="ui-btn-lg" type="submit">提现</button>
         </div>
     </section>
+</form>
 
 </section>
 

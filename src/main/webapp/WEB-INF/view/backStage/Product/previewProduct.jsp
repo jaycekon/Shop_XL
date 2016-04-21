@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.Good" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Model.Image" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/3/29 0029
@@ -87,11 +88,14 @@
                             <td>商品图片：</td>
                             <td colspan="3">
                                 <%
-                                    List<String> address =(List)request.getAttribute("address");
-                                    for(String str:address){
+                                    List<Image> images =(List)request.getAttribute("images");
+                                    if(images !=null){
+
+                                    for(Image image:images){
                                 %>
-                                <img src="<%=str%>" alt="">
+                                <img src="<%=image.getAddress()%>" alt="">
                                 <%
+                                        }
                                     }
                                 %>
                             </td>

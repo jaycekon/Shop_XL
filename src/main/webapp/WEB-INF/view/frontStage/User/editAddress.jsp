@@ -1,4 +1,6 @@
-<%@ page import="com.Shop.Model.Address" %><%--
+<%@ page import="com.Shop.Model.Address" %>
+<%@ page import="com.Shop.Model.Area" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/7 0007
@@ -24,30 +26,62 @@
 
 <header class="ui-header ui-header-stable ui-border-b">
     <i class="ui-icon-return" onclick="history.back()"></i>
-    <h1>编辑收货地址</h1>
+    <h1>新增收货地址</h1>
 </header>
 
 <%@include file="../footer.jsp"%>
 
 <section class="ui-container">
-<%
-    Address address= (Address)request.getAttribute("address");
-%>
+
     <div class="ui-form ui-border-t">
+        <%
+            List<Area> areas= (List<Area>)request.getAttribute("areas");
+            Address address = (Address) request.getAttribute("address");
+        %>
         <form action="<%=request.getContextPath()%>/editAddress" method = "post">
+            <input type="hidden" name="id" value="<%=address.getId()%>"/>
+            <input type="hidden" name="flagt" value ="<%=request.getAttribute("flagt")%>"/>
             <div class="ui-form-item ui-form-item-show ui-border-b">
-                <input type="hidden" name="id" value="<%=address.getId()%>"/>
                 <label for="#">姓名</label>
-                <input type="text" name ="name" value="<%=address.getUsername()%>" placeholder="填写联系人姓名">
+                <input type="text" name ="username" value="<%=address.getUsername()%>" placeholder="填写联系人姓名">
             </div>
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label for="#">联系方式</label>
                 <input type="text" name ="phone" value="<%=address.getPhone()%>" placeholder="填写联系人电话">
             </div>
             <div class="ui-form-item ui-form-item-show ui-border-b">
-                <label>省市</label>
-                <input type="text" value="" name ="<%=address.getArea()%>" placeholder="填写收货省城市">
+                <label>省</label>
+                <div class="ui-select">
+                    <select name = "areaId" oninput="queryCity(this.value)">
+                        <option value="">--请选择省份--</option>
+                        <%
+                            for(Area area:areas){
+                        %>
+                        <option name ="areaId" value ="<%=area.getId()%>"><%=area.getName()%></option>
+                        <%
+                            }
+                        %>
+                    </select>
+                </div>
             </div>
+
+            <div class="ui-form-item ui-form-item-show ui-border-b">
+                <label>市</label>
+                <div class="ui-select">
+                    <select class="compAddr forget_select" name="cityId" id="city" oninput="queryArea(this.value)" >
+                    </select>
+                </div>
+            </div>
+
+            <div class="ui-form-item ui-form-item-show ui-border-b">
+                <label>区</label>
+                <div class="ui-select">
+                    <select class="compAddr forget_select" name="area_id" id="area">
+                    </select>
+                </div>
+            </div>
+
+
 
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label for="#">详细地址</label>
@@ -55,7 +89,7 @@
             </div>
             <div class="ui-form-item ui-form-item-checkbox ui-border-b">
                 <label class="ui-checkbox">
-                    <input type="checkbox" name="flag" value="1">
+                    <input type="checkbox" name = "flag" value="1" >
                 </label>
                 <p>设为默认收货地址</p>
             </div>
@@ -82,5 +116,45 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/js/index.js"></script>
 
+<script>
+    function queryCity(obj){
+        $("#provinceError").hide();
+        $("#cityError").hide();
+        var urlStr = "<%=request.getContextPath()%>/findCity?area_id="+obj;
+        //alert("Before Call:"+urlStr);
+        $.ajax({
+            method: "GET",
+            url: urlStr,
+            success:function(data,status,jqXHR){
+                //alert(data);
+                $("#city").html("");
+                for(var i=0;i<data.length;i++){
+                    $("#city").append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                }
+                queryArea(data[0].id);
+            }
+        }); // end ajax
+    }
+
+
+    function queryArea(obj){
+        $("#provinceError").hide();
+        $("#cityError").hide();
+        var urlStr = "<%=request.getContextPath()%>/findCity?area_id="+obj;
+        //alert("Before Call:"+urlStr);
+        $.ajax({
+            method: "GET",
+            url: urlStr,
+            success:function(data,status,jqXHR){
+                //alert(data);
+                $("#area").html("");
+                for(var i=0;i<data.length;i++){
+                    $("#area").append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                }
+
+            }
+        }); // end ajax
+    }
+</script>
 </body>
 </html>

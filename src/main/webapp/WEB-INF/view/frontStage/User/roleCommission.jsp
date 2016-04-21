@@ -67,7 +67,7 @@
                 <h4 class="ui-nowrap">时间：<%=orders.getSetTime()%></h4>
             </div>
             <div class="ui-list-info" style="text-align: right;">
-                <div class="ui-list-action">佣金状态：<span class="themeColor"><%
+                <div class="ui-list-action"><span class="themeColor"><%
                     if(orders.getD()==1){
                         out.println("已结算");
                     }else{

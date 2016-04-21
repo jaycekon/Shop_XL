@@ -37,7 +37,7 @@
         <%
             List<Area> areas= (List<Area>)request.getAttribute("areas");
         %>
-        <form action="<%=request.getContextPath()%>/addAddress" method = "post">
+        <form action="<%=request.getContextPath()%>/addAddress/<%=request.getAttribute("flagt")%>" method = "post">
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label for="#">姓名</label>
                 <input type="text" name ="username" value="" placeholder="填写联系人姓名">
@@ -49,18 +49,36 @@
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label>省</label>
                 <div class="ui-select">
-                    <select name = "area_id">
+                    <select name = "area_id" oninput="queryCity(this.value)">
                         <option value="">--请选择省份--</option>
                         <%
                             for(Area area:areas){
                         %>
-                        <option name ="area_id" value ="<%=area.getId()%>"><%=area.getName()%></option>
+                        <option name ="areaId" value ="<%=area.getId()%>"><%=area.getName()%></option>
                         <%
                             }
                         %>
                     </select>
                 </div>
             </div>
+
+            <div class="ui-form-item ui-form-item-show ui-border-b">
+            <label>市</label>
+            <div class="ui-select">
+                <select class="compAddr forget_select" name="cityId" id="city" oninput="queryArea(this.value)" >
+                </select>
+            </div>
+        </div>
+
+            <div class="ui-form-item ui-form-item-show ui-border-b">
+                <label>区</label>
+                <div class="ui-select">
+                    <select class="compAddr forget_select" name="area_id" id="area">
+                    </select>
+                </div>
+            </div>
+
+
 
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label for="#">详细地址</label>
@@ -95,5 +113,45 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/js/index.js"></script>
 
+<script>
+    function queryCity(obj){
+        $("#provinceError").hide();
+        $("#cityError").hide();
+        var urlStr = "<%=request.getContextPath()%>/findCity?area_id="+obj;
+        //alert("Before Call:"+urlStr);
+        $.ajax({
+            method: "GET",
+            url: urlStr,
+            success:function(data,status,jqXHR){
+                //alert(data);
+                $("#city").html("");
+                for(var i=0;i<data.length;i++){
+                    $("#city").append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                }
+                queryArea(data[0].id);
+            }
+        }); // end ajax
+    }
+
+
+    function queryArea(obj){
+        $("#provinceError").hide();
+        $("#cityError").hide();
+        var urlStr = "<%=request.getContextPath()%>/findCity?area_id="+obj;
+        //alert("Before Call:"+urlStr);
+        $.ajax({
+            method: "GET",
+            url: urlStr,
+            success:function(data,status,jqXHR){
+                //alert(data);
+                $("#area").html("");
+                for(var i=0;i<data.length;i++){
+                    $("#area").append("<option value="+data[i].id+">"+data[i].name+"</option>");
+                }
+
+            }
+        }); // end ajax
+    }
+</script>
 </body>
 </html>

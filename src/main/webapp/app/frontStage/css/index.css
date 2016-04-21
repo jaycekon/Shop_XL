@@ -181,8 +181,16 @@ header, footer, section, div, li, i {
 店家中心
  */
 .picture {
+<<<<<<< .mine
     width: 30px;
     height: 30px;
+||||||| .r2109
+    width: 80px;
+    height: 80px;
+=======
+    width: 60px;
+    height: 60px;
+>>>>>>> .r2378
     border-radius: 50%;
 }
 

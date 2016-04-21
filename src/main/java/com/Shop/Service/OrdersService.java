@@ -2,8 +2,10 @@ package com.Shop.Service;
 
 import com.Shop.Dao.OrderProductDao;
 import com.Shop.Dao.OrdersDao;
+import com.Shop.Dao.WithdrawalsOrderDao;
 import com.Shop.Model.OrderProduct;
 import com.Shop.Model.Orders;
+import com.Shop.Model.WithdrawalsOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,8 @@ public class OrdersService {
     OrdersDao ordersDao;
     @Autowired
     OrderProductDao orderProductDao;
+    @Autowired
+    WithdrawalsOrderDao withdrawalsOrderDao;
 
     public Orders findOrdersById(int id){
         return ordersDao.findById(id);
@@ -111,5 +115,22 @@ public class OrdersService {
 
     public Orders findOrdersByUid(String uid){
         return ordersDao.findOrdersByUid(uid);
+    }
+
+
+    public void addWithdrawalsOrder(WithdrawalsOrder withdrawalsOrder){
+        withdrawalsOrderDao.save(withdrawalsOrder);
+    }
+
+    public WithdrawalsOrder findWithdrawalsOrderById(int id){
+        return withdrawalsOrderDao.findById(id);
+    }
+
+    public List<WithdrawalsOrder> findWithdrawalsOrderByAreaId(int area_id){
+        return withdrawalsOrderDao.findAllByAreaId(area_id);
+    }
+
+    public List<WithdrawalsOrder> findWithdrawalsOrderByRoleId(int role_id){
+        return withdrawalsOrderDao.findAllByRoleId(role_id);
     }
 }

@@ -74,9 +74,9 @@
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/userCrod/<%=roles.getId()%>'">
             <h4>店家推广码</h4>
         </li>
-        <li class="ui-border-t">
-            <h4>联系信息</h4>
-        </li>
+        <%--<li class="ui-border-t">--%>
+            <%--<h4>联系信息</h4>--%>
+        <%--</li>--%>
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleCommission'">
             <h4>分佣订单</h4>
         </li>

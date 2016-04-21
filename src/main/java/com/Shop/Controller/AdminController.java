@@ -2,24 +2,26 @@ package com.Shop.Controller;
 
 import com.Shop.Model.*;
 import com.Shop.Service.AddressService;
+import com.Shop.Service.GoodService;
 import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Administrator on 2016/3/25 0025.
@@ -33,6 +35,8 @@ public class AdminController {
     private UserService userService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private GoodService goodService;
 
     Logger log = Logger.getLogger(AdminController.class);
 
@@ -42,7 +46,9 @@ public class AdminController {
     }
 
     @RequestMapping(value ="indexCarousel")
-    public String indexCarousel(){
+    public String indexCarousel(Model model){
+        List<Image> images = goodService.findImage();
+        model.addAttribute("images",images);
         return "backStage/SystemManage/indexCarousel";
     }
 
@@ -67,7 +73,6 @@ public class AdminController {
             log.info("成功获取角色信息！");
             User user = terraceService.findUseByOpenId(openId);
             if(user==null){
-
             }
             request.getSession().setAttribute("loginUser",user);
             return "redirect:/index";
@@ -142,109 +147,7 @@ public class AdminController {
         return "backStage/SystemManage/parameter";
     }
 
-    @RequestMapping(value ="listOrder",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    public String listOrder(HttpSession session, Model model){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-        List<Orders> orders = userService.listOrders();
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders order:orders){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        return "backStage/Orders/listOrders";
-    }
 
-    @RequestMapping(value ="listOrderByF",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String listOrderByF(HttpSession session, Model model,int f){
-        if(session.getAttribute("loginTerrace") == null){
-            return "redirect:/loginTerrace";
-        }
-        List<Orders> orders = userService.listOrdersByF(f);
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders order:orders){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        Gson gson = new Gson();
-        return gson.toJson(orderPoJos);
-    }
-
-    @RequestMapping(value ="listOrderByP/{p}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    public String listOrderByP(HttpSession session, Model model,@PathVariable(value ="p") int p){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-        List<Orders> orders = userService.listOrdersByP(p);
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders order:orders){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        return "backStage/Orders/listOrders";
-    }
-
-    @RequestMapping(value ="listOrderByD",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String listOrderByD(HttpSession session, Model model,int d){
-        if(session.getAttribute("loginTerrace") == null){
-            return "redirect:/loginTerrace";
-        }
-        List<Orders> orders = userService.listOrdersByD(d);
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders order:orders){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        Gson gson = new Gson();
-        return gson.toJson(orderPoJos);
-    }
-
-    @RequestMapping(value ="listOrderByT",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String listOrderByT(HttpSession session, Model model,int t){
-        if(session.getAttribute("loginTerrace") == null){
-            return "redirect:/loginTerrace";
-        }
-        List<Orders> orders = userService.listOrdersByT(t);
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders order:orders){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        Gson gson = new Gson();
-        return gson.toJson(orderPoJos);
-    }
-
-    @RequestMapping(value ="listOrderByC",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    @ResponseBody
-    public String listOrderByC(HttpSession session, Model model,int c){
-        if(session.getAttribute("loginTerrace") == null){
-            return "redirect:/loginTerrace";
-        }
-        List<Orders> orders = userService.listOrdersByC(c);
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders order:orders){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        Gson gson = new Gson();
-        return gson.toJson(orderPoJos);
-    }
 
     @RequestMapping(value ="findOrderById",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -363,6 +266,24 @@ public class AdminController {
         area.setArea(a);
         addressService.addArea(area);
         return "";
+    }
+
+
+    @RequestMapping(value = "setImage/{id}",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
+    public String addGoodDown(@RequestParam("files")MultipartFile files,@PathVariable("id")int id){
+        String fileNames = UUID.randomUUID().toString()+".jpg";
+        String file = "http://115.29.141.108/Shop_XL_war/"+fileNames;
+        Image image = goodService.findImageById(id);
+        String path= File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
+                try {
+                    FileUtils.copyInputStreamToFile(files.getInputStream(),new File(path,fileNames));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                image.setAddress(file);
+                log.info(file);
+                goodService.addImage(image);
+        return "redirect:/indexCarousel";
     }
 
 

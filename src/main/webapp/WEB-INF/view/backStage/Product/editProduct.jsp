@@ -75,8 +75,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control" value="<%=good.getProductPrices()%>" name="productPrices" id="retailPrice"/>
-                                <span class="input-group-addon">元</span>
+                                <input  type="text" class="form-control" value="<%=good.getProductPrices()%>" name="productPrices" id="retailPrice"/>
                             </div>
                         </div>
                     </div>
@@ -85,8 +84,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control" value="<%=good.getWholesalePrices()%>"name="wholesalePrices" id="tradePrice"/>
-                                <span class="input-group-addon">元</span>
+                                <input  type="text" class="form-control" value="<%=good.getWholesalePrices()%>"name="wholesalePrices" id="tradePrice"/>
                             </div>
                         </div>
                     </div>
@@ -95,8 +93,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control" value="<%=good.getDumpingPrices()%>" name="dumpingPrices"id="dumpingPrice"/>
-                                <span class="input-group-addon">元</span>
+                                <input  type="text" class="form-control" value="<%=good.getDumpingPrices()%>" name="dumpingPrices"id="dumpingPrice"/>
                             </div>
                         </div>
                     </div>
@@ -134,7 +131,7 @@
                             <div class="col-xs-2 add">
                                 <span class="addIcon">+</span>
                                 <span class="cancel">X</span>
-                                <input  type="file" accept="image/*" name="" class="file"/>
+                                <input  type="file" accept="image/*" name="files" class="file"/>
                             </div>
                         </div>
                     </div>

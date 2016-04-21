@@ -49,13 +49,21 @@ public class GoodService {
         imageDao.save(image);
     }
 
-    public List<String> findImageByGoodId(int id){
+    public Image findImageById(int id){
+        return imageDao.findById(id);
+    }
+
+    public void updateImage(Image image){
+        imageDao.update(image);
+    }
+
+    public List<Image> findImageByGoodId(int id){
         List<Image> imgs = imageDao.findAllByGoodId(id);
-        List<String> address = new ArrayList<>();
-        for(Image img :imgs){
-            address.add(img.getAddress());
-        }
-        return address;
+        return imgs;
+    }
+
+    public List<Image> findImage(){
+        return imageDao.findImage();
     }
 
     public void clearImage(int id){

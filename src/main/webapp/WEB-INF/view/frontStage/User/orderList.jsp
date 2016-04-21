@@ -120,7 +120,22 @@
                 <p class="unMarjorColor">X<%=orderProduct.getCount()%></p>
             </div>
         </li><!-- 订单商品]] -->
-       <%
+        <%
+            if(orders.getF()==1&&orders.getP()==0){
+            if(orderProduct.getStauts()==0){
+        %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/exitProduct/<%=orderProduct.getId()%>'">申请退款</button>
+        </div>
+       <%}else if(orderProduct.getStauts()==1){
+       %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/exitProduct/<%=orderProduct.getId()%>'">取消申请</button>
+        </div>
+
+        <%
+                    }
+                }
             }
        %>
     </ul>

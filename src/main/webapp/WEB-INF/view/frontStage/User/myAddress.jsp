@@ -39,20 +39,20 @@
             for(Address address:addresses){
 
         %>
-        <a href="<%=request.getContextPath()%>/myAddress/<%=address.getId()%>"><li class="addressInfo blockInfo ui-border-tb addressList">
-            <%--<input type="hidden" value="<%=address.getId()%>" class="addressId"/>--%>
+        <li class="addressInfo blockInfo ui-border-tb addressList">
+            <input type="hidden" value="<%=address.getId()%>" class="addressId"/>
             <p>姓名：<%=address.getUsername()%></p>
             <p>电话：<%=address.getPhone()%></p>
             <p>地址：<%=address.getAddress()%></p>
-            <button class="icon iconfont RTIcon" onclick="window.location.href='<%=request.getContextPath()%>/editAddress/<%=address.getId()%>'">&#xe603;</button>
-        </li></a>
+            <button class="icon iconfont RTIcon" onclick="window.location.href='<%=request.getContextPath()%>/editAddress/<%=address.getId()%>?flagt=1'">&#xe603;</button>
+        </li>
         <%
             }
         %>
     </ul>
 
     <div class="ui-btn-wrap">
-        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/addAddress'">
+        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/addAddress/1'">
             新增收货地址
         </button>
     </div>
@@ -76,6 +76,13 @@
         <%--});--%>
     <%--});--%>
 <%--</script>--%>
-
+<script>
+    $(".addressInfo").click(function(e){
+        if( e.target !== $(this).find(".RTIcon")[0] ) {
+            var id = $(this).find("input").eq(0).val();
+            window.location.href = "<%=request.getContextPath()%>/myAddress/" + id;
+        }
+    })
+</script>
 </body>
 </html>

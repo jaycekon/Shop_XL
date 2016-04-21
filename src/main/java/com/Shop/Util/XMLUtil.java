@@ -26,7 +26,6 @@ public class XMLUtil {
             Document document = reader.read(is);
             Element root = document.getRootElement();
             List<Element> list = root.elements();
-            System.out.println(list.size());
             for (int i=0;i<list.size();i++){
                 Element element = list.get(i);
                 System.out.println(element.getName()+":"+element.getData());

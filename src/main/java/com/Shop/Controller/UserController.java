@@ -82,6 +82,8 @@ public class UserController {
                 User user = (User) session.getAttribute("loginUser");
                 List<WatchProduct> watchProducts = userService.findAllWatchProduct(user.getId());
                 model.addAttribute("watchProducts", watchProducts);
+                List<Image> images = goodService.findImage();
+                model.addAttribute("images",images);
             }
             return "frontStage/index";
         }else if(session.getAttribute("areas")!=null){
@@ -109,6 +111,8 @@ public class UserController {
             User user =(User)session.getAttribute("loginUser");
             List<WatchProduct> watchProducts = userService.findAllWatchProduct(user.getId());
             model.addAttribute("watchProducts",watchProducts);
+            List<Image> images = goodService.findImage();
+            model.addAttribute("images",images);
         }
         return "frontStage/index";
     }
@@ -139,10 +143,10 @@ public class UserController {
             prices += good.getDumpingPrices() * count;
             cart.setTotalPrices(prices);
             cartService.updateCart(cart);
-            List<String> images = goodService.findImageByGoodId(good_id);
+            List<Image> images = goodService.findImageByGoodId(good_id);
             String imageAddress = null;
             if (images.size() > 0) {
-                imageAddress = images.get(0);
+                imageAddress = images.get(0).getAddress();
             }
            userService.addOrderProduct(cart, good, imageAddress, count);
         } else {
@@ -440,12 +444,27 @@ public class UserController {
 
             //支付成功，可以再次进行对数据库的操作
             if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
-                    User user =(User)request.getSession().getAttribute("loginUser");
-                    user.setSign(1);
+                    log.info("倾销币处理");
                     String uuid= (String)map.get("out_trade_no");
                     CountOrder countOrder = userService.findCountOrderByUUid(uuid);
+                if(countOrder.getType().equals("会员认证")) {
+                    log.info("会员认证处理");
+                    User user = userService.findById(countOrder.getUser().getId());
+                    user.setSign(1);
                     countOrder.setStatus(1);
+                    int count = countOrder.getCount() + user.getCount();
+                    user.setCount(count);
+                    userService.updateUser(user);
                     userService.updateCountOrder(countOrder);
+                }else if(countOrder.getType().equals("充值")){
+                    log.info("充值处理");
+                    User user = userService.findById(countOrder.getUser().getId());
+                    countOrder.setStatus(1);
+                    int count = countOrder.getCount() + user.getCount();
+                    user.setCount(count);
+                    userService.updateUser(user);
+                    userService.updateCountOrder(countOrder);
+                }
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -459,12 +478,14 @@ public class UserController {
             return "redirect:/login";
         }
         User user =(User)session.getAttribute("loginUser");
+        User u = userService.findById(user.getId());
+
+        session.setAttribute("loginUser",u);
         Page page = new Page();
 
         List<CountOrder> countOrders = userService.listCountOrderByUserId(user.getId());
-        page.setBeginIndex(count+count*10);
+        page.setBeginIndex(count);
         page.setEveryPage(10);
-        page.setTotalPage(countOrders.size()/10+1);
         page.setTotalCount(countOrders.size());
         List<CountOrder> countOrder = userService.listCountOrderByUserId(page,user.getId());
         model.addAttribute("countOrders",countOrder);
@@ -497,8 +518,8 @@ public class UserController {
         return "redirect:/weixin/preparePayCountOrder/"+countOrder.getId();
     }
 
-    @RequestMapping(value ="addAddress",method = RequestMethod.GET)
-    public String addAddress(HttpSession session,Model model){
+    @RequestMapping(value ="addAddress/{flagt}",method = RequestMethod.GET)
+    public String addAddress(HttpSession session,Model model,@PathVariable("flagt")int flagt){
         if(session.getAttribute("loginUser")==null){
             String openId =(String)session.getAttribute("openId");
             User user = terraceService.findUseByOpenId(openId);
@@ -507,35 +528,60 @@ public class UserController {
         }
         List<Area> areas = addressService.findTopArea();
         model.addAttribute("areas",areas);
+        model.addAttribute("flag",flagt);
         return "frontStage/User/addAddress";
     }
 
-    @RequestMapping(value ="addAddress",method = RequestMethod.POST)
-    public String addAddress(Address address,HttpSession session){
+    @RequestMapping(value ="/findCity",method = RequestMethod.GET)
+    @ResponseBody
+    public List<Area> findCity(int area_id){
+        return addressService.findAllAreaByAreaId(area_id);
+    }
+
+    @RequestMapping(value ="addAddress/{flagt}",method = RequestMethod.POST)
+    public String addAddress(Address address,HttpSession session,int area_id,@PathVariable("flagt")int flagt){
         User user =(User)session.getAttribute("loginUser");
-        address.setUser(user);
+        Area area= addressService.findAreaById(area_id);
+        User u  = userService.findById(user.getId());
+        address.setArea(area.getName());
+        log.info("添加地址");
+        address.setUser(u);
         userService.addAddress(address);
-        return "redirect:/listAddress";
+        if(flagt==0) {
+            return "redirect:/listAddress";
+        }else{
+            return "redirect:/myAddress/"+address.getId();
+        }
     }
 
 
     @RequestMapping(value ="editAddress/{id}",method = RequestMethod.GET)
-    public String editAddress(@PathVariable(value ="id")int id,Model model){
+    public String editAddress(@PathVariable(value ="id")int id,Model model,int flagt){
         Address address = userService.findAddressById(id);
+        List<Area> areas = addressService.findTopArea();
         model.addAttribute("address",address);
+        model.addAttribute("areas",areas);
+        model.addAttribute("flagt",flagt);
         return "frontStage/User/editAddress";
     }
 
     @RequestMapping(value ="editAddress",method = RequestMethod.POST)
-    public String editAddress(Address address){
+    public String editAddress(Address address,int area_id,HttpSession session,int flagt){
+        log.info(area_id);
+        Area area = addressService.findAreaById(area_id);
         Address a = userService.findAddressById(address.getId());
+        User user = (User)session.getAttribute("loginUser");
         a.setUsername(address.getUsername());
         a.setAddress(address.getAddress());
         a.setFlag(address.getFlag());
         a.setPhone(address.getPhone());
-        a.setArea(address.getArea());
-        userService.updateAddress(address);
-        return "frontStage/User/addAddress";
+        a.setArea(area.getName());
+        a.setUser(user);
+        userService.updateAddress(a);
+        if(flagt ==1){
+            return "redirect:/myAddress/"+a.getId();
+        }
+        return "redirect:/listAddress";
     }
 
     @RequestMapping(value ="roleCenter",method = RequestMethod.GET)
@@ -567,7 +613,7 @@ public class UserController {
 
     @RequestMapping(value ="/withdrawProfit",method =RequestMethod.GET)
     public String areaProfit(){
-        return "frontStage/User/roleWithdraw";
+        return "frontStage/User/Withdraw";
     }
 
 

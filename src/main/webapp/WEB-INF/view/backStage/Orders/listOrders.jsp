@@ -55,13 +55,13 @@
             <!-- [[右边操作页面 -->
             <div class="content col-md-10 orderManager">
                 <div class="order-type text-left">
-                    <button class="btn btn-default btn-primary">待付款</button>
-                    <a href ="<%=request.getContextPath()%>/listOrderByP/0"><button class="btn btn-default">待发货</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByF/0"><button class="btn btn-default">待付款</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByF/1"><button class="btn btn-default">待发货</button></a>
                     <a href ="<%=request.getContextPath()%>/listOrderByP/1"><button class="btn btn-default">待收货</button></a>
-                    <button class="btn btn-default">待评价</button>
-                    <button class="btn btn-default">已完成</button>
-                    <button class="btn btn-default">退款中</button>
-                    <button class="btn btn-default">已关闭</button>
+                    <a href ="<%=request.getContextPath()%>/listOrderByC/0"><button class="btn btn-default">待评价</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByD/1"><button class="btn btn-default">已完成</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByT/1"><button class="btn btn-default">退款中</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByD/2"><button class="btn btn-default">已关闭</button></a>
                 </div>
                 <!-- [[订单-->
                 <%
@@ -75,11 +75,23 @@
                         <div class="order-statue clearfix">
                             <div class="company pull-left">订单号：<%=orders.getId()%></div>
                             <div class="pull-right contact">订单状态：<%
-                                switch(orders.getD()){
-                                    case 0:out.println("未付款");
-                                                break;
-                                    case 1:out.println("已完成");
-                                            break;
+                                if(orders.getD()==0){
+                                    if(orders.getF()==0){
+                                        out.println("未付款");
+                                    }else if(orders.getT()==1){
+                                        out.println("申请退款");
+                                    }else if(orders.getT()==2){
+                                        out.println("已退款");
+                                    }
+                                    else if(orders.getP()==0){
+                                        out.println("未发货");
+                                    }else if(orders.getP()==1){
+                                        out.println("未收货");
+                                    }
+                                }else if(orders.getD()==1){
+                                    out.println("已完成");
+                                }else{
+                                    out.println("已关闭");
                                 }
                             %></div>
                         </div>
@@ -89,7 +101,7 @@
                         <div class="product clearfix">
                             <div class="pull-left col-md-8">
                                 <div class="col-md-4">
-                                    <img src="http://localhost:55555/Shop_XL1459415582486.jpg" alt=""/>
+                                    <img src="<%=orderProduct.getImage()%>" alt=""/>
                                 </div>
                                 <div class="col-md-8 text-left">
                                     <span class="name"><%=orderProduct.getName()%></span><br /><br />

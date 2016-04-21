@@ -9,16 +9,24 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.ssl.SSLContexts;
 import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.security.KeyStore;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -29,8 +37,8 @@ public class WebChatUtil {
     private static String  APPID = "wx05208e667b03b794";
     private static String  APPSECRET = "d6ee7f14c7481fee93cbd4f569564dd7";
     private static final String ACCESS_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-    public static final String TENANT_ID = "1272412901";
-    public static final String KEY = "huanlingkejihuangbianfenbu2016ph";
+    private static final String TENANT_ID = "1272412901";
+    private static final String KEY = "huanlingkejihuangbianfenbu2016ph";
 
     static Logger  log  =Logger.getLogger(WebChatUtil.class);
     // 获取access_token值
@@ -124,7 +132,7 @@ public class WebChatUtil {
     public static boolean checkSignature(String signature,String timestamp,String nonce){
         Logger logger = Logger.getLogger(WebChatUtil.class);
         logger.info("enter checkSignature");
-        String[] s = {"weijiehuang",timestamp,nonce};
+        String[] s = {"baichengwandian",timestamp,nonce};
         Arrays.sort(s);
         String str="";
         for(int i=0;i<s.length;i++){
@@ -309,7 +317,7 @@ public class WebChatUtil {
         map.put("appid", APPID);
         map.put("trade_type","JSAPI");
         map.put("body", "1");
-        map.put("mch_id", TENANT_ID);
+        map.put("mch_id", getTenantId());
         map.put("nonce_str", nonce_str);
         map.put("notify_url", notify_url);
         map.put("openid", request.getSession().getAttribute("openId"));
@@ -321,7 +329,7 @@ public class WebChatUtil {
 
 
         String stringA=XMLUtil.mapToStr(map);
-        String stringSignTemp=stringA+"&key="+KEY;
+        String stringSignTemp=stringA+"&key="+ getKEY();
         String sign = MD5.toMD5(stringSignTemp).toUpperCase();
 
         map.put("sign", sign);
@@ -367,7 +375,7 @@ public class WebChatUtil {
         String nonce_str = generateStr(32);
         String stringA = "appId="+APPID+"&nonceStr="+nonce_str
                 +"&package=prepay_id="+prepayId+"&signType=MD5"+"&timeStamp="+startTime;
-        String stringSignTemp = stringA+"&key="+KEY;
+        String stringSignTemp = stringA+"&key="+ getKEY();
         String paySign = MD5.toMD5(stringSignTemp).toUpperCase();
 
         Map<String,Object> map = new HashMap<String,Object>();
@@ -465,5 +473,38 @@ public class WebChatUtil {
             System.out.println("使用缓存的jsapi_ticket");
             return (String)CacheMap.getDefault().get("ticket");
         }
+    }
+
+    //导入证书
+    public static CloseableHttpClient loadCert() throws Exception{
+        //指定读取证书格式为PKCS12
+        KeyStore keyStore = KeyStore.getInstance("PKCS12");
+        //读取本机存放的PKCS12证书文件
+        FileInputStream instream = new FileInputStream(new File("/var/xiaoguozhushou/apiclient_cert.p12"));
+        try {
+            //指定PKCS12的密码(商户ID)
+            keyStore.load(instream, getTenantId().toCharArray());
+        } finally {
+            instream.close();
+        }
+        SSLContext sslcontext = SSLContexts.custom()
+                .loadKeyMaterial(keyStore, getTenantId().toCharArray()).build();
+        //指定TLS版本
+        SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+                sslcontext,new String[] { "TLSv1" },null,
+                SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
+        //设置httpclient的SSLSocketFactory
+        CloseableHttpClient httpclient = HttpClients.custom()
+                .setSSLSocketFactory(sslsf)
+                .build();
+        return httpclient;
+    }
+
+    public static String getKEY() {
+        return KEY;
+    }
+
+    public static String getTenantId() {
+        return TENANT_ID;
     }
 }
