@@ -616,5 +616,11 @@ public class UserController {
         return "frontStage/User/Withdraw";
     }
 
+    @RequestMapping(value="/deleteAddress/{id}",method =RequestMethod.GET)
+    public String deleteAddress(@PathVariable("id")int id){
+        addressService.deleteAddress(id);
+        return "redirect:/listAddress";
+    }
+
 
 }

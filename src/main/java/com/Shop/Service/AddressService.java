@@ -1,5 +1,6 @@
 package com.Shop.Service;
 
+import com.Shop.Dao.AddressDao;
 import com.Shop.Dao.AreaDao;
 import com.Shop.Dao.CommentDao;
 import com.Shop.Model.Area;
@@ -18,6 +19,8 @@ public class AddressService {
     AreaDao areaDao;
     @Autowired
     CommentDao commentDao;
+    @Autowired
+    AddressDao addressDao;
 
     public void addArea(Area area){
         areaDao.save(area);
@@ -57,5 +60,9 @@ public class AddressService {
 
     public List<Comment> findCommentByGoodId(int good_id){
         return commentDao.findCommentByGoodId(good_id);
+    }
+
+    public void deleteAddress(int id){
+        addressDao.deleteById(id);
     }
 }

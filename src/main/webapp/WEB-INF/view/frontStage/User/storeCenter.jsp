@@ -66,7 +66,7 @@
 %>        </li>
     </ul>
 
-    <ul class="ui-list ui-list-text ui-list-link ui-border-tb bottomBlock  ui-list-active ui-list-cover">
+    <ul class="ui-list ui-list-text ui-list-link ui-border-tb bottomBlock  ui-list-active ui-list-cover gapTB">
         <li class="ui-border-t"  onclick="window.location.href='<%=request.getContextPath()%>/userOrders'">
             <h4>我的订单</h4>
         </li>

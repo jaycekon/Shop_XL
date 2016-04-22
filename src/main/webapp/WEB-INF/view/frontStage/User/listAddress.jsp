@@ -39,13 +39,18 @@
             for(Address address:addresses){
 
         %>
-        <a href="<%=request.getContextPath()%>/editAddress/<%=address.getId()%>/?flagt=0"><li class="addressInfo blockInfo ui-border-tb addressList">
+        <li class="addressInfo blockInfo ui-border-tb addressList">
             <%--<input type="hidden" value="<%=address.getId()%>" class="addressId"/>--%>
             <p>姓名：<%=address.getUsername()%></p>
             <p>电话：<%=address.getPhone()%></p>
             <p>地址：<%=address.getAddress()%></p>
             <button class="icon iconfont RTIcon" onclick="window.location.href='<%=request.getContextPath()%>/editAddress/<%=address.getId()%>'">&#xe603;</button>
-        </li></a>
+            <button class="icon iconfont ui-icon-delete"></button>
+        </li>
+
+        <li id="me">
+            <button onclick="window.location.href='<%=request.getContextPath()%>/deleteAddress/<%=address.getId()%>'"></button>
+        </li>
         <%
             }
         %>

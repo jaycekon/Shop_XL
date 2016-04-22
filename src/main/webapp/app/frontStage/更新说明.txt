@@ -24,4 +24,14 @@
 6.推广码  roleExtensionCode.html   largeExtensionCode.html    二维码居中   
 
 7.充值页面：   输入框的动态监测
-			
+
+4月20：
+解决数据排版乱的问题：
+table外层包裹一个div  <div class="table-responsive"></div>  div：table-responsive{overflow-x:auto;}   td不换行要加css属性：white-space:nowrap(一行显示的原因:某些不想一行显示的可以加换行符<br/>),所以对于要换行的表格单元要加‘nowrap’ 类
+参考：withdrawDetail.html页面 
+更新index.css文件 因为加了table-responsive类 
+
+
+4月22
+我的收货地址：
+页面加入了（删除按钮）  样式表address.css要更新

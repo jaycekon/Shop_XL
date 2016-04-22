@@ -1,11 +1,14 @@
 package com.Shop.Service;
 
+import com.Shop.Dao.GoodDao;
 import com.Shop.Dao.OrderProductDao;
 import com.Shop.Dao.OrdersDao;
 import com.Shop.Dao.WithdrawalsOrderDao;
+import com.Shop.Model.Good;
 import com.Shop.Model.OrderProduct;
 import com.Shop.Model.Orders;
 import com.Shop.Model.WithdrawalsOrder;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +25,9 @@ public class OrdersService {
     OrderProductDao orderProductDao;
     @Autowired
     WithdrawalsOrderDao withdrawalsOrderDao;
+    @Autowired
+    GoodDao goodDao;
+    Logger log = Logger.getLogger(OrdersService.class);
 
     public Orders findOrdersById(int id){
         return ordersDao.findById(id);
@@ -132,5 +138,24 @@ public class OrdersService {
 
     public List<WithdrawalsOrder> findWithdrawalsOrderByRoleId(int role_id){
         return withdrawalsOrderDao.findAllByRoleId(role_id);
+    }
+
+    public void updateWithdrawalsOrder(WithdrawalsOrder withdrawalsOrder){
+        withdrawalsOrderDao.update(withdrawalsOrder);
+    }
+
+
+    public void updateOrderProductAfterPay(int order_id){
+        List<OrderProduct> orderProducts = orderProductDao.findAllByOrderId(order_id);
+        for(OrderProduct orderProduct :orderProducts){
+            Good good = goodDao.findById(orderProduct.getGood_id());
+            int num = good.getNum()-orderProduct.getCount();
+            good.setNum(num);           //设置商品的库存
+            log.info(good.getNum());
+            int sale_count = good.getSaleCount() +orderProduct.getCount();
+            good.setSaleCount(sale_count);   //设置销量
+            log.info(good.getSaleCount());
+            goodDao.update(good);
+        }
     }
 }

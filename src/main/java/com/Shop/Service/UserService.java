@@ -174,6 +174,7 @@ public class UserService {
         orderProduct.setImage(imageAddress);
         orderProduct.setPrices(good.getDumpingPrices());
         orderProduct.setDescribes(good.getDescribes());
+        orderProduct.setMaxCount(good.getNum());
         float areaProfit = good.getPv() * count * profit.getArea_count();
         orderProduct.setAreaProfit(areaProfit/100);
         float roleProfit = good.getPv() * count * profit.getRole_count();
@@ -223,6 +224,7 @@ public class UserService {
     public List<Address> listAddress(int id){
         return addressDao.findByUserId(id);
     }
+
 
 
     public void updateOrderProduct(OrderProduct orderProduct){

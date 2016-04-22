@@ -49,7 +49,7 @@
 
         <div class="productsBox ui-border-t ">
             <!-- [[单个商品 -->
-            <div class="productBox ui-border-b" data-unitPrice="12">
+            <div class="productBox ui-border-b" data-unitPrice="12" id="22">
 
                <div class="col imgCol">
                    <a href="./productDetail.html"><img src="./../image/1.jpg" alt=""></a>
@@ -60,7 +60,31 @@
                     <div>
                         <div class="selectNum">
                             <button class="reduce minus">&#45;</button>
-                            <input type="text" value="1" title="number" data-max="10" readonly="readonly"/>
+                            <input type="text" value="1" title="number" data-max="10" readonly="readonly" class="productNum"/>
+                            <button class="add plus">&#43;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col rightCol">
+                    <button><i class="ui-icon-delete productDel"></i></button>
+                    <p class="price">&#165; 196.09</p>
+                </div>
+
+            </div><!-- 单个商品]] -->
+            <!-- [[单个商品 -->
+            <div class="productBox ui-border-b" data-unitPrice="12" id="22">
+
+                <div class="col imgCol">
+                    <a href="./productDetail.html"><img src="./../image/1.jpg" alt=""></a>
+                </div>
+
+                <div class="col describeCol">
+                    <h4 class="intwoline productName">自然堂雪域精粹纯粹滋润冰肌水自然堂雪域精粹纯粹滋润冰肌水</h4>
+                    <div>
+                        <div class="selectNum">
+                            <button class="reduce minus">&#45;</button>
+                            <input type="text" value="1" title="number" data-max="10" readonly="readonly" class="productNum"/>
                             <button class="add plus">&#43;</button>
                         </div>
                     </div>
@@ -76,7 +100,7 @@
 
             <!-- [[价格合计 -->
             <ul class="countBlock ui-border-b">
-                <li>商品合计： <span class="themeColor" id="amount">&#165; 123.00</span>（共四件）</li>
+                <li>商品合计： <span class="themeColor" id="amount">&#165; 392.18</span>（共<span id="num">2</span>件）</li>
                 <li>运费合计： <span class="themeColor" id="freight">&#165; 10.00</span></li>
             </ul><!-- 价格合计]] -->
 

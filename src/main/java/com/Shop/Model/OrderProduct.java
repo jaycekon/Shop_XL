@@ -17,6 +17,7 @@ public class OrderProduct {
     private String image;
     private Cart cart;
     private Orders orders;
+    private int maxCount;
     private int stauts;
     private float areaProfit;
     private float roleProfit;
@@ -121,5 +122,13 @@ public class OrderProduct {
 
     public void setStauts(int stauts) {
         this.stauts = stauts;
+    }
+
+    public int getMaxCount() {
+        return maxCount;
+    }
+
+    public void setMaxCount(int maxCount) {
+        this.maxCount = maxCount;
     }
 }

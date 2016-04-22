@@ -354,6 +354,8 @@ public class WebChatController {
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 if(resultMap.get("return_code").equals("FAIL")){
                 }else{
+                    withdrawalsOrder.setStatus(1);
+                    ordersService.updateWithdrawalsOrder(withdrawalsOrder);
                     log.info(resultMap.get("prepay_id"));
                 }
             }

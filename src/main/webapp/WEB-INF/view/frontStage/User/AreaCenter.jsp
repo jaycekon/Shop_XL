@@ -66,7 +66,7 @@
 
     <ul class="ui-list ui-list-text ui-list-link ui-border-tb  ui-list-active ui-list-cover gapT">
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/roleList'">
-            <h4>我的店家</h4>
+            <h4>我的角色</h4>
         </li>
         <li class="ui-border-t" onclick="window.location.href='<%=request.getContextPath()%>/withDraw'">
             <h4>我的佣金</h4>

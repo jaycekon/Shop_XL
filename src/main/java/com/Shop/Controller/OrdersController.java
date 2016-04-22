@@ -1,12 +1,14 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
+import com.Shop.Service.CartService;
 import com.Shop.Service.OrdersService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.OrderPoJo;
 import com.Shop.Util.XMLUtil;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +35,8 @@ public class OrdersController {
     UserService userService;
     @Autowired
     OrdersService ordersService;
+    @Autowired
+    CartService cartService;
     Logger log = Logger.getLogger(OrdersController.class);
     /**
      * 获取未付款订单(后台）
@@ -429,9 +433,14 @@ public class OrdersController {
                     areas.setTotalCommission(total);
                     userService.updateAreas(areas);
                 }
+
+
+
                 log.info("更新数据库中订单的信息："+orders.getUuid());
                 orders.setF(1);
                 ordersService.updateOrders(orders);
+                //跟新商品的销量和库存
+                ordersService.updateOrderProductAfterPay(orders.getId());
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -439,6 +448,12 @@ public class OrdersController {
         return "success";
     }
 
+    /**
+     * 创建体现订单
+     * @param cout
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/witdraw",method =RequestMethod.POST)
     public String withdraw(float cout,HttpSession session){
         WithdrawalsOrder withdrawalsOrder = new WithdrawalsOrder();
@@ -448,7 +463,8 @@ public class OrdersController {
             if(cout<50) {
                 return "redirect:/Withdraw";
             }
-              else  if (areas.getExitCommission() < cout) {
+              else
+            if (areas.getExitCommission() < cout) {
                     return "redirect:/Withdraw";
                 }
             withdrawalsOrder.setUuid(UUID.randomUUID().toString());
@@ -465,7 +481,8 @@ public class OrdersController {
             Roles roles =(Roles)session.getAttribute("roles");
             if(cout<50){
                 return "redirect:/Withdraw";
-            } else if(roles.getExitCommission()<cout){
+            } else
+              if(roles.getExitCommission()<cout){
                 return "redirect:/Withdraw";
             }
             withdrawalsOrder.setUuid(UUID.randomUUID().toString());
@@ -571,6 +588,33 @@ public class OrdersController {
         }
         model.addAttribute("orderPoJos",orderPoJos);
         return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value="editOrderProductNum",method = RequestMethod.GET)
+    @ResponseBody
+    public String editOrderProductNum(int id,int num){
+        log.info(id+"测试"+num);
+        OrderProduct orderProduct = userService.findOrderProductById(id);
+        Cart cart = orderProduct.getCart();
+        Orders orders = orderProduct.getOrders();
+
+        float prices = orderProduct.getPrices()*orderProduct.getCount();
+        double total  = cart.getTotalPrices()-prices;
+        int count = cart.getCount()-orderProduct.getCount();
+        cart.setCount(count);
+        cart.setTotalPrices(total);
+        orderProduct.setCount(num);
+        prices = orderProduct.getPrices()*orderProduct.getCount();
+        total = cart.getTotalPrices()+prices;
+        cart.setTotalPrices(total);
+        count = cart.getCount()+orderProduct.getCount();
+        cart.setCount(count);
+        cartService.updateCart(cart);
+        userService.updateOrderProduct(orderProduct);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status","success");
+        return jsonObject.toString();
     }
 
 }

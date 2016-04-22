@@ -48,28 +48,41 @@
         <div class="productsBox ui-border-tb ">
 
             <!-- [[单个商品 -->
-            <div class="productBox ui-border-b">
+            <div class="productBox ui-border-b" data-unitPrice="<%=orderProduct.getPrices()%>" id="<%=orderProduct.getId()%>">
 
                 <div class="col imgCol">
-                    <a href="<%=request.getContextPath()%>/removeProduct/<%=orderProduct.getId()%>"><img
-                            src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt=""></a>
-                </div>
+                    <a href="<%=request.getContextPath()%>/Detail/<%=orderProduct.getId()%>">
+                        <%
+                            if(orderProduct.getImage()!=null){
+                                %>
 
+                        <img src="<%=orderProduct.getImage()%>" alt="">
+                        <%
+                            }else{
+                        %>
+                            <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
+                        <%
+                            }
+                        %>
+                    </a>
+                </div>
+            <%--<input type="hidden" class="id" value="<%=orderProduct.getId()%>"/>--%>
                 <div class="col describeCol">
                     <h4 class="intwoline productName"><%=orderProduct.getName()%>
                     </h4>
                     <div>
                         <div class="selectNum">
                             <button class="reduce minus">&#45;</button>
-                            <input type="number" value="<%=orderProduct.getCount()%>"/>
+                            <input type="number" class="productNum" value="<%=orderProduct.getCount()%>" data-max="<%=orderProduct.getMaxCount()%>"/>
                             <button class="add plus">&#43;</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="col rightCol">
-                    <a href="<%=request.getContextPath()%>/removeProduct/<%=orderProduct.getId()%>">删除</a>
-                    <p class="totalPrice">&#165; <%
+                    <%--<a href="<%=request.getContextPath()%>/removeProduct/<%=orderProduct.getId()%>">删除</a>--%>
+                            <button onclick="delProduct(this,<%=orderProduct.getId()%>)"><i class="ui-icon-delete productDel"></i></button>
+                    <p class="price">&#165; <%
                        float price =  orderProduct.getPrices()*orderProduct.getCount();
                         out.println(price);
                     %>
@@ -88,7 +101,7 @@
             <!-- [[价格合计 -->
             <ul class="countBlock ui-border-b">
                 <li>商品合计： <span class="themeColor"
-                                id="amount">&#165; <%=cart.getTotalPrices()%></span>（共<%=cart.getCount()%>件）
+                                id="amount">&#165; <%=cart.getTotalPrices()%></span>（共<span id="num"><%=cart.getCount()%></span>件）
                 </li>
                 <li>运费合计： <span class="themeColor" id="freight">&#165; 0.00</span></li>
             </ul><!-- 价格合计]] -->
@@ -118,8 +131,6 @@
         %>
 
 
-
-
     </div><!-- 没有商品]] -->
 
 </section>
@@ -128,6 +139,7 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/zepto.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/js/index.js"></script>
+<script src="<%=request.getContextPath()%>/app/frontStage/js/shopCart.js"></script>
 
 </body>
 </html>

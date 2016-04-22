@@ -31,19 +31,13 @@
 <section class="ui-container">
 
     <ul class="ui-list-active address">
-        <li class="addressInfo blockInfo ui-border-tb addressList">
+        <li class="addressInfo blockInfo ui-border-tb addressList" >
             <input type="hidden" value="" class="addressId"/>
             <p>姓名：</p>
             <p>电话：</p>
             <p>地址：</p>
             <button class="icon iconfont RTIcon" onclick="window.location.href='./editAddress.html'">&#xe603;</button>
-        </li>
-        <li class="addressInfo blockInfo ui-border-tb addressList">
-            <input type="hidden" value="" class="addressId"/>
-            <p>姓名：</p>
-            <p>电话：</p>
-            <p>地址：</p>
-            <button class="icon iconfont RTIcon" onclick="window.location.href='./editAddress.html'">&#xe603;</button>
+            <button class="icon iconfont ui-icon-delete"></button>
         </li>
     </ul>
 
@@ -69,6 +63,12 @@
             data: id
         });
     });
+
+    $(".addressInfo").click(function(e){
+        if(e.target !== $(this).find(".RTIcon")[0] ){
+            alert();
+        }
+    })
 </script>
 
 </body>

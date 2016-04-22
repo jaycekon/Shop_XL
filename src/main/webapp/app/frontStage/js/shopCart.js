@@ -2,7 +2,9 @@
 var thisProduct;
 /* 商品删除 */
 $('.productDel').tap(function(){
-    var $targetDel = $(this).parents('.productBox');
+    var $targetDel = $(this).parents('div').eq(3);
+    console.log($targetDel.attr("id"));
+/*    console.log( $targetDel.parent() );*/
     /* 弹窗 */
     var dia=$.dialog({
         content:'确定删除该商品么',
@@ -20,22 +22,29 @@ $('.productDel').tap(function(){
         }
     });
 
+    /*商品总计改变*/
+    acountNum();
+
 });
 
 $('.minus').tap(function(){
-    $thisProduct = $(this).parents('.productBox');
+    $thisProduct = $(this).parents('div').eq(3);
+    var id = $thisProduct.attr('id');
     var $num = $(this).siblings('input');         //  当前选择数量
-    var num =  parseFloat( $num.val() ).toFixed(2);
+    var num =  parseInt( $num.val() );
     if ( num >= 2 ) {          // 修改数量显示
         $num.val( num-1 );
-        editPrice($thisProduct,'reduce');
+        num = num-1;
+
+        editPrice($thisProduct,'reduce',id,num);
     }
 });
 
 /* 商品数量编辑 */
 $('.plus').tap(function(){
 
-    $thisProduct = $(this).parents('.productBox');
+    var $thisProduct = $(this).parents('div').eq(3);
+    var id = $thisProduct.attr('id');
 
     /*数量的改变*/
     var $num = $thisProduct.find('input');              // 当前选择数量
@@ -43,7 +52,9 @@ $('.plus').tap(function(){
     var num =  parseInt ( $num.val() );
     if( num < max ) {
         $num.val( num+1 );
-        editPrice($thisProduct,'add');
+        num =num+1;
+
+        editPrice($thisProduct,'add',id,num);
     }else {
         /*达到最大库存量信息提示*/
         $.tips({
@@ -109,10 +120,11 @@ $('.selectNum input').tap(function() {
      }*/
 
 });
-
 /*价格改变*/
-function editPrice($thisProduct,type) {
-
+function editPrice($thisProduct,type,id,num) {
+    $.ajax({
+        url: "../editOrderProductNum?id=" + id + "&num=" + num
+    });
     var $num = $thisProduct.find('input');                       // 数量
     var $unitPrice = $thisProduct.attr('data-unitPrice') ;      // 单价
     var $price =  $thisProduct.find('.price');                  // 总价
@@ -129,14 +141,26 @@ function editPrice($thisProduct,type) {
 
     $price.html('&#165; ' + price);
     acountPrice();
+    /*商品总计改变*/
+    acountNum();
 }
 
 /*总价的计算*/
 function acountPrice() {
     var totalPrice = 0;
+    var price;
     $('.productBox .price').each(function(){
-        var price = parseFloat( $(this).text().substr(1));
-        totalPrice = totalPrice + price;
+        price = parseFloat( $(this).text().substr(1));
+        totalPrice = (parseFloat(totalPrice) + price).toFixed(2);
     });
     $('#amount').html('&#165; ' + totalPrice);
+}
+
+/*商品总数量的改变*/
+function acountNum() {
+    var totalNum = 0;
+    $('.productNum').each(function(){
+        totalNum = totalNum + parseInt( $(this).val());
+    });
+    $("#num").text(totalNum)
 }
