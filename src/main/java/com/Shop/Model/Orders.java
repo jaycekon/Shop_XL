@@ -11,7 +11,7 @@ import java.util.Date;
 public class Orders {
     private int id;             //订单号
     private int number;             //商品数量
-    private int status;             //订单状态
+    private int status;             //订单是否有退货退款状态
     private float prices;              //订单总额
     private Date setTime;               //下单时间
     private Date payTime;               //付款时间

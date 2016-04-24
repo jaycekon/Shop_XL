@@ -36,7 +36,7 @@
     <!-- [[订单类别 -->
     <ul class="tab">
         <li>
-            <a href="<%=request.getContextPath()%>/repayOrders"  id="daifukuan" class="ui-btn">待付款</a>
+            <a href="<%=request.getContextPath()%>/repayOrders" id="daifukuan" class="ui-btn">待付款</a>
         </li>
         <li>
             <a href="<%=request.getContextPath()%>/resendOrders" id="daifahuo" class="ui-btn">待发货</a>
@@ -45,7 +45,7 @@
             <a href="<%=request.getContextPath()%>/sendOrders" id="daishouhuo" class="ui-btn">待收货</a>
         </li>
         <li>
-            <a href="<%=request.getContextPath()%>/endOrders"  id="yiwancheng" class="ui-btn">已完成</a>
+            <a href="<%=request.getContextPath()%>/getOrders" id="yiwancheng" class="ui-btn">已收货</a>
         </li>
         <li>
             <a href="<%=request.getContextPath()%>/reCommentOrders" id="daipingjia" class="ui-btn">待评价</a>
@@ -54,7 +54,7 @@
             <a href="<%=request.getContextPath()%>/exitOrders" id="tuikuanzhong" class="ui-btn">退款中</a>
         </li>
         <li>
-            <a href="<%=request.getContextPath()%>/closeOrders"  id="yiguanbi" class="ui-btn">已关闭</a>
+            <a href="<%=request.getContextPath()%>/closeOrders" id="yiguanbi" class="ui-btn">已关闭</a>
         </li>
     </ul>
 
@@ -68,10 +68,10 @@
 
 
     <%
-        List<OrderPoJo> orderPoJos =(List<OrderPoJo>)request.getAttribute("orderPoJos");
-        if(orderPoJos!=null){
-        for(OrderPoJo orderPoJo:orderPoJos){
-            Orders orders = orderPoJo.getOrders();
+        List<OrderPoJo> orderPoJos = (List<OrderPoJo>) request.getAttribute("orderPoJos");
+        if (orderPoJos != null) {
+            for (OrderPoJo orderPoJo : orderPoJos) {
+                Orders orders = orderPoJo.getOrders();
 
     %>
     <!-- [[待付款 -->
@@ -79,25 +79,22 @@
         <!-- [[订单头部 -->
         <li class="ui-border-t">
             <div class="ui-list-info">
-                <h4 class="ui-nowrap">订单编号：<%=orders.getUuid()%></h4>
+                <h4 class="ui-nowrap">订单编号：<%=orders.getUuid()%>
+                </h4>
             </div>
             <div class="ui-list-action themeColor"><%
-                if(orders.getD()==0){
-                    if(orders.getF()==0){
+
+                if (orders.getD() == 0) {
+                    if (orders.getF() == 0) {
                         out.println("未付款");
-                    }else if(orders.getT()==1){
-                        out.println("申请退款");
-                    }else if(orders.getT()==2){
-                        out.println("已退款");
-                    }
-                    else if(orders.getP()==0){
+                    } else if (orders.getP() == 0) {
                         out.println("未发货");
-                    }else if(orders.getP()==1){
+                    } else if (orders.getP() == 1) {
                         out.println("未收货");
                     }
-                }else if(orders.getD()==1){
+                } else if (orders.getD() == 1) {
                     out.println("已完成");
-                }else{
+                } else {
                     out.println("已关闭");
                 }
             %>
@@ -106,38 +103,84 @@
         <!-- [[订单商品 -->
         <%
             List<OrderProduct> orderProducts = orderPoJo.getOrderProduct();
-            for(OrderProduct orderProduct:orderProducts){
+            for (OrderProduct orderProduct : orderProducts) {
         %>
         <li class="ui-border-t productLink">
             <div class="ui-list-thumb">
                 <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
             </div>
             <div class="ui-list-info">
-                <h4 class="ui-nowrap"><%=orderProduct.getDescribes()%></h4>
+                <h4 class="ui-nowrap"><%=orderProduct.getDescribes()%>
+                </h4>
             </div>
             <div class="textRight">
-                <p class="">&#165; <%=orderProduct.getPrices()%></p>
-                <p class="unMarjorColor">X<%=orderProduct.getCount()%></p>
+                <p class="">&#165; <%=orderProduct.getPrices()%>
+                </p>
+                <p class="unMarjorColor">X<%=orderProduct.getCount()%>
+                </p>
             </div>
         </li><!-- 订单商品]] -->
         <%
-            if(orders.getF()==1&&orders.getP()==0){
-            if(orderProduct.getStauts()==0){
+            if (orders.getF() == 1 && orders.getP() == 0) {
+                if (orderProduct.getStauts() == 0) {
         %>
         <div class="ui-border-b block operateBlock">
-            <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/exitProduct/<%=orderProduct.getId()%>'">申请退款</button>
+            <button class="ui-btn ui-btn-danger"
+                    onclick="window.location.href='<%=request.getContextPath()%>/exitProduct/<%=orderProduct.getId()%>'">
+                申请退款
+            </button>
         </div>
-       <%}else if(orderProduct.getStauts()==1){
-       %>
+        <%
+        } else if (orderProduct.getStauts() == 1) {
+        %>
         <div class="ui-border-b block operateBlock">
-            <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/exitProduct/<%=orderProduct.getId()%>'">取消申请</button>
+            <button class="ui-btn ui-btn-danger"
+                    onclick="window.location.href='<%=request.getContextPath()%>/exitProduct/<%=orderProduct.getId()%>'">
+                取消申请
+            </button>
         </div>
 
+        <%
+        } else if (orderProduct.getStauts() == 2) {
+        %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger">已退款</button>
+        </div>
+        <%
+            }
+        } else if (orders.getP() == 2) {
+                if(orderProduct.getExitStatus()==0){
+        %>
+
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger"
+                    onclick="window.location.href='<%=request.getContextPath()%>/exitGood/<%=orderProduct.getId()%>'">
+                申请退货
+            </button>
+        </div>
+        <%
+                    }else if(orderProduct.getExitStatus()==1){
+                        %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger"
+                    onclick="window.location.href='<%=request.getContextPath()%>/cancleGood/<%=orderProduct.getId()%>'">
+                取消申请
+            </button>
+        </div>
+        <%
+                    }else if(orderProduct.getExitStatus()==2){
+                        %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger"
+                    onclick="window.location.href='<%=request.getContextPath()%>/sendOrderProduct/<%=orderProduct.getId()%>'">
+                发货
+            </button>
+        </div>
         <%
                     }
                 }
             }
-       %>
+        %>
     </ul>
 
     <div class="block ui-border-b">
@@ -147,46 +190,29 @@
 
 
     <%
-        if(orders.getD()==0){
-            if(orders.getF()==0){
+        if (orders.getD() == 0) {
+            if (orders.getF() == 0) {
     %>
     <div class="ui-border-b block operateBlock">
-        <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/deleteOrders/<%=orders.getId()%>'">取消订单</button>
-        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/weixin/preparePayOrder/<%=orders.getId()%>'">去付款</button>
+        <button class="ui-btn"
+                onclick="window.location.href='<%=request.getContextPath()%>/deleteOrders/<%=orders.getId()%>'">取消订单
+        </button>
+        <button class="ui-btn ui-btn-danger"
+                onclick="window.location.href='<%=request.getContextPath()%>/weixin/preparePayOrder/<%=orders.getId()%>'">
+            去付款
+        </button>
     </div>
     <!-- 待付款]] -->
     <%
-            }else{
-                if(orders.getP()==0){
-                    if(orders.getT()==0){
-    %>
-    <div class="ui-border-b block operateBlock">
-        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/exitOrders/<%=orders.getId()%>'">申请退款</button>
-    </div>
-    <%
-                    }else{
-    %>
-    <div class="ui-border-b block operateBlock">
-        <button class="ui-btn ui-btn-danger" onclick="window.location.href='<%=request.getContextPath()%>/cancleOrders/<%=orders.getId()%>'">取消申请</button>
-    </div>
-    <%
-                    }
-                }
             }
         }
     %>
 
 
-<%
+    <%
+            }
         }
-    }
-%>
-
-
-
-
-
-
+    %>
 
 
 </section>
@@ -194,65 +220,65 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/zepto.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script>
-//    $('.productLink').tap(function(){
-//        var $target = $(this);
-//        $target.addClass('clickActive');
-//        setTimeout(function(){
-//            $target.removeClass('clickActive');
-//        },150);
-//        window.location.href = "./orderDetail.html"
-//    });
+    //    $('.productLink').tap(function(){
+    //        var $target = $(this);
+    //        $target.addClass('clickActive');
+    //        setTimeout(function(){
+    //            $target.removeClass('clickActive');
+    //        },150);
+    //        window.location.href = "./orderDetail.html"
+    //    });
 
     var $orderTabBtn = $('.orderTabBtn');
-    $orderTabBtn.tap(function(){
+    $orderTabBtn.tap(function () {
         $orderTabBtn.removeClass('productBtn');
         $(this).addClass('productBtn');
     })
 
 
-// 订单状态页面url解析
-switch(window.location.pathname.split("/").pop())  {  // 条件根据具体情况设定
-    /*待付款*/
-    case "repayOrders":
-        $daifukuan = $('#daifukuan');
-        setActive($daifukuan);
-        break;
-    /*待发货*/
-    case "resendOrders":
-        $daifahuo = $('#daifahuo');
-        setActive($daifahuo);
-        break;
-    /*待收货*/
-    case "sendOrders":
-        $daishouhuo = $('#daishouhuo');
-        setActive($daishouhuo);
-        break;
-    /*已完成*/
-    case "endOrders":
-        $yiwancheng = $('#yiwancheng');
-        setActive($yiwancheng);
-        break;
-    /*待评价*/
-    case "reCommentOrders":
-        $daipingjia = $('#daipingjia');
-        setActive($daipingjia);
-        break;
-    /*退款中*/
-    case "exitOrders":
-        $tuikuanzhong = $('#tuikuanzhong');
-        setActive($tuikuanzhong);
-        break;
-    /*已关闭*/
-    case "closeOrders":
-        $yiguanbi = $('#yiguanbi');
-        setActive($yiguanbi);
-        break;
-}
+    // 订单状态页面url解析
+    switch (window.location.pathname.split("/").pop()) {  // 条件根据具体情况设定
+        /*待付款*/
+        case "repayOrders":
+            $daifukuan = $('#daifukuan');
+            setActive($daifukuan);
+            break;
+        /*待发货*/
+        case "resendOrders":
+            $daifahuo = $('#daifahuo');
+            setActive($daifahuo);
+            break;
+        /*待收货*/
+        case "sendOrders":
+            $daishouhuo = $('#daishouhuo');
+            setActive($daishouhuo);
+            break;
+        /*已完成*/
+        case "endOrders":
+            $yiwancheng = $('#yiwancheng');
+            setActive($yiwancheng);
+            break;
+        /*待评价*/
+        case "reCommentOrders":
+            $daipingjia = $('#daipingjia');
+            setActive($daipingjia);
+            break;
+        /*退款中*/
+        case "exitOrders":
+            $tuikuanzhong = $('#tuikuanzhong');
+            setActive($tuikuanzhong);
+            break;
+        /*已关闭*/
+        case "closeOrders":
+            $yiguanbi = $('#yiguanbi');
+            setActive($yiguanbi);
+            break;
+    }
 
 
-function setActive(objID){
-    objID.addClass("productBtn");
-}
+    function setActive(objID) {
+        objID.addClass("productBtn");
+    }
 </script>
 
 </body>

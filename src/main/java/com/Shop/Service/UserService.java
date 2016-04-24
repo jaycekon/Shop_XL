@@ -260,6 +260,10 @@ public class UserService {
     public List<Orders> listOrdersByT(int t){
         return ordersDao.findAllByT(t);
     }
+
+    public List<Orders> listOrdersByStatus(){
+        return ordersDao.findAllByStatus();
+    }
     public List<Orders> listOrdersByD(int d){
         return ordersDao.findAllByD(d);
     }

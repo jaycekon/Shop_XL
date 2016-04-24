@@ -9,18 +9,21 @@ import javax.persistence.*;
 @Table
 public class OrderProduct {
     private int id;
-    private int count;
-    private float prices;
+    private int count;          //订单项数量
+    private float prices;           //订单项价格
     private String name;
     private int good_id;
-    private String describes;
-    private String image;
+    private String describes;       //商品描述
+    private String image;           //商品描述
     private Cart cart;
     private Orders orders;
-    private int maxCount;
-    private int stauts;
+    private int maxCount;               //订单最大数量
+    private int stauts;                     //订单状态
+    private int exitStatus;                 //订单退货状态
     private float areaProfit;
     private float roleProfit;
+    private ExitOrders exitOrders;          //退货订单
+
 
     @Id
     @GeneratedValue
@@ -130,5 +133,22 @@ public class OrderProduct {
 
     public void setMaxCount(int maxCount) {
         this.maxCount = maxCount;
+    }
+
+    public int getExitStatus() {
+        return exitStatus;
+    }
+
+    public void setExitStatus(int exitStatus) {
+        this.exitStatus = exitStatus;
+    }
+
+    @OneToOne
+    public ExitOrders getExitOrders() {
+        return exitOrders;
+    }
+
+    public void setExitOrders(ExitOrders exitOrders) {
+        this.exitOrders = exitOrders;
     }
 }

@@ -74,7 +74,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByF(int f) {
         Session session = super.openSession();
-        String hql ="from Orders where f=:f and d=0 and p=0 order by setTime desc";
+        String hql ="from Orders where f=:f and d=0 and p=0 and t=0 order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("f",f).list();
         session.close();
         return orders;
@@ -101,7 +101,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByP(int p) {
         Session session = super.openSession();
-        String hql ="from Orders where p=:p and f=1 and d=0 order by setTime desc";
+        String hql ="from Orders where p=:p and f=1 and d=0 and t=0 order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("p",p).list();
         session.close();
         return orders;
@@ -130,6 +130,18 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         Session session = super.openSession();
         String hql ="from Orders where t=:t and d=0 order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("t",t).list();
+        session.close();
+        return orders;
+    }
+
+    /**
+     * 获取正在申请退款的订单
+     * @return
+     */
+    public List<Orders> findAllByStatus() {
+        Session session = super.openSession();
+        String hql ="from Orders where status = 1 order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).list();
         session.close();
         return orders;
     }

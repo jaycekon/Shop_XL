@@ -1,13 +1,7 @@
 package com.Shop.Service;
 
-import com.Shop.Dao.GoodDao;
-import com.Shop.Dao.OrderProductDao;
-import com.Shop.Dao.OrdersDao;
-import com.Shop.Dao.WithdrawalsOrderDao;
-import com.Shop.Model.Good;
-import com.Shop.Model.OrderProduct;
-import com.Shop.Model.Orders;
-import com.Shop.Model.WithdrawalsOrder;
+import com.Shop.Dao.*;
+import com.Shop.Model.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +21,8 @@ public class OrdersService {
     WithdrawalsOrderDao withdrawalsOrderDao;
     @Autowired
     GoodDao goodDao;
+    @Autowired
+    ExitOrdersDao exitOrdersDao;
     Logger log = Logger.getLogger(OrdersService.class);
 
     public Orders findOrdersById(int id){
@@ -101,6 +97,7 @@ public class OrdersService {
         orderProductDao.update(orderProduct);
     }
 
+
     /**
      * 通过ID获取订单项
      * @param id
@@ -157,5 +154,17 @@ public class OrdersService {
             log.info(good.getSaleCount());
             goodDao.update(good);
         }
+    }
+
+    public void addExitOrders(ExitOrders exitOrders){
+        exitOrdersDao.save(exitOrders);
+    }
+
+    public void deleteExitOrders(ExitOrders exitOrders){
+        exitOrdersDao.delete(exitOrders);
+    }
+
+    public void updateExitOrders(ExitOrders exitOrders){
+        exitOrdersDao.update(exitOrders);
     }
 }

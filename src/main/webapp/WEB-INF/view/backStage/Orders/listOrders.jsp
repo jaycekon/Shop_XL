@@ -58,9 +58,10 @@
                     <a href ="<%=request.getContextPath()%>/listOrderByF/0"><button class="btn btn-default">待付款</button></a>
                     <a href ="<%=request.getContextPath()%>/listOrderByF/1"><button class="btn btn-default">待发货</button></a>
                     <a href ="<%=request.getContextPath()%>/listOrderByP/1"><button class="btn btn-default">待收货</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByC/0"><button class="btn btn-default">待评价</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByP/2"><button class="btn btn-default">已收货</button></a>
                     <a href ="<%=request.getContextPath()%>/listOrderByD/1"><button class="btn btn-default">已完成</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByT/1"><button class="btn btn-default">退款中</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByS"><button class="btn btn-default">退款中</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByT/1"><button class="btn btn-default">退货中</button></a>
                     <a href ="<%=request.getContextPath()%>/listOrderByD/2"><button class="btn btn-default">已关闭</button></a>
                 </div>
                 <!-- [[订单-->
@@ -75,18 +76,21 @@
                         <div class="order-statue clearfix">
                             <div class="company pull-left">订单号：<%=orders.getId()%></div>
                             <div class="pull-right contact">订单状态：<%
+
                                 if(orders.getD()==0){
                                     if(orders.getF()==0){
                                         out.println("未付款");
-                                    }else if(orders.getT()==1){
-                                        out.println("申请退款");
-                                    }else if(orders.getT()==2){
-                                        out.println("已退款");
                                     }
                                     else if(orders.getP()==0){
                                         out.println("未发货");
                                     }else if(orders.getP()==1){
                                         out.println("未收货");
+                                    }else if(orders.getP()==2){
+                                        if(orders.getT()==1){
+                                            out.println("申请退货");
+                                        }else {
+                                            out.println("已收货");
+                                        }
                                     }
                                 }else if(orders.getD()==1){
                                     out.println("已完成");
@@ -110,7 +114,18 @@
                             </div>
                             <div class="pull-right width-2 text-right">
                                 <span class="price">￥<%=orderProduct.getPrices()%></span><br /><br />
-                                <span class="number">X <%=orderProduct.getCount()%></span>
+                                <span class="number">X <%=orderProduct.getCount()%></span><br />
+                                <span class="status"><%
+                                    if(orderProduct.getStauts()==2){
+                                        out.println("已退款");
+                                    }else if(orderProduct.getStauts()==1){
+                                        out.println("申请退款");
+                                    }else if(orderProduct.getExitStatus()==1){
+                                        out.println("申请退货");
+                                    }else if(orderProduct.getExitStatus()==2){
+                                        out.println("已退货");
+                                    }
+                                %></span>
                             </div>
                         </div>
 
@@ -121,6 +136,9 @@
                             <div class="product-total">商品合计：￥<%=orders.getPrices()%>（共<%=orders.getNumber()%>件）</div>
 
                             <div class="freight">运费合计：￥0.00</div>
+                        </div>
+
+                        <div class="ui-border-b block operateBlock">
                         </div>
                     </a>
                 </div>

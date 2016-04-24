@@ -367,4 +367,83 @@ public class WebChatController {
         }
     }
 
+    /**
+     * 用户退款
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="exitToUser/{id}")
+    public String exitOrders(@PathVariable("id") int id) throws Exception{
+        //统计要付的钱
+        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+        Orders orders = orderProduct.getOrders();
+//        int money = (int)(orders.getPrices()*100);
+        int money = (int)(orderProduct.getPrices()*orderProduct.getCount()*100);
+        log.info(money);
+        money=100;
+        log.info(money);
+        User user = orders.getUser();
+        String openId =user.getOpenId();
+        String nonce_str = WebChatUtil.generateStr(32);
+        String ip = "131.25.0.7";
+
+        //组装参数
+        Map<String, Object> map = new TreeMap<String, Object>();
+        map.put("amount", String.valueOf(money));
+        map.put("check_name", "NO_CHECK");
+        map.put("desc", "拿去花");
+        map.put("mch_appid", WebChatUtil.getAPPID());
+        map.put("mchid", WebChatUtil.getTenantId());
+        map.put("nonce_str", nonce_str);
+        map.put("openid", openId);
+        map.put("partner_trade_no", orders.getUuid());
+        map.put("spbill_create_ip",ip);
+
+
+        String stringA=XMLUtil.mapToStr(map);
+        String stringSignTemp=stringA+"&key="+WebChatUtil.getKEY();
+        String sign = MD5.toMD5(stringSignTemp).toUpperCase();
+
+        map.put("sign", sign);
+        String xml=XMLUtil.mapToXml(map);
+
+        System.out.println("stringA"+stringA);
+        System.out.println("xml-"+xml);
+        String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+        CloseableHttpClient client = WebChatUtil.loadCert();
+
+        HttpPost post = new HttpPost(url);
+        boolean result=false;
+        try{
+            String xml2=new String(xml.getBytes("UTF-8"), "ISO8859_1");
+            StringEntity s = new StringEntity(xml2);
+            s.setContentEncoding("UTF-8");
+            s.setContentType("text/xml");
+            post.setEntity(s);
+
+            HttpResponse res = client.execute(post);
+            HttpEntity entity = res.getEntity();
+            String responseContent= EntityUtils.toString(entity, "UTF-8");
+            Map<String,Object> resultMap = XMLUtil.parseXML(responseContent);
+            System.out.println(responseContent);
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                if(resultMap.get("result_code").equals("FAIL")){
+                    log.info("退款失败");
+                }else{
+                    log.info("退款成功!");
+                    orderProduct.setStauts(2);
+                    orders.setStatus(0);
+                    ordersService.updateOrderProduct(orderProduct);
+                    ordersService.updateOrders(orders);
+                }
+            }
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }finally{
+            return "redirect:/orderDetail/"+orders.getId();
+        }
+    }
+
+
 }
