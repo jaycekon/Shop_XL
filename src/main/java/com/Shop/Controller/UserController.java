@@ -258,6 +258,7 @@ public class UserController {
             areaProfit += orderProduct.getAreaProfit();
             roleProfit += orderProduct.getRoleProfit();
         }
+        orders.setTotalProfit(prices-areaProfit-roleProfit);
         orders.setNumber(count);
         orders.setPrices(prices);
         orders.setAreaProfit(areaProfit);

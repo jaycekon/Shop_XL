@@ -122,7 +122,7 @@
                                     同意退款
                                 </button>
                                 <button class="btn btn-warning"
-                                        onclick="window.location.href='<%=request.getContextPath()%>/exitToUser/<%=orderProduct.getId()%>'">
+                                        onclick="window.location.href='<%=request.getContextPath()%>/disagreeExitOrderProduct/<%=orderProduct.getId()%>'">
                                     拒绝退款
                                 </button>
                             <%
@@ -133,7 +133,7 @@
                                 }else if(orderProduct.getExitStatus()==1){
                                 %>
                                 <button class="btn btn-warning"
-                                        onclick="window.location.href='<%=request.getContextPath()%>/exitGood/<%=orderProduct.getId()%>'">
+                                        onclick="window.location.href='<%=request.getContextPath()%>/agreeExit/<%=orderProduct.getId()%>'">
                                     同意退货
                                 </button>
                                 <button class="btn btn-warning"
@@ -142,13 +142,20 @@
                                 </button>
 
                                 <%
-                                }else if(orderProduct.getExitStatus()==2){
+                                }else if(orderProduct.getExitStatus()==3){
                                     %>
                                 <button class="btn btn-warning"
                                         onclick="window.location.href='<%=request.getContextPath()%>/exitToUser/<%=orderProduct.getId()%>'">
                                     签收
                                 </button>
                                 <%
+                                }else if(orderProduct.getExitStatus()==9){
+                                    %>
+                                <div class="product-total pull-right">拒绝退货
+                                </div>
+
+                                <%
+
                                 }
                             %>
                             </div>

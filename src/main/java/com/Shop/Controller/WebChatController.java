@@ -433,6 +433,13 @@ public class WebChatController {
                     log.info("退款成功!");
                     orderProduct.setStauts(2);
                     orders.setStatus(0);
+                    float roleProfit = orderProduct.getRoleProfit();
+                    float areaProfit = orderProduct.getAreaProfit();
+                    roleProfit = orders.getRolesProfit() - roleProfit;
+                    areaProfit = orders.getAreaProfit() - areaProfit;
+                    orders.setRolesProfit(roleProfit);
+                    orders.setAreaProfit(areaProfit);
+                    orders.setTotalProfit(orders.getTotalProfit()-roleProfit-areaProfit);
                     ordersService.updateOrderProduct(orderProduct);
                     ordersService.updateOrders(orders);
                 }

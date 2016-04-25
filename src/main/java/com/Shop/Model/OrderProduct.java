@@ -18,8 +18,8 @@ public class OrderProduct {
     private Cart cart;
     private Orders orders;
     private int maxCount;               //订单最大数量
-    private int stauts;                     //订单状态
-    private int exitStatus;                 //订单退货状态
+    private int stauts;                     //订单状态  1.申请退款，2.同意退款
+    private int exitStatus;                 //订单退货状态 1.申请退货，2.同意退货，3.买家发货，4.平台退货
     private float areaProfit;
     private float roleProfit;
     private ExitOrders exitOrders;          //退货订单

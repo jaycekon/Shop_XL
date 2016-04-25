@@ -54,6 +54,9 @@
             <a href="<%=request.getContextPath()%>/exitOrders" id="tuikuanzhong" class="ui-btn">退款中</a>
         </li>
         <li>
+            <a href="<%=request.getContextPath()%>/exitGoods" id="tuihuozhong" class="ui-btn">退款中</a>
+        </li>
+        <li>
             <a href="<%=request.getContextPath()%>/closeOrders" id="yiguanbi" class="ui-btn">已关闭</a>
         </li>
     </ul>
@@ -177,6 +180,14 @@
             </button>
         </div>
         <%
+                    }else if(orderProduct.getExitStatus()==3){
+                        %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger">
+                已发货
+            </button>
+        </div>
+        <%
                     }
                 }
             }
@@ -271,6 +282,11 @@
         /*已关闭*/
         case "closeOrders":
             $yiguanbi = $('#yiguanbi');
+            setActive($yiguanbi);
+            break;
+        /*退货中*/
+        case "exitGoods":
+            $yiguanbi = $('#tuihuozhong');
             setActive($yiguanbi);
             break;
     }

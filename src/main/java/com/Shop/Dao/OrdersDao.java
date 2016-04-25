@@ -146,6 +146,23 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         return orders;
     }
 
+
+    public List<Orders> findAllByStatusAndUserId(int user_id) {
+        Session session = super.openSession();
+        String hql ="from Orders where status = 1 and user_id=:user_id order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("user_id",user_id).list();
+        session.close();
+        return orders;
+    }
+
+    public List<Orders> findAllByExitStatusAndUserId(int user_id) {
+        Session session = super.openSession();
+        String hql ="from Orders where status = 1 and user_id=:user_id order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("user_id",user_id).list();
+        session.close();
+        return orders;
+    }
+
     /**
      * 通过退货状态以及用户ID获取订单（用户）
      * @param t

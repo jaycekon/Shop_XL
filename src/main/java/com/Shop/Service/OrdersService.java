@@ -89,6 +89,16 @@ public class OrdersService {
         return orderses;
     }
 
+    public List<Orders> findAllByStatusAndUserId(int user_id){
+        List<Orders> orderses = ordersDao.findAllByStatusAndUserId(user_id);
+        return orderses;
+    }
+
+//    public List<Orders> findAllByStatusAndUserId(int user_id){
+//        List<Orders> orderses = ordersDao.findAllByStatusAndUserId(user_id);
+//        return orderses;
+//    }
+
     /**
      * 更新订单项信息
      * @param orderProduct

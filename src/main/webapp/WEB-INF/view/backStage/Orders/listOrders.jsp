@@ -123,8 +123,13 @@
                                     }else if(orderProduct.getExitStatus()==1){
                                         out.println("申请退货");
                                     }else if(orderProduct.getExitStatus()==2){
-                                        out.println("已退货");
+                                        out.println("同意退货");
+                                    }else if(orderProduct.getExitStatus()==3){
+                                        out.println("等待签收");
+                                    }else if(orderProduct.getExitStatus()==4){
+                                        out.println("成功退货");
                                     }
+
                                 %></span>
                             </div>
                         </div>

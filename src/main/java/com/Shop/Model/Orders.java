@@ -31,6 +31,7 @@ public class Orders {
     private Areas areas;
     private float areaProfit;
     private User user;
+    private float totalProfit;        //平台盈利
 
     public Orders(){
         super();
@@ -220,5 +221,13 @@ public class Orders {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public float getTotalProfit() {
+        return totalProfit;
+    }
+
+    public void setTotalProfit(float totalProfit) {
+        this.totalProfit = totalProfit;
     }
 }

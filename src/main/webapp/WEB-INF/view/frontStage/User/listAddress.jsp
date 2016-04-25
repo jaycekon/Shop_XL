@@ -45,22 +45,16 @@
             <p>电话：<%=address.getPhone()%></p>
             <p>地址：<%=address.getAddress()%></p>
             <button class="icon iconfont RTIcon" onclick="window.location.href='<%=request.getContextPath()%>/editAddress/<%=address.getId()%>'">&#xe603;</button>
-            <button class="icon iconfont ui-icon-delete"></button>
+            <button class="icon iconfont ui-icon-delete" onclick="window.location.href='<%=request.getContextPath()%>/deleteAddress/<%=address.getId()%>'"></button>
         </li>
 
-        <li id="me">
-            <button onclick="window.location.href='<%=request.getContextPath()%>/deleteAddress/<%=address.getId()%>'"></button>
-        </li>
+
         <%
             }
         %>
     </ul>
 
-    <div class="ui-btn-wrap">
-        <button class="ui-btn-lg productBtn" onclick="window.location.href='<%=request.getContextPath()%>/addAddress/0'">
-            新增收货地址
-        </button>
-    </div>
+
 
 
 </section>

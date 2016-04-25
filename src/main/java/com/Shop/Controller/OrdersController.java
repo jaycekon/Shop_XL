@@ -4,9 +4,18 @@ import com.Shop.Model.*;
 import com.Shop.Service.CartService;
 import com.Shop.Service.OrdersService;
 import com.Shop.Service.UserService;
+import com.Shop.Util.MD5;
 import com.Shop.Util.OrderPoJo;
+import com.Shop.Util.WebChatUtil;
 import com.Shop.Util.XMLUtil;
 import com.google.gson.Gson;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,6 +108,22 @@ public class OrdersController {
         return "redirect:/exitOrders";
     }
 
+    /**
+     * 拒绝退款
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/disagreeExitOrderProduct/{id}",method = RequestMethod.GET)
+    public String disagreeExitOrderProduct(@PathVariable("id")int id){
+        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+        Orders orders = orderProduct.getOrders();
+        orderProduct.setStauts(3);
+        orders.setStatus(0);
+        ordersService.updateOrderProduct(orderProduct);
+        ordersService.updateOrders(orders);
+        return "redirect:/listOrder";
+    }
+
 
     /**
      * 订单项申请退货
@@ -118,7 +143,7 @@ public class OrdersController {
         ordersService.updateOrderProduct(orderProduct);
         orders.setT(1);
         ordersService.updateOrders(orders);
-        return "redirect:/exitOrders";
+        return "redirect:/exitGoods";
     }
 
     /**
@@ -131,9 +156,14 @@ public class OrdersController {
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
         orderProduct.setExitStatus(2);
         ordersService.updateOrderProduct(orderProduct);
-        return "redirect:/orderDetail"+id;
+        return "redirect:/orderDetail/"+id;
     }
 
+    /**
+     * 取消申请
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/cancleGood/{id}",method = RequestMethod.GET)
     public String cancleGood(@PathVariable("id")int id){
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
@@ -152,36 +182,33 @@ public class OrdersController {
     @RequestMapping(value = "/disagreeExit/{id}",method = RequestMethod.GET)
     public String disagreeExit(@PathVariable("id")int id){
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
-        orderProduct.setExitStatus(3);
+        orderProduct.setExitStatus(9);
         ordersService.updateOrderProduct(orderProduct);
         return "redirect:/orderDetail"+id;
     }
 
-    @RequestMapping(value = "/sendOrderProduct/{id}",method = RequestMethod.POST)
-    public String sendOrderProduct(@PathVariable("id")int id,String logistics,String logisticsNum){
-        OrderProduct orderProduct = ordersService.findOrderProductById(id);
-        ExitOrders exitOrders = orderProduct.getExitOrders();
-        exitOrders.setSentTime(new Date());
-        exitOrders.setLogistics(logistics);
-        exitOrders.setLogisticsNum(logisticsNum);
-        ordersService.updateExitOrders(exitOrders);
-        return "redirect:/exitOrderProduts";
-    }
 
 
-    @RequestMapping(value="/exitOrderProduts",method = RequestMethod.GET)
-    public String exitOrderProduts(HttpSession session,Model model){
-        User user =(User)session.getAttribute("loginUser");
-        List<Orders> orderses = ordersService.findOrdersByTAndUserId(1,user.getId());
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders orders :orderses){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
-            orderPoJos.add(orderPoJo);
-        }
-        model.addAttribute("orderPoJos",orderPoJos);
-        return "frontStage/User/orderList";
-    }
+
+//    /**
+//     * 前台获取退货订单
+//     * @param session
+//     * @param model
+//     * @return
+//     */
+//    @RequestMapping(value="/exitOrderProduts",method = RequestMethod.GET)
+//    public String exitOrderProduts(HttpSession session,Model model){
+//        User user =(User)session.getAttribute("loginUser");
+//        List<Orders> orderses = ordersService.findOrdersByTAndUserId(1,user.getId());
+//        List<OrderPoJo> orderPoJos = new ArrayList<>();
+//        for(Orders orders :orderses){
+//            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+//            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+//            orderPoJos.add(orderPoJo);
+//        }
+//        model.addAttribute("orderPoJos",orderPoJos);
+//        return "frontStage/User/orderList";
+//    }
 
 
 
@@ -362,12 +389,36 @@ public class OrdersController {
     @RequestMapping(value = "/exitOrders",method = RequestMethod.GET)
     public String exitOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
+        List<Orders> orderses = ordersService.findAllByStatusAndUserId(user.getId());
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        if(orderses!=null) {
+            for (Orders orders : orderses) {
+                List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                OrderPoJo orderPoJo = new OrderPoJo(orders, orderProducts);
+                orderPoJos.add(orderPoJo);
+            }
+        }
+        model.addAttribute("orderPoJos",orderPoJos);
+        return "frontStage/User/orderList";
+    }
+
+    /**
+     * 获取退货订单
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "/exitGoods",method = RequestMethod.GET)
+    public String exitGoods(HttpSession session,Model model){
+        User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByTAndUserId(1,user.getId());
         List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders orders :orderses){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
-            orderPoJos.add(orderPoJo);
+        if(orderses!=null) {
+            for (Orders orders : orderses) {
+                List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                OrderPoJo orderPoJo = new OrderPoJo(orders, orderProducts);
+                orderPoJos.add(orderPoJo);
+            }
         }
         model.addAttribute("orderPoJos",orderPoJos);
         return "frontStage/User/orderList";
@@ -386,32 +437,8 @@ public class OrdersController {
         return "redirect:/userOrders";
     }
 
-    /**
-     * 申请退款
-     * @param id
-     * @return
-     */
-    @RequestMapping(value ="/exitOrders/{id}",method = RequestMethod.GET)
-    public String exitOrders(@PathVariable("id")int id){
-        Orders orders = ordersService.findOrdersById(id);
-        orders.setT(1);
-        ordersService.updateOrders(orders);
-        return "redirect:/exitOrders";
-    }
 
 
-    /**
-     * 取消申请退款
-     * @param id
-     * @return
-     */
-    @RequestMapping(value ="/cancleOrders/{id}",method = RequestMethod.GET)
-    public String cancleOrders(@PathVariable("id")int id){
-        Orders orders = ordersService.findOrdersById(id);
-        orders.setT(0);
-        ordersService.updateOrders(orders);
-        return "redirect:/resendOrders";
-    }
 
 
     @RequestMapping(value ="/areaListOrders",method = RequestMethod.GET)
@@ -762,6 +789,33 @@ public class OrdersController {
 
     }
 
+    @RequestMapping(value="sendOrderProduct/{id}",method=RequestMethod.GET)
+    public String sentOrderProduct(@PathVariable("id")int id,Model model){
+        model.addAttribute("id",id);
+        return "frontStage/User/sentOrderProduct";
+    }
+
+
+    /**
+     * 退货发货
+     * @param id
+     * @param logistics
+     * @param logisticsNum
+     * @return
+     */
+    @RequestMapping(value = "/sendOrderProduct/{id}",method = RequestMethod.POST)
+    public String sendOrderProduct(@PathVariable("id")int id,String logistics,String logisticsNum){
+        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+        orderProduct.setStauts(3);
+        ExitOrders exitOrders = orderProduct.getExitOrders();
+        exitOrders.setSentTime(new Date());
+        exitOrders.setLogistics(logistics);
+        exitOrders.setLogisticsNum(logisticsNum);
+        ordersService.updateExitOrders(exitOrders);
+        return "redirect:/exitGoods";
+    }
+
+
 //    @RequestMapping(value="agreeExitOrder/{id}",method=RequestMethod.GET)
 //    public String agreeExitOrder(@PathVariable("id")int id){
 //        Orders orders = ordersService.findOrdersById(id);
@@ -770,4 +824,84 @@ public class OrdersController {
 //
 //    }
 
+
+    @RequestMapping(value="/signOrders/{id}",method=RequestMethod.GET)
+    public String signOrders(@PathVariable("id")int id) throws Exception {
+        //统计要付的钱
+        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+        Orders orders = orderProduct.getOrders();
+//        int money = (int)(orders.getPrices()*100);
+        int money = (int)(orderProduct.getPrices()*orderProduct.getCount()*100);
+        log.info(money);
+        money=100;
+        log.info(money);
+        User user = orders.getUser();
+        String openId =user.getOpenId();
+        String nonce_str = WebChatUtil.generateStr(32);
+        String ip = "131.25.0.7";
+
+        //组装参数
+        Map<String, Object> map = new TreeMap<String, Object>();
+        map.put("amount", String.valueOf(money));
+        map.put("check_name", "NO_CHECK");
+        map.put("desc", "拿去花");
+        map.put("mch_appid", WebChatUtil.getAPPID());
+        map.put("mchid", WebChatUtil.getTenantId());
+        map.put("nonce_str", nonce_str);
+        map.put("openid", openId);
+        map.put("partner_trade_no", orders.getUuid());
+        map.put("spbill_create_ip",ip);
+
+
+        String stringA=XMLUtil.mapToStr(map);
+        String stringSignTemp=stringA+"&key="+WebChatUtil.getKEY();
+        String sign = MD5.toMD5(stringSignTemp).toUpperCase();
+
+        map.put("sign", sign);
+        String xml=XMLUtil.mapToXml(map);
+
+        System.out.println("stringA"+stringA);
+        System.out.println("xml-"+xml);
+        String url = "https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers";
+        CloseableHttpClient client = WebChatUtil.loadCert();
+
+        HttpPost post = new HttpPost(url);
+        boolean result=false;
+        try{
+            String xml2=new String(xml.getBytes("UTF-8"), "ISO8859_1");
+            StringEntity s = new StringEntity(xml2);
+            s.setContentEncoding("UTF-8");
+            s.setContentType("text/xml");
+            post.setEntity(s);
+
+            HttpResponse res = client.execute(post);
+            HttpEntity entity = res.getEntity();
+            String responseContent= EntityUtils.toString(entity, "UTF-8");
+            Map<String,Object> resultMap = XMLUtil.parseXML(responseContent);
+            System.out.println(responseContent);
+            if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+                if(resultMap.get("result_code").equals("FAIL")){
+                    log.info("退款失败");
+                }else{
+                    log.info("退款成功!");
+                    float roleProfit = orderProduct.getRoleProfit();
+                    float areaProfit = orderProduct.getAreaProfit();
+                    roleProfit = orders.getRolesProfit() - roleProfit;
+                    areaProfit = orders.getAreaProfit() - areaProfit;
+                    orders.setRolesProfit(roleProfit);
+                    orders.setAreaProfit(areaProfit);
+                    orders.setTotalProfit(orders.getTotalProfit()-areaProfit-roleProfit);
+                    orderProduct.setExitStatus(4);
+                    orders.setStatus(0);
+                    ordersService.updateOrderProduct(orderProduct);
+                    ordersService.updateOrders(orders);
+                }
+            }
+        }
+        catch (Exception e){
+            throw new RuntimeException(e);
+        }finally{
+            return "redirect:/orderDetail/"+orders.getId();
+        }
+    }
 }
