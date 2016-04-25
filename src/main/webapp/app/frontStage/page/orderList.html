@@ -289,7 +289,7 @@
                 <div class="ui-list-action themeColor">已关闭</div>
             </li><!-- 订单头部]] -->
             <!-- [[订单商品 -->
-            <li class="ui-border-t productLink">
+            <li class="ui-border-t productLink" onclick="goDetail(this,)">
                 <div class="ui-list-thumb">
                     <img src="./../image/1.jpg" alt="">
                 </div>
@@ -328,14 +328,14 @@
     <script src="./../lib/js/zepto.min.js"></script>
     <script src="./../lib/js/frozen.js"></script>
     <script>
-        $('.productLink').tap(function(){
-            var $target = $(this);
+        function goDetail(obj,id){
+            var $target = $(obj);
             $target.addClass('clickActive');
             setTimeout(function(){
                 $target.removeClass('clickActive');
             },150);
             window.location.href = "./orderDetail.html"
-        });
+        };
 
         var $orderTabBtn = $('.orderTabBtn');
         $orderTabBtn.tap(function(){

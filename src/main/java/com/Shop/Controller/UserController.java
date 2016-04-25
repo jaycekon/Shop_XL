@@ -140,6 +140,9 @@ public class UserController {
             cart.setCount(num);
             double prices = cart.getTotalPrices();
             Good good = goodService.findGoodById(good_id);
+            if(count >good.getNum()){
+                return "redirect:/Detail/"+good_id;
+            }
             prices += good.getDumpingPrices() * count;
             cart.setTotalPrices(prices);
             cartService.updateCart(cart);
@@ -258,9 +261,12 @@ public class UserController {
             areaProfit += orderProduct.getAreaProfit();
             roleProfit += orderProduct.getRoleProfit();
         }
+        log.info("平台总盈利:"+prices+"大区佣金："+areaProfit+"角色佣金："+roleProfit);
+
         orders.setTotalProfit(prices-areaProfit-roleProfit);
         orders.setNumber(count);
         orders.setPrices(prices);
+
         orders.setAreaProfit(areaProfit);
         orders.setRolesProfit(roleProfit);
         if (user.getRoles() != null) {
@@ -365,7 +371,20 @@ public class UserController {
         User user = (User)session.getAttribute("loginUser");
         List<Orders> orderses = userService.listOrdersByUser(user.getId());
         List<OrderPoJo> orderPoJos = new ArrayList<>();
+        long time =0;
+        long nd = 1000*24*60*60;
         for(Orders orders :orderses){
+            if(orders.getD()==0&&orders.getP() == 2) {
+                if(orders.getSentTime()!=null) {
+                    time = new Date().getTime() - orders.getSentTime().getTime();
+                    long day = time / nd;
+                    log.info("发货时间" + orders.getSentTime().getTime() + ",现在时间" + new Date().getTime());
+                    log.info("发货后时间：" + day);
+                    if (day > 14 && orders.getStatus() == 0) {
+                        orders.setD(1);
+                    }
+                }
+            }
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
             OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
             orderPoJos.add(orderPoJo);
@@ -622,6 +641,8 @@ public class UserController {
         addressService.deleteAddress(id);
         return "redirect:/listAddress";
     }
+
+
 
 
 }

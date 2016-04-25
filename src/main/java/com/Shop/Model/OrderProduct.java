@@ -11,6 +11,7 @@ public class OrderProduct {
     private int id;
     private int count;          //订单项数量
     private float prices;           //订单项价格
+    private String uuid;        //订单项唯一标示
     private String name;
     private int good_id;
     private String describes;       //商品描述
@@ -150,5 +151,13 @@ public class OrderProduct {
 
     public void setExitOrders(ExitOrders exitOrders) {
         this.exitOrders = exitOrders;
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 }

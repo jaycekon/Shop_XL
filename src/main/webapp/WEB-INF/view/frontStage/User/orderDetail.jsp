@@ -1,7 +1,8 @@
 <%@ page import="com.Shop.Model.Orders" %>
 <%@ page import="com.Shop.Model.OrderProduct" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.Shop.Util.OrderPoJo" %><%--
+<%@ page import="com.Shop.Util.OrderPoJo" %>
+<%@ page import="java.text.SimpleDateFormat" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/6 0006
@@ -34,19 +35,28 @@
 <%
         OrderPoJo orderPojo = (OrderPoJo) request.getAttribute("orderPoJo");
         Orders orders =orderPojo.getOrders();
+        String model = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat format=new SimpleDateFormat(model);
         List<OrderProduct> orderProducts = orderPojo.getOrderProduct();
 %>
 <section class="ui-container">
 
     <ul class="ui-list ui-list-text ui-border-tb">
         <li>
-            <h4 class="ui-nowrap">订单编号:<%=orders.getId()%></h4>
+            <h4 class="ui-nowrap">订单编号:<%=orders.getUuid()%></h4>
         </li>
     </ul>
+    <%
+        if(orders.getP()!=0){
+    %>
     <ul class="ui-list ui-list-text ui-border-b ui-list-link ui-list-active">
         <li>
-            <h4 class="ui-nowrap"><i class="icon iconfont">&#xe7b8;</i> 查看物流信息</h4>
+            <h4 class="ui-nowrap" onclick="window.location.href='<%=request.getContextPath()%>/getOrderLogisticTrack/<%=orders.getId()%>'"><i class="icon iconfont">&#xe600;</i> 查看物流信息</h4>
         </li>
+        <%
+            }
+
+        %>
     </ul>
 
     <section class="receiveInfo">
@@ -73,6 +83,28 @@
                 <p class="">&#165; <%=orderProduct.getPrices()%></p>
                 <p class="unMarjorColor">X<%=orderProduct.getCount()%></p>
             </div>
+            <%
+                if(orderProduct.getExitStatus()==2){
+            %>
+            <div class="ui-border-b block operateBlock">
+                <button class="ui-btn ui-btn-danger"
+                        onclick="window.location.href='<%=request.getContextPath()%>/sendOrderProduct/<%=orderProduct.getId()%>'">
+                    发货
+                </button>
+            </div>
+            <%
+                }else if(orderProduct.getExitStatus()==3){
+                    %>
+            <div class="ui-border-b block operateBlock">
+                <button class="ui-btn ui-btn-danger"
+                        onclick="window.location.href='<%=request.getContextPath()%>/getOrderProductLogisticTrack/<%=orderProduct.getId()%>'">
+                    查看物流
+                </button>
+            </div>
+
+            <%
+                }
+            %>
         </li><!-- 订单商品]] -->
         <%
 
@@ -84,19 +116,21 @@
         <p>运费合计： <span class="themeColor">&#165; 10.00</span></p>
     </div>
     <div class="countBlock ui-border-b">
-        <p>下单时间： <span class=""><%=orders.getSetTime()%></span></p>
+        <p>下单时间： <span class=""><%=format.format(orders.getSetTime())%></span></p>
         <p>付款时间： <span class=""><%
             if(orders.getPayTime() ==null){
                 out.println("未付款");
             }else{
-                out.println(orders.getPayTime());
+                out.println(format.format(orders.getPayTime()));
             }
         %></span></p>
         <p>发货时间： <span class=""><%
             switch(orders.getP()){
                 case 0:out.println("未发货");
                         break;
-                case 1:out.println("已发货");
+                case 1:out.println(format.format(orders.getSentTime()));
+                        break;
+                case 2:out.println("已收货");
                         break;
             }
 
@@ -106,11 +140,11 @@
     <!-- [[联系热线 -->
     <div class="contact ui-row">
         <div class="ui-col ui-col-50">
-            <a href="tel:telephonenumber" class="icon iconfont" id="phone" >&#xe672;</a>
+            <a href="tel:telephonenumber" class="icon iconfont" id="phone" >&#xe601;</a>
             <label for="phone">拨打平台热线</label>
         </div>
         <div class="ui-col ui-col-50">
-            <a href="tencent://message/?uin=2965366058" class="icon iconfont" id="qq">&#xe613;</a>
+            <a href="tencent://message/?uin=2965366058" class="icon iconfont" id="qq">&#xe602;</a>
             <label for="qq">联系平台服务</label>
         </div>
     </div><!-- 联系热线]] -->

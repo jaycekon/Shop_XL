@@ -7,10 +7,7 @@ import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/3/22 0022.
@@ -167,6 +164,7 @@ public class UserService {
             }
         }
         orderProduct.setCart(cart);
+        orderProduct.setUuid(UUID.randomUUID().toString());
         orderProduct.setGood_id(good.getId());
         orderProduct.setImage(good.getImg());
         orderProduct.setCount(count);

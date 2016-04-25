@@ -32,6 +32,8 @@ public class Orders {
     private float areaProfit;
     private User user;
     private float totalProfit;        //平台盈利
+    private Logistic logistic;          //物流公司
+    private String carriageCode;        //运单单号
 
     public Orders(){
         super();
@@ -229,5 +231,24 @@ public class Orders {
 
     public void setTotalProfit(float totalProfit) {
         this.totalProfit = totalProfit;
+    }
+
+
+    public String getCarriageCode() {
+        return carriageCode;
+    }
+
+    public void setCarriageCode(String carriageCode) {
+        this.carriageCode = carriageCode;
+    }
+
+
+   @ManyToOne
+    public Logistic getLogistic() {
+        return logistic;
+    }
+
+    public void setLogistic(Logistic logistic) {
+        this.logistic = logistic;
     }
 }

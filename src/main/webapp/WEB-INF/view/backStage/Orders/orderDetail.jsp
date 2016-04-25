@@ -145,7 +145,7 @@
                                 }else if(orderProduct.getExitStatus()==3){
                                     %>
                                 <button class="btn btn-warning"
-                                        onclick="window.location.href='<%=request.getContextPath()%>/exitToUser/<%=orderProduct.getId()%>'">
+                                        onclick="window.location.href='<%=request.getContextPath()%>/signOrders/<%=orderProduct.getId()%>'">
                                     签收
                                 </button>
                                 <%
@@ -179,10 +179,11 @@
                                     if (orders.getP() == 0) {
                             %>
                             <div class="pull-right">
-                                <button class="btn btn-warning"
-                                        onclick="window.location.href='<%=request.getContextPath()%>/sendOrder/<%=orders.getId()%>'">
-                                    发货
-                                </button>
+                                <%--<button class="btn btn-warning"--%>
+                                        <%--onclick="window.location.href='<%=request.getContextPath()%>/sendOrder/<%=orders.getId()%>'">--%>
+                                    <%--发货--%>
+                                <%--</button>--%>
+                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#logisticInfoModal">发货</button>
                             </div>
 
                             <%
@@ -227,7 +228,7 @@
                             <%
                                 if (orders.getP() == 1) {
                             %>
-                            <a href="./logisticsTrace.html">
+                            <a href="<%=request.getContextPath()%>/getLogisticTrack/<%=orders.getId()%>">
                                 <button class="btn btn-primary">物流追踪</button>
                             </a>
                             <%
@@ -243,8 +244,36 @@
         <!-- 页面主体]] -->
     </div>
     <!-- wrapper]] -->
-
+    <div class="modal fade" id="logisticInfoModal">
+        <div class="modal-dialog">
+            <form class="modal-content"  action="<%=request.getContextPath()%>/sendOrder/<%=orders.getId()%>" method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">填写物流信息</h4>
+                </div>
+                <div class="form-horizontal modal-body">
+                    <div class="form-group">
+                        <label for="logisticCompany" class="control-label col-sm-2">物流公司</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="填写物流公司" id="logisticCompany" name="logisticCompany"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="logisticCode" class="control-label col-sm-2">物流编号</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" placeholder="填写物流编号" id="logisticCode" name ="logisticCode"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="submit" class="btn btn-primary" >提交</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
+    <script src="<%=request.getContextPath()%>/app/backStage/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="<%=request.getContextPath()%>/app/backStage/js/common.js"></script>
 
 </div>
