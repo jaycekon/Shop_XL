@@ -1,7 +1,7 @@
 
 var thisProduct;
 /* 商品删除 */
-$('.productDel').tap(function(){
+function delProduct(obj,id){
     var $targetDel = $(this).parents('div').eq(3);
     console.log($targetDel.attr("id"));
 /*    console.log( $targetDel.parent() );*/
@@ -22,10 +22,10 @@ $('.productDel').tap(function(){
         }
     });
 
-    /*商品总计改变*/
-    acountNum();
+    window.location.href="../removeProduct/"+id;
 
-});
+
+};
 
 $('.minus').tap(function(){
     $thisProduct = $(this).parents('div').eq(3);

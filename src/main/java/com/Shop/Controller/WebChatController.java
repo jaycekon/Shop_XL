@@ -396,7 +396,7 @@ public class WebChatController {
         map.put("mchid", WebChatUtil.getTenantId());
         map.put("nonce_str", nonce_str);
         map.put("openid", openId);
-        map.put("partner_trade_no", orders.getUuid());
+        map.put("partner_trade_no", orderProduct.getUuid());
         map.put("spbill_create_ip",ip);
 
 

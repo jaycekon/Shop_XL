@@ -122,10 +122,6 @@ public class UserController {
     @RequestMapping(value = "buyGood", method = RequestMethod.POST)
     public String buyGood(int good_id, int count, HttpSession session) {
         User user = (User) session.getAttribute("loginUser");
-        Good good = goodService.findGoodById(good_id);
-        if(count<good.getWholesaleCount()){
-            return "redirect:/Detail/"+good.getId();
-        }
         if (user == null) {
             return "redirect:login";
         }
@@ -143,7 +139,10 @@ public class UserController {
             num += count;
             cart.setCount(num);
             double prices = cart.getTotalPrices();
-
+            Good good = goodService.findGoodById(good_id);
+            if(count >good.getNum()){
+                return "redirect:/Detail/"+good_id;
+            }
             prices += good.getDumpingPrices() * count;
             cart.setTotalPrices(prices);
             cartService.updateCart(cart);
@@ -262,9 +261,12 @@ public class UserController {
             areaProfit += orderProduct.getAreaProfit();
             roleProfit += orderProduct.getRoleProfit();
         }
+        log.info("平台总盈利:"+prices+"大区佣金："+areaProfit+"角色佣金："+roleProfit);
+
         orders.setTotalProfit(prices-areaProfit-roleProfit);
         orders.setNumber(count);
         orders.setPrices(prices);
+
         orders.setAreaProfit(areaProfit);
         orders.setRolesProfit(roleProfit);
         if (user.getRoles() != null) {
@@ -300,7 +302,6 @@ public class UserController {
         if (session.getAttribute("loginUser") == null) {
             return "redirect:/login";
         }
-        log.info("获取所有的地址！！！！");
         User user = (User) session.getAttribute("loginUser");
         List<Address> addresses = userService.listAddress(user.getId());
         model.addAttribute("addresses", addresses);
@@ -370,7 +371,20 @@ public class UserController {
         User user = (User)session.getAttribute("loginUser");
         List<Orders> orderses = userService.listOrdersByUser(user.getId());
         List<OrderPoJo> orderPoJos = new ArrayList<>();
+        long time =0;
+        long nd = 1000*24*60*60;
         for(Orders orders :orderses){
+            if(orders.getD()==0&&orders.getP() == 2) {
+                if(orders.getSentTime()!=null) {
+                    time = new Date().getTime() - orders.getSentTime().getTime();
+                    long day = time / nd;
+                    log.info("发货时间" + orders.getSentTime().getTime() + ",现在时间" + new Date().getTime());
+                    log.info("发货后时间：" + day);
+                    if (day > 14 && orders.getStatus() == 0) {
+                        orders.setD(1);
+                    }
+                }
+            }
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
             OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
             orderPoJos.add(orderPoJo);
@@ -574,8 +588,6 @@ public class UserController {
     @RequestMapping(value ="editAddress",method = RequestMethod.POST)
     public String editAddress(Address address,int area_id,HttpSession session,int flagt){
         log.info(area_id);
-        log.info(flagt);
-        log.info("进入修改地址控制层");
         Area area = addressService.findAreaById(area_id);
         Address a = userService.findAddressById(address.getId());
         User user = (User)session.getAttribute("loginUser");
@@ -589,8 +601,6 @@ public class UserController {
         if(flagt ==1){
             return "redirect:/myAddress/"+a.getId();
         }
-        log.info("跳转到我的地址！！！");
-        log.info("跳转到我的地址！！！");
         return "redirect:/listAddress";
     }
 
@@ -631,6 +641,8 @@ public class UserController {
         addressService.deleteAddress(id);
         return "redirect:/listAddress";
     }
+
+
 
 
 }

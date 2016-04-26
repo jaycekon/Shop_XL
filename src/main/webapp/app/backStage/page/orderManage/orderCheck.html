@@ -101,9 +101,9 @@
                 </div>
                 <!-- [[订单-->
                 <div class="order">
-                    <a href="./orderDetail.html">
+                    <div>
                         <div class="order-statue clearfix">
-                            <div class="company pull-left">订单号：1f56aw4f56er44f64afe6f4er6</div>
+                            <div class="company pull-left">订单号：<a href="./orderDetail.html">1f56aw4f56er44f64afe6f4er6</a></div>
                             <div class="pull-right contact">订单状态：已完成</div>
                         </div>
                         <div class="product clearfix">
@@ -139,8 +139,10 @@
                         <div class="order-total clearfix text-left">
                             <div class="product-total">商品合计：￥99.99（共99件）</div>
                             <div class="freight">运费合计：￥9.99</div>
+                            <!-- [[填写物流信息 -->
+                            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#logisticInfoModal">发货</button>
                         </div>
-                    </a>
+                    </div>
                 </div>
                 <!-- 订单]]-->
             </div>
@@ -151,6 +153,37 @@
     <!-- 页面主体]] -->
 </div>
 <!-- wrapper]] -->
+
+<!-- [[物流填写弹出框-->
+<div class="modal fade" id="logisticInfoModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">填写物流信息</h4>
+            </div>
+            <form action="" class="form-horizontal modal-body">
+                <div class="form-group">
+                    <label for="logisticCompany" class="control-label col-sm-2">物流公司</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="填写物流公司" id="logisticCompany"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="logisticCode" class="control-label col-sm-2">物流编号</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" placeholder="填写物流编号" id="logisticCode"/>
+                    </div>
+                </div>
+            </form>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="submit" class="btn btn-primary" data-dismiss="modal">提交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 物流填写弹出框]]-->
 
 
 <script src="./../../lib/jquery/jquery.min.js"></script>

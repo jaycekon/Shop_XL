@@ -118,7 +118,7 @@
     <bean id="withdrawalsDao" class="com.Shop.Dao.WithdrawalsOrderDao" parent="daoTemplate"/>
     <bean id="commentDao" class="com.Shop.Dao.CommentDao" parent="daoTemplate"/>
     <bean id="exitOrdersDao" class="com.Shop.Dao.ExitOrdersDao" parent="daoTemplate"/>
-
+    <bean id="logisticDao" class="com.Shop.Dao.LogisticDao" parent="daoTemplate"/>
 
     <bean id="userService" class="com.Shop.Service.UserService">
         <!--<property name="userDao" ref="userDao"/>-->

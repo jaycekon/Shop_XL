@@ -45,7 +45,7 @@
             <a href="<%=request.getContextPath()%>/sendOrders" id="daishouhuo" class="ui-btn">待收货</a>
         </li>
         <li>
-            <a href="<%=request.getContextPath()%>/getOrders" id="yiwancheng" class="ui-btn">已收货</a>
+            <a href="<%=request.getContextPath()%>/getOrders" id="yishouhuo" class="ui-btn">已收货</a>
         </li>
         <li>
             <a href="<%=request.getContextPath()%>/reCommentOrders" id="daipingjia" class="ui-btn">待评价</a>
@@ -54,7 +54,7 @@
             <a href="<%=request.getContextPath()%>/exitOrders" id="tuikuanzhong" class="ui-btn">退款中</a>
         </li>
         <li>
-            <a href="<%=request.getContextPath()%>/exitGoods" id="tuihuozhong" class="ui-btn">退款中</a>
+            <a href="<%=request.getContextPath()%>/exitGoods" id="tuihuozhong" class="ui-btn">退货中</a>
         </li>
         <li>
             <a href="<%=request.getContextPath()%>/closeOrders" id="yiguanbi" class="ui-btn">已关闭</a>
@@ -94,6 +94,8 @@
                         out.println("未发货");
                     } else if (orders.getP() == 1) {
                         out.println("未收货");
+                    } else if(orders.getP()==2){
+                        out.println("已收货");
                     }
                 } else if (orders.getD() == 1) {
                     out.println("已完成");
@@ -108,7 +110,7 @@
             List<OrderProduct> orderProducts = orderPoJo.getOrderProduct();
             for (OrderProduct orderProduct : orderProducts) {
         %>
-        <li class="ui-border-t productLink">
+        <li class="ui-border-t productLink" onclick="goDetail(this,<%=orders.getId()%>)">
             <div class="ui-list-thumb">
                 <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
             </div>
@@ -151,7 +153,7 @@
         </div>
         <%
             }
-        } else if (orders.getP() == 2) {
+        } else if (orders.getP() == 2&&orders.getD()==0) {
                 if(orderProduct.getExitStatus()==0){
         %>
 
@@ -173,10 +175,10 @@
         <%
                     }else if(orderProduct.getExitStatus()==2){
                         %>
+
         <div class="ui-border-b block operateBlock">
-            <button class="ui-btn ui-btn-danger"
-                    onclick="window.location.href='<%=request.getContextPath()%>/sendOrderProduct/<%=orderProduct.getId()%>'">
-                发货
+            <button class="ui-btn ui-btn-danger">
+                同意申请，等待发货
             </button>
         </div>
         <%
@@ -186,6 +188,21 @@
             <button class="ui-btn ui-btn-danger">
                 已发货
             </button>
+        </div>
+        <%
+                    }else if(orderProduct.getExitStatus()==4){
+                        %>
+        <div class="ui-border-b block operateBlock">
+            <button class="ui-btn ui-btn-danger">
+                已退款
+            </button>
+        </div>
+        <%
+                    }else if(orderProduct.getExitStatus()==9){
+                     %>
+        <div class="textRight">
+            <p class="">拒绝退货
+            </p>
         </div>
         <%
                     }
@@ -215,6 +232,14 @@
     </div>
     <!-- 待付款]] -->
     <%
+            }else if(orders.getP()==1){
+                %>
+    <div class="ui-border-b block operateBlock">
+        <button class="ui-btn ui-btn-danger"
+                onclick="window.location.href='<%=request.getContextPath()%>/achieveOrder/<%=orders.getId()%>'">确认收货
+        </button>
+    </div>
+    <%
             }
         }
     %>
@@ -231,14 +256,14 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/zepto.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script>
-    //    $('.productLink').tap(function(){
-    //        var $target = $(this);
-    //        $target.addClass('clickActive');
-    //        setTimeout(function(){
-    //            $target.removeClass('clickActive');
-    //        },150);
-    //        window.location.href = "./orderDetail.html"
-    //    });
+    function goDetail(obj,id){
+        var $target = $(obj);
+        $target.addClass('clickActive');
+        setTimeout(function(){
+            $target.removeClass('clickActive');
+        },150);
+        window.location.href = "../userOrderDetail/"+id;
+    };
 
     var $orderTabBtn = $('.orderTabBtn');
     $orderTabBtn.tap(function () {
@@ -265,8 +290,8 @@
             setActive($daishouhuo);
             break;
         /*已完成*/
-        case "endOrders":
-            $yiwancheng = $('#yiwancheng');
+        case "getOrders":
+            $yiwancheng = $('#yishouhuo');
             setActive($yiwancheng);
             break;
         /*待评价*/

@@ -101,7 +101,7 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
      */
     public List<Orders> findAllByP(int p) {
         Session session = super.openSession();
-        String hql ="from Orders where p=:p and f=1 and d=0 and t=0 order by setTime desc";
+        String hql ="from Orders where p=:p and f=1 and d=0 order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("p",p).list();
         session.close();
         return orders;

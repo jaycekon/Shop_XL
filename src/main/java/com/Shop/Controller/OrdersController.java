@@ -3,6 +3,7 @@ package com.Shop.Controller;
 import com.Shop.Model.*;
 import com.Shop.Service.CartService;
 import com.Shop.Service.OrdersService;
+import com.Shop.Service.TerraceService;
 import com.Shop.Service.UserService;
 import com.Shop.Util.MD5;
 import com.Shop.Util.OrderPoJo;
@@ -41,11 +42,13 @@ import java.util.*;
 @Controller
 public class OrdersController {
     @Autowired
-    UserService userService;
+    private UserService userService;
     @Autowired
-    OrdersService ordersService;
+    private OrdersService ordersService;
     @Autowired
-    CartService cartService;
+    private CartService cartService;
+    @Autowired
+    private TerraceService terraceService;
     Logger log = Logger.getLogger(OrdersController.class);
     /**
      * 获取未付款订单(后台）
@@ -156,7 +159,7 @@ public class OrdersController {
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
         orderProduct.setExitStatus(2);
         ordersService.updateOrderProduct(orderProduct);
-        return "redirect:/orderDetail/"+id;
+        return "redirect:/orderDetail/"+orderProduct.getOrders().getId();
     }
 
     /**
@@ -168,11 +171,14 @@ public class OrdersController {
     public String cancleGood(@PathVariable("id")int id){
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
         orderProduct.setExitStatus(0);
+        Orders orders = orderProduct.getOrders();
         ExitOrders exitOrders = orderProduct.getExitOrders();
         orderProduct.setExitOrders(null);
+        orders.setT(0);
         ordersService.deleteExitOrders(exitOrders);
         ordersService.updateOrderProduct(orderProduct);
-        return "redirect:/orderDetail"+id;
+        ordersService.updateOrders(orders);
+        return "redirect:/orderDetail/"+id;
     }
     /**
      * 平台拒绝退货
@@ -184,7 +190,7 @@ public class OrdersController {
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
         orderProduct.setExitStatus(9);
         ordersService.updateOrderProduct(orderProduct);
-        return "redirect:/orderDetail"+id;
+        return "redirect:/orderDetail/"+orderProduct.getOrders().getId();
     }
 
 
@@ -286,10 +292,12 @@ public class OrdersController {
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByFAndUserId(0,user.getId());
         List<OrderPoJo> orderPoJos = new ArrayList<>();
-        for(Orders orders :orderses){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
-            orderPoJos.add(orderPoJo);
+        if(orderses!=null) {
+            for (Orders orders : orderses) {
+                List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                OrderPoJo orderPoJo = new OrderPoJo(orders, orderProducts);
+                orderPoJos.add(orderPoJo);
+            }
         }
         model.addAttribute("orderPoJos",orderPoJos);
         return "frontStage/User/orderList";
@@ -569,7 +577,7 @@ public class OrdersController {
                     userService.updateAreas(areas);
                 }
 
-
+                orders.setTotalProfit(orders.getPrices()-orders.getAreaProfit()-orders.getRolesProfit());
 
                 log.info("更新数据库中订单的信息："+orders.getUuid());
                 orders.setPayTime(new Date());
@@ -643,7 +651,20 @@ public class OrdersController {
 //        }
         List<Orders> orders = userService.listOrders();
         List<OrderPoJo> orderPoJos = new ArrayList<>();
+        long time =0;
+        long nd = 1000*24*60*60;
         for(Orders order:orders){
+            if(order.getSentTime()!=null) {
+                if(order.getD()==0&&order.getP()==2) {
+                    time = new Date().getTime() - order.getSentTime().getTime();
+                    long day = time / nd;
+                    log.info("发货时间" + order.getSentTime().getTime() + ",现在时间" + new Date().getTime());
+                    log.info("发货后时间：" + day);
+                    if (day > 14&&order.getStatus()==0) {
+                        order.setD(1);
+                    }
+                }
+            }
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
@@ -778,42 +799,56 @@ public class OrdersController {
      * @param id
      * @return
      */
-    @RequestMapping(value="sendOrder/{id}",method=RequestMethod.GET)
-    public String sentOrder(@PathVariable("id")int id){
+    @RequestMapping(value="sendOrder/{id}",method={RequestMethod.GET,RequestMethod.POST})
+    public String sentOrder(@PathVariable("id")int id,String logisticCompany,String logisticCode){
         log.info("发货成功！");
         Orders orders = ordersService.findOrdersById(id);
         orders.setSentTime(new Date());
         orders.setP(1);
+        Logistic logistic = terraceService.findLogisticByName(logisticCompany);
+        orders.setLogistic(logistic);
+        orders.setCarriageCode(logisticCode);
         ordersService.updateOrders(orders);
        return "redirect:/orderDetail/"+id;
 
     }
 
-    @RequestMapping(value="sendOrderProduct/{id}",method=RequestMethod.GET)
-    public String sentOrderProduct(@PathVariable("id")int id,Model model){
-        model.addAttribute("id",id);
-        return "frontStage/User/sentOrderProduct";
-    }
-
-
     /**
      * 退货发货
      * @param id
-     * @param logistics
-     * @param logisticsNum
      * @return
      */
     @RequestMapping(value = "/sendOrderProduct/{id}",method = RequestMethod.POST)
-    public String sendOrderProduct(@PathVariable("id")int id,String logistics,String logisticsNum){
+    public String sendOrderProduct(@PathVariable("id")int id,String logisticCompany,String logisticCode){
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
         orderProduct.setStauts(3);
         ExitOrders exitOrders = orderProduct.getExitOrders();
         exitOrders.setSentTime(new Date());
-        exitOrders.setLogistics(logistics);
-        exitOrders.setLogisticsNum(logisticsNum);
+        Logistic logistic = terraceService.findLogisticByName(logisticCompany);
+        exitOrders.setLogistic(logistic);
+        exitOrders.setCarriageCode(logisticCode);
         ordersService.updateExitOrders(exitOrders);
+        ordersService.updateOrderProduct(orderProduct);
         return "redirect:/exitGoods";
     }
+
+    /**
+     * 测试用
+     * @param id
+     * @param model
+     * @return
+     */
+    @RequestMapping(value="sendOrderProduct/{id}",method=RequestMethod.GET)
+    public String sentOrderProduct(@PathVariable("id")int id,Model model){
+        model.addAttribute("id",id);
+        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+        ExitOrders exitOrders = orderProduct.getExitOrders();
+        ordersService.updateExitOrders(exitOrders);
+        ordersService.updateOrderProduct(orderProduct);
+        return "frontStage/User/editLogisticInfo";
+    }
+
+
 
 
 //    @RequestMapping(value="agreeExitOrder/{id}",method=RequestMethod.GET)
@@ -849,7 +884,7 @@ public class OrdersController {
         map.put("mchid", WebChatUtil.getTenantId());
         map.put("nonce_str", nonce_str);
         map.put("openid", openId);
-        map.put("partner_trade_no", orders.getUuid());
+        map.put("partner_trade_no", orderProduct.getUuid());
         map.put("spbill_create_ip",ip);
 
 
@@ -903,5 +938,14 @@ public class OrdersController {
         }finally{
             return "redirect:/orderDetail/"+orders.getId();
         }
+    }
+
+
+    @RequestMapping(value="/achieveOrder/{id}",method =RequestMethod.GET)
+    public String achieveOrder(@PathVariable("id")int id){
+        Orders orders = ordersService.findOrdersById(id);
+        orders.setP(2);
+        ordersService.updateOrders(orders);
+        return "redirect:/getOrders";
     }
 }

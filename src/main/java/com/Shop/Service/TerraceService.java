@@ -5,6 +5,8 @@ import com.Shop.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/3/25 0025.
  */
@@ -20,6 +22,8 @@ public class TerraceService {
     private RolesDao rolesDao;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private LogisticDao logisticDao;
 
     public void addTerrace(Terrace terrace){
         terraceDao.save(terrace);
@@ -89,6 +93,10 @@ public class TerraceService {
         }
         return true;
 
+    }
+
+    public Logistic findLogisticByName(String name){
+        return logisticDao.findLogisticByName(name);
     }
 
 }

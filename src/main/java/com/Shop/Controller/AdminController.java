@@ -1,10 +1,7 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
-import com.Shop.Service.AddressService;
-import com.Shop.Service.GoodService;
-import com.Shop.Service.TerraceService;
-import com.Shop.Service.UserService;
+import com.Shop.Service.*;
 import com.Shop.Util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -37,6 +34,8 @@ public class AdminController {
     private AddressService addressService;
     @Autowired
     private GoodService goodService;
+    @Autowired
+    private OrdersService ordersService;
 
     Logger log = Logger.getLogger(AdminController.class);
 
@@ -286,5 +285,53 @@ public class AdminController {
         return "redirect:/indexCarousel";
     }
 
+    @RequestMapping(value="/getOrderLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})
+    public String getOrderLogisticTrack(@PathVariable("id")int id, HttpSession session,Model model){
+        Orders orders = ordersService.findOrdersById(id);
+        String json = ExpressSearch.consult3(orders.getLogistic().getLogis_comp_id(),orders.getCarriageCode());
+        ExpressBean  expressBean = (ExpressBean) DataConvertorUtil.json2object(json, ExpressBean.class);
+        model.addAttribute("expressBean", expressBean);
+        model.addAttribute("orders",orders);
+        System.out.println("getOrderLogisticTrack   expressBean : "+expressBean);
+        return "frontStage/User/logistics";
+    }
+
+    @RequestMapping(value="/getLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})
+    public String getLogisticTrack(@PathVariable("id")int id, HttpSession session,Model model){
+        Orders orders = ordersService.findOrdersById(id);
+        String json = ExpressSearch.consult3(orders.getLogistic().getLogis_comp_id(),orders.getCarriageCode());
+        ExpressBean  expressBean = (ExpressBean) DataConvertorUtil.json2object(json, ExpressBean.class);
+        model.addAttribute("expressBean", expressBean);
+        System.out.println("getOrderLogisticTrack   expressBean : "+expressBean);
+        return "backStage/Orders/logisticsTrace";
+    }
+
+
+    @RequestMapping(value="/getOrderProductLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})
+    public String getOrderProductLogisticTrack(@PathVariable("id")int id, HttpSession session,Model model){
+        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+        ExitOrders exitOrders = orderProduct.getExitOrders();
+        String json = ExpressSearch.consult3(exitOrders.getLogistic().getLogis_comp_id(),exitOrders.getCarriageCode());
+        ExpressBean  expressBean = (ExpressBean) DataConvertorUtil.json2object(json, ExpressBean.class);
+        model.addAttribute("expressBean", expressBean);
+        model.addAttribute("exitOrders",exitOrders);
+        System.out.println("getOrderLogisticTrack   expressBean : "+expressBean);
+        return "frontStage/User/logistics";
+    }
+
+
+//    @RequestMapping(value="/getProductLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})
+//    public String getProductLogisticTrack(@PathVariable("id")int id, HttpSession session,Model model){
+//        Orders orders = ordersService.findOrdersById(id);
+//        OrderProduct orderProduct = ordersService.findOrderProductById(id);
+//        ExitOrders exitOrders = orderProduct.getExitOrders();
+//
+//        String json = ExpressSearch.consult3(exitOrders.getLogistic().getLogis_comp_id(),exitOrders.getCarriageCode());
+//        ExpressBean  expressBean = (ExpressBean) DataConvertorUtil.json2object(json, ExpressBean.class);
+//        model.addAttribute("expressBean", expressBean);
+//        model.addAttribute("exitOrders",exitOrders);
+//        System.out.println("getOrderLogisticTrack   expressBean : "+expressBean);
+//        return "backStage/Orders/logisticsTrace";
+//    }
 
 }
