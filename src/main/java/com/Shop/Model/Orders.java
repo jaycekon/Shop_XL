@@ -31,7 +31,8 @@ public class Orders {
     private Areas areas;
     private float areaProfit;
     private User user;
-    private float totalProfit;        //平台盈利
+    private float totalProfit;        //货款
+    private float totalPV;                 //订单总PV值
     private Logistic logistic;          //物流公司
     private String carriageCode;        //运单单号
 
@@ -250,5 +251,13 @@ public class Orders {
 
     public void setLogistic(Logistic logistic) {
         this.logistic = logistic;
+    }
+
+    public float getTotalPV() {
+        return totalPV;
+    }
+
+    public void setTotalPV(float totalPV) {
+        this.totalPV = totalPV;
     }
 }

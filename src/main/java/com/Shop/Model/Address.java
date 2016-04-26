@@ -15,6 +15,7 @@ public class Address {
     private String username;
     private User user;
     private int flag;
+    private Area a;
 
     @Id
     @GeneratedValue
@@ -74,5 +75,14 @@ public class Address {
 
     public void setFlag(int flag) {
         this.flag = flag;
+    }
+
+    @ManyToOne
+    public Area getA() {
+        return a;
+    }
+
+    public void setA(Area a) {
+        this.a = a;
     }
 }

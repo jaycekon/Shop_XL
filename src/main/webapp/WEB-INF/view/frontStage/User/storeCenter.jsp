@@ -21,7 +21,6 @@
 <body>
 
 <header class="ui-header ui-header-stable ui-border-b">
-    <i class="ui-icon-return" onclick="history.back()"></i>
     <h1>店家中心</h1>
 </header>
 
@@ -59,7 +58,7 @@
             </div>
 <%
             if(user.getRoles()==null){
-                out.println("");
+                out.println("百城万店倾销网");
             }else{
                 out.println(user.getRoles().getName());
             }

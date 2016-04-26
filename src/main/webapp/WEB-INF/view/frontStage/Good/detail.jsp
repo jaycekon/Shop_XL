@@ -25,7 +25,6 @@
 <body>
 
 <header class="ui-header ui-header-stable ui-border-b">
-    <i class="ui-icon-return" onclick="history.back()"></i>
     <h1>商品详情</h1>
 </header>
 
@@ -89,7 +88,7 @@
 
         <div class="selectNum">
             <button class="reduce minus" type="button">&#45;</button>
-            <input type="number" value="1"  name="count" />
+            <input type="number" value="<%=good.getWholesaleCount()%>"  name="count" id ="count" />
             <button class="add plus" type="button">&#43;</button>
         </div>
 
@@ -174,12 +173,13 @@
     });
 
     /* 商品数量选择组件 */
-    var max = 100/*parseInt( $('#stock').text() )*/;   /*库存量*/
+    var max = <%=good.getNum()%>/*parseInt( $('#stock').text() )*/;   /*库存量*/
+    var min = <%=good.getWholesaleCount()%>
 
     $('.minus').tap(function(){
         var $num = $(this).siblings('input');
         var num =  parseFloat( $num.val() );
-        if ( num >= 2 ) {          // 修改数量显示
+        if ( num > min ) {          // 修改数量显示
             $num.val( num-1 );
         }
 
@@ -197,8 +197,11 @@
         if( parseInt( $(this).val() ) > max ) {
             $(this).val(max);
         }
-        if( parseInt( $(this).val() ) < 1 ) {
-            $(this).val(1);
+    });
+
+    $('.selectNum input').blur(function(){
+        if( parseInt( $(this).val() ) < min ) {
+            $(this).val(min);
         }
     });
 

@@ -242,7 +242,9 @@ public class UserController {
         List<OrderProduct> orderProducts = userService.findOrderProductByCartId(cart.getId());
         Address address = userService.findAddressById(id);
         Orders orders = new Orders();
-        orders.setAddress(address.getAddress());
+        Area city = address.getA().getArea();
+        Area s = city.getArea();
+        orders.setAddress(s.getName()+city.getName()+address.getA().getName()+address.getAddress());
         orders.setName(address.getUsername());
         orders.setPhone(address.getPhone());
         orders.setUser(user);
@@ -252,9 +254,12 @@ public class UserController {
         float prices = 0;
         float areaProfit = 0;
         float roleProfit = 0;
+        float totalPV = 0;
         userService.addOrders(orders);
         for (OrderProduct orderProduct : orderProducts) {
             orderProduct.setCart(null);
+            //累加每个订单项的PV值
+            totalPV += orderProduct.getPv() * orderProduct.getCount();
             orderProduct.setOrders(orders);
             userService.updateOrderProduct(orderProduct);
             count += orderProduct.getCount();
@@ -263,19 +268,24 @@ public class UserController {
             roleProfit += orderProduct.getRoleProfit();
         }
         log.info("平台总盈利:"+prices+"大区佣金："+areaProfit+"角色佣金："+roleProfit);
-
-        orders.setTotalProfit(prices-areaProfit-roleProfit);
+        log.info("总的PV值:"+totalPV);
         orders.setNumber(count);
         orders.setPrices(prices);
+        orders.setTotalProfit(prices-totalPV);
 
-        orders.setAreaProfit(areaProfit);
-        orders.setRolesProfit(roleProfit);
+        //如果店家上级不为空，则划分佣金，为空佣金归平台
         if (user.getRoles() != null) {
             Roles roles = userService.getRoles(user.getRoles().getId());
             orders.setRoles(roles);
             Areas areas = userService.getAreas(roles.getAreas().getId());
             orders.setAreas(areas);
+            orders.setAreaProfit(areaProfit);
+            orders.setRolesProfit(roleProfit);
+            totalPV = totalPV-areaProfit-roleProfit;
         }
+
+
+        orders.setTotalPV(totalPV);
         cartService.deleteCart(cart);
         userService.updateOrders(orders);
         return "redirect:/weixin/preparePayOrder/"+orders.getId();
@@ -565,6 +575,7 @@ public class UserController {
         Area area= addressService.findAreaById(area_id);
         User u  = userService.findById(user.getId());
         address.setArea(area.getName());
+        address.setA(area);
         log.info("添加地址");
         address.setUser(u);
         userService.addAddress(address);
@@ -598,6 +609,7 @@ public class UserController {
         a.setPhone(address.getPhone());
         a.setArea(area.getName());
         a.setUser(user);
+        a.setA(area);
         userService.updateAddress(a);
         if(flagt ==1){
             return "redirect:/myAddress/"+a.getId();

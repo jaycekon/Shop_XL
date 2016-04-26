@@ -24,7 +24,6 @@
 <body>
 
 <header class="ui-header ui-header-stable ui-border-b">
-    <i class="ui-icon-return" onclick="history.back()"></i>
     <h1>角色提现</h1>
     <button class="ui-btn" onclick="window.location.href='<%=request.getContextPath()%>/withdrawDetail'">提现明细</button>
 </header>

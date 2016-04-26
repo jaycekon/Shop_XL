@@ -163,6 +163,8 @@ public class UserService {
                 return orderProduct1;
             }
         }
+        orderProduct.setPv(good.getPv());
+        orderProduct.setWholeSaleCount(good.getWholesaleCount());
         orderProduct.setCart(cart);
         orderProduct.setUuid(UUID.randomUUID().toString());
         orderProduct.setGood_id(good.getId());

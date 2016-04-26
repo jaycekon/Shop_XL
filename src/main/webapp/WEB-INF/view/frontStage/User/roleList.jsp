@@ -22,7 +22,6 @@
 <body>
 
 <header class="ui-header ui-header-stable ui-border-b">
-    <i class="ui-icon-return" onclick="history.back()"></i>
     <h1>角色列表</h1>
 </header>
 

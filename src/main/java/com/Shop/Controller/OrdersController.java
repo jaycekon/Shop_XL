@@ -576,9 +576,6 @@ public class OrdersController {
                     areas.setTotalCommission(total);
                     userService.updateAreas(areas);
                 }
-
-                orders.setTotalProfit(orders.getPrices()-orders.getAreaProfit()-orders.getRolesProfit());
-
                 log.info("更新数据库中订单的信息："+orders.getUuid());
                 orders.setPayTime(new Date());
                 orders.setF(1);
@@ -821,13 +818,16 @@ public class OrdersController {
     @RequestMapping(value = "/sendOrderProduct/{id}",method = RequestMethod.POST)
     public String sendOrderProduct(@PathVariable("id")int id,String logisticCompany,String logisticCode){
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
-        orderProduct.setStauts(3);
+        orderProduct.setExitStatus(3);
         ExitOrders exitOrders = orderProduct.getExitOrders();
         exitOrders.setSentTime(new Date());
         Logistic logistic = terraceService.findLogisticByName(logisticCompany);
         exitOrders.setLogistic(logistic);
         exitOrders.setCarriageCode(logisticCode);
         ordersService.updateExitOrders(exitOrders);
+        log.info("退货发货，更新订单项的状态");
+        log.info("退货发货，更新订单项的状态");
+        log.info("退货发货，更新订单项的状态");
         ordersService.updateOrderProduct(orderProduct);
         return "redirect:/exitGoods";
     }

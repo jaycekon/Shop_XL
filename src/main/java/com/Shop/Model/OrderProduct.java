@@ -18,7 +18,9 @@ public class OrderProduct {
     private String image;           //商品描述
     private Cart cart;
     private Orders orders;
+    private int wholeSaleCount;        //起批量
     private int maxCount;               //订单最大数量
+    private float pv;                       //订单项PV
     private int stauts;                     //订单状态  1.申请退款，2.同意退款
     private int exitStatus;                 //订单退货状态 1.申请退货，2.同意退货，3.买家发货，4.平台退货
     private float areaProfit;
@@ -159,5 +161,21 @@ public class OrderProduct {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public int getWholeSaleCount() {
+        return wholeSaleCount;
+    }
+
+    public void setWholeSaleCount(int wholeSaleCount) {
+        this.wholeSaleCount = wholeSaleCount;
+    }
+
+    public float getPv() {
+        return pv;
+    }
+
+    public void setPv(float pv) {
+        this.pv = pv;
     }
 }

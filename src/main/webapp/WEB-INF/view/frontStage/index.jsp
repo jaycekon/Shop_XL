@@ -1,7 +1,8 @@
 <%@ page import="com.Shop.Model.Good" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Shop.Model.WatchProduct" %>
-<%@ page import="com.Shop.Model.Image" %><%--
+<%@ page import="com.Shop.Model.Image" %>
+<%@ page import="com.Shop.Model.User" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/2 0002
@@ -32,6 +33,7 @@
         <ul class="ui-slider-content" style="width: 300%">
             <%
                 List<Image> images = (List<Image>)request.getAttribute("images");
+                User user =(User)session.getAttribute("loginUser");
                 for(Image image:images){
             %>
             <li><img src="<%=image.getAddress()%>" alt=""></li>
@@ -40,7 +42,7 @@
             %>
         </ul>
     </div><!-- 轮播图]] -->
-
+    <input type="hidden" name="sign" id="sign" value="<%=user.getSign()%>"/>
     <div class="productListWrapper">
         <%
             List<Good> goods = (List<Good>) request.getAttribute("goods");
@@ -128,7 +130,7 @@
         </div>
         <div class="ui-dialog-ft">
             <button type="button" data-role="button">取消</button>
-            <button type="button" data-role="button">支付查看</button>
+            <button type="button" data-role="button">确认支付</button>
         </div>
     </div>
 </div><!-- 点击查看需要倾销]] -->

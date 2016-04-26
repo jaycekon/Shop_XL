@@ -25,7 +25,6 @@
 <body>
 
 <header class="ui-header ui-header-stable ui-border-b">
-    <i class="ui-icon-return" onclick="history.back()"></i>
     <h1>新增收货地址</h1>
 </header>
 
@@ -49,7 +48,7 @@
             <div class="ui-form-item ui-form-item-show ui-border-b">
                 <label>省</label>
                 <div class="ui-select">
-                    <select name = "area_id" oninput="queryCity(this.value)">
+                    <select name = "areaId" oninput="queryCity(this.value)">
                         <option value="">--请选择省份--</option>
                         <%
                             for(Area area:areas){

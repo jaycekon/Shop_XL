@@ -2,7 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.Shop.Model.OrderProduct" %>
 <%@ page import="com.Shop.Model.Cart" %>
-<%@ page import="javax.persistence.criteria.Order" %><%--
+<%@ page import="javax.persistence.criteria.Order" %>
+<%@ page import="com.Shop.Model.Area" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/2 0002
@@ -26,7 +27,6 @@
 <body>
 
 <header class="ui-header ui-header-stable ui-border-b">
-    <i class="ui-icon-return" onclick="history.back()"></i>
     <h1>结算中心</h1>
 </header>
 
@@ -53,9 +53,25 @@
     %>
         <section class="receiveInfo">
         <p><span><%=address.getUsername()%></span><span style="float: right;"><%=address.getPhone()%></span></p>
-        <p style="color:#848689;"><%=address.getAddress()%></p>
+            <%
+                if(address.getA()!=null){
+                Area city = address.getA().getArea();
+                Area s = city.getArea();
+            %>
+        <p style="color:#848689;"><%=s.getName()+city.getName()+address.getA().getName()+address.getAddress()%></p>
         <b class="borderT"></b>
         <b class="borderB"></b>
+            <%
+                }else{
+            %>
+            <p style="color:#848689;"><%=address.getAddress()%></p>
+            <b class="borderT"></b>
+            <b class="borderB"></b>
+            <%
+
+                }
+            %>
+
         </section><!-- [[收货地址 -->
     <%
             }
