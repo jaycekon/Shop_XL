@@ -122,8 +122,12 @@ public class UserController {
     @RequestMapping(value = "buyGood", method = RequestMethod.POST)
     public String buyGood(int good_id, int count, HttpSession session) {
         User user = (User) session.getAttribute("loginUser");
-        if (user == null) {
-            return "redirect:login";
+        Good good = goodService.findGoodById(good_id);
+        if(count >good.getNum()){
+            return "redirect:/Detail/"+good_id;
+        }
+        if(count <good.getWholesaleCount()){
+            return "redirect:/Detail/"+good_id;
         }
         if(user.getSign()==0){
             return "redirect:/personSign";
@@ -139,10 +143,7 @@ public class UserController {
             num += count;
             cart.setCount(num);
             double prices = cart.getTotalPrices();
-            Good good = goodService.findGoodById(good_id);
-            if(count >good.getNum()){
-                return "redirect:/Detail/"+good_id;
-            }
+
             prices += good.getDumpingPrices() * count;
             cart.setTotalPrices(prices);
             cartService.updateCart(cart);
