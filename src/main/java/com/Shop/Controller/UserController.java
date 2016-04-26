@@ -427,7 +427,7 @@ public class UserController {
         return "frontStage/User/storeCenter";
     }
 
-    @RequestMapping(value ="personSign",method = RequestMethod.GET)
+    @RequestMapping(value =" ",method = RequestMethod.GET)
     public String memberSign(Model model,HttpSession session){
         if(session.getAttribute("loginUser")==null){
             return "redirect:/login";

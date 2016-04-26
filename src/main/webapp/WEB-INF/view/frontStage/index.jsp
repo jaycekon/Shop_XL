@@ -134,10 +134,30 @@
         </div>
     </div>
 </div><!-- 点击查看需要倾销]] -->
+
+
+<div class="ui-dialog" id="goSignDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div></div>
+        </div>
+        <div class="ui-dialog-ft">
+            <button type="button" data-role="button">取消</button>
+            <button type="button" data-role="button">去认证</button>
+        </div>
+    </div>
+</div><!-- 点击查看需要倾销]] -->
 <script>
     function displayPrice(price,id){
-        $(".ui-dialog-bd").find("div").html("查看需要支付"+price+"倾销币");
-        $("#id").val(id);
+        var sign = $("#sign").val();
+        if(sign == 1){
+            $(".ui-dialog-bd").find("div").html("查看需要支付"+price+"倾销币");
+            $("#id").val(id);
+            watchPrice();
+        }else if(sign ==0){
+            $(".ui-dialog-bd").find("div").html("您当前尚未认证会员，请前往认证");
+            signUser();
+        }
     }
 </script>
 </body>

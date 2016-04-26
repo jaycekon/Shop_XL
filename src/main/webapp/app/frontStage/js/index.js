@@ -29,15 +29,27 @@ $(function(){
 
     });
 
-    /* 点击查看倾销价 */
-    $('.watchPrice').click(function(){
-        var goPayDialog =  $("#goPayDialog").dialog("show");
-        goPayDialog.on('dialog:action',function(e){
-            if(e.index == 1) {
-                window.location.href= "../watchGood/"+$("#id").val();
-            }
-        })
-    });
+
 
 
 });
+
+/* 点击查看倾销价 */
+function watchPrice(){
+    var goPayDialog =  $("#goPayDialog").dialog("show");
+    goPayDialog.on('dialog:action',function(e){
+        if(e.index == 1) {
+            window.location.href= "../watchGood/"+$("#id").val();
+        }
+    })
+};
+
+
+function signUser(){
+    var goPayDialog =  $("#goSignDialog").dialog("show");
+    goPayDialog.on('dialog:action',function(e){
+        if(e.index == 1) {
+            window.location.href= "../personSign";
+        }
+    })
+};
