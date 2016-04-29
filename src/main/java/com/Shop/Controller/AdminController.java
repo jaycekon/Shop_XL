@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +54,8 @@ public class AdminController {
     }
 
     @RequestMapping(value ="getCode")
-    public String getCode(HttpServletRequest request){
+    public String getCode(HttpServletRequest request, HttpServletResponse response){
+
         String code=request.getParameter("code");
         log.info("获取code成功---------->"+code);
         WebChatUtil.getCode(code,request);
@@ -68,13 +71,21 @@ public class AdminController {
             Roles roles = terraceService.findRolesByOpenId(openId);
             request.getSession().setAttribute("roles",roles);
             return "frontStage/User/RoleCenter";
-        }else{
+        }else if(terraceService.findUseByOpenId(openId)!=null){
             log.info("成功获取角色信息！");
             User user = terraceService.findUseByOpenId(openId);
-            if(user==null){
-            }
             request.getSession().setAttribute("loginUser",user);
+            log.info("这里要出问题了！！！！");
             return "redirect:/index";
+        }else{
+            User user = new User();
+            JsonObject jsonObject = UserInfoUtil.getUserInfo(openId);
+            user.setOpenId(openId);
+            user.setUsername(jsonObject.get("nickname").getAsString());
+            user.setImg(jsonObject.get("headimgurl").getAsString());
+            userService.addUser(user);
+            request.getSession().setAttribute("loginUser",user);
+            return  "redirect:/index";
         }
     }
 

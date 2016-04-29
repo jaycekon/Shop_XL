@@ -85,6 +85,9 @@ public class WebChatUtil {
        return accessToken;
     }
 
+
+
+
     public static String getQrCodePic(int type,long flag) {
         HttpClient client = new DefaultHttpClient();
         String url = "https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=" + getAccessToken();

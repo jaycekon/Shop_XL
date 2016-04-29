@@ -427,8 +427,15 @@ public class UserController {
         return "frontStage/User/storeCenter";
     }
 
-    @RequestMapping(value =" ",method = RequestMethod.GET)
-    public String memberSign(Model model,HttpSession session){
+    @RequestMapping(value ="/personSign",method = RequestMethod.GET)
+    public String memberSign(Model model){
+        Profit profit = terraceService.findProfit();
+        model.addAttribute("profit",profit);
+        return "frontStage/User/memberCeritification";
+    }
+
+    @RequestMapping(value ="/memberSign",method = RequestMethod.GET)
+    public String memberSign(HttpSession session){
         if(session.getAttribute("loginUser")==null){
             return "redirect:/login";
         }
@@ -437,7 +444,6 @@ public class UserController {
             return "redirect:/";
         }
         Profit profit = terraceService.findProfit();
-        int count = user.getCount()+profit.getDumpingCount();
         CountOrder countOrder = new CountOrder();
         countOrder.setDate(new Date());
         countOrder.setType("会员认证");
@@ -447,9 +453,7 @@ public class UserController {
         countOrder.setUuid(UUID.randomUUID().toString());
         countOrder.setUser(user);
         userService.addCountOrder(countOrder);
-        model.addAttribute("profit",profit);
-        model.addAttribute("countOrder",countOrder);
-        return "frontStage/User/memberCeritification";
+        return "redirect:/weixin/preparePayCountOrder/"+countOrder.getId();
     }
 
     @RequestMapping(value ="personSignSuccess",method = RequestMethod.POST)
