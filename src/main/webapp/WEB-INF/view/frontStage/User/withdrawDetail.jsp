@@ -52,9 +52,8 @@
     <table class="table ui-table ui-border ui-border-tb">
         <thead>
         <tr>
-            <th>订单编号</th>
-            <th>分佣金额（元）</th>
             <th>订单时间</th>
+            <th>提现金额（元）</th>
             <th>佣金状态</th>
         </tr>
 
@@ -68,9 +67,8 @@
             for(WithdrawalsOrder withdrawalsOrder:withdrawalsOrders){
         %>
         <tr>
-            <td><%=withdrawalsOrder.getUuid()%></td>
-            <td><%=withdrawalsOrder.getPrices()%></td>
             <td><%=format.format(withdrawalsOrder.getDate())%></td>
+            <td><%=withdrawalsOrder.getPrices()%></td>
             <td><%
                 if(withdrawalsOrder.getStatus()==1){
                     out.println("已结算");

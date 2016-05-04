@@ -433,13 +433,41 @@ public class WebChatController {
                     log.info("退款成功!");
                     orderProduct.setStauts(2);
                     orders.setStatus(0);
-                    float roleProfit = orderProduct.getRoleProfit();
-                    float areaProfit = orderProduct.getAreaProfit();
-                    roleProfit = orders.getRolesProfit() - roleProfit;
-                    areaProfit = orders.getAreaProfit() - areaProfit;
-                    orders.setRolesProfit(roleProfit);
-                    orders.setAreaProfit(areaProfit);
-                    orders.setTotalProfit(orders.getTotalProfit()-roleProfit-areaProfit);
+                    Profit profit = terraceService.findProfit();
+                    float pv = orderProduct.getPv()*orderProduct.getCount();
+                    float prices  = orderProduct.getPrices() * orderProduct.getCount();
+                    float totalPv = orders.getTotalPV();
+                    int count = orders.getNumber() - orderProduct.getCount();
+                    orders.setNumber(count);
+                    prices = orders.getPrices() - prices;
+                    totalPv = totalPv-pv;
+                    orders.setTotalPV(totalPv);   //退款后设置总的pv
+                    orders.setPrices(prices);     //退款后设置订单总金额
+                    orders.setTotalProfit(prices - totalPv);
+                    if(orders.getRoles()!=null) {
+
+
+                        //更新角色中的佣金
+                        Roles roles = orders.getRoles();
+                        float totalCommission = roles.getTotalCommission();
+                        float waitCommission = roles.getWaitCommission();
+                        totalCommission = totalCommission - (pv * profit.getRole_count())/100;
+                        waitCommission = waitCommission - (pv * profit.getRole_count())/100;
+                        roles.setWaitCommission(waitCommission);
+                        roles.setTotalCommission(totalCommission);
+                        userService.updateRoles(roles);
+
+                        //更新大区中的佣金
+                        Areas areas = orders.getAreas();
+                        totalCommission = areas.getTotalCommission();
+                        waitCommission = areas.getWaitCommission();
+                        totalCommission = totalCommission - (pv * profit.getArea_count())/100;
+                        waitCommission = waitCommission - (pv * profit.getArea_count())/100;
+                        areas.setTotalCommission(totalCommission);
+                        areas.setWaitCommission(waitCommission);
+                        userService.updateAreas(areas);
+
+                    }
                     ordersService.updateOrderProduct(orderProduct);
                     ordersService.updateOrders(orders);
                 }

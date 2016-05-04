@@ -88,7 +88,9 @@
                                     }else if(orders.getP()==2){
                                         if(orders.getT()==1){
                                             out.println("申请退货");
-                                        }else {
+                                        }else if(orders.getT()==2){
+                                            out.println("成功退货");
+                                        }else{
                                             out.println("已收货");
                                         }
                                     }

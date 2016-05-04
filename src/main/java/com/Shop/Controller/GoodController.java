@@ -297,4 +297,18 @@ public class GoodController {
         return "frontStage/Good/detail";
     }
 
+
+    @RequestMapping(value="/commentGood/{id}",method = RequestMethod.GET)
+    public String commentGood(@PathVariable("id")int id,String text,HttpSession session){
+        User user =(User)session.getAttribute("loginUser");
+        Comment comment = new Comment();
+        comment.setUser(user);
+        comment.setText(text);
+        Good good = goodService.findGoodById(id);
+        comment.setGood(good);
+        comment.setDate(new Date());
+        comment.setUsername(user.getUsername());
+        addressService.addComment(comment);
+        return null;
+    }
 }

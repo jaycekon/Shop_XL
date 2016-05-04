@@ -149,20 +149,17 @@ public class UserService {
 
     public OrderProduct addOrderProduct(Cart cart,Good good,String imageAddress,int count){
         OrderProduct orderProduct = new OrderProduct();
-        Profit profit = profitDao.findById();
         List<OrderProduct> orderProducts = orderProductDao.findAllByCartId(cart.getId());
+
         for(OrderProduct orderProduct1:orderProducts){
             if(orderProduct1.getGood_id()==good.getId()){
                 int c = orderProduct1.getCount()+count;
                 orderProduct1.setCount(c);
-                float areaProfit = good.getPv() * count * profit.getArea_count();
-                orderProduct1.setAreaProfit(areaProfit/100);
-                float roleProfit = good.getPv() * count * profit.getRole_count();
-                orderProduct1.setRoleProfit(roleProfit/100);
                 orderProductDao.update(orderProduct1);
                 return orderProduct1;
             }
         }
+
         orderProduct.setPv(good.getPv());
         orderProduct.setWholeSaleCount(good.getWholesaleCount());
         orderProduct.setCart(cart);
@@ -175,10 +172,6 @@ public class UserService {
         orderProduct.setPrices(good.getDumpingPrices());
         orderProduct.setDescribes(good.getDescribes());
         orderProduct.setMaxCount(good.getNum());
-        float areaProfit = good.getPv() * count * profit.getArea_count();
-        orderProduct.setAreaProfit(areaProfit/100);
-        float roleProfit = good.getPv() * count * profit.getRole_count();
-        orderProduct.setRoleProfit(roleProfit/100);
         orderProductDao.save(orderProduct);
         return orderProduct;
     }

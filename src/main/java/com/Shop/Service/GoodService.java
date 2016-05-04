@@ -1,5 +1,6 @@
 package com.Shop.Service;
 
+import com.Shop.Dao.CommentDao;
 import com.Shop.Dao.GoodDao;
 import com.Shop.Dao.ImageDao;
 import com.Shop.Model.Good;
@@ -19,6 +20,8 @@ public class GoodService {
     private GoodDao goodDao;
     @Autowired
     private ImageDao imageDao;
+    @Autowired
+    private CommentDao commentDao;
     public boolean addGood(Good good){
         goodDao.save(good);
         return true;

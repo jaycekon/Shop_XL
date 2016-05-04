@@ -92,7 +92,7 @@ $('.selectNum input').tap(function() {
             if( $myNum.val() == '' ) {
                 num = 1;
             }
-            if( $myNum.val()<min){
+            if( $myNum.val()<min||$myNum.val()==null){
                 num = min;
             }
             $num.val( num );

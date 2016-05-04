@@ -153,6 +153,16 @@
         <%
             }
         } else if (orders.getP() == 2&&orders.getD()==0) {
+                if(orderProduct.getStauts() ==2){
+                   %>
+        <div class="textRight">
+            <p class="">
+               已退款
+            </p>
+        </div>
+        <%
+                }
+                else
                 if(orderProduct.getExitStatus()==0){
         %>
 
@@ -175,26 +185,29 @@
                     }else if(orderProduct.getExitStatus()==2){
                         %>
 
-        <div class="ui-border-b block operateBlock">
-            <button class="ui-btn ui-btn-danger">
+        <div class="textRight">
+            <p class="">
+                <button class="ui-btn ui-btn-danger"
+                        onclick="window.location.href='<%=request.getContextPath()%>/sendOrderProduct/<%=orderProduct.getId()%>'">
+                    发货
+                </button>
+                <br>
                 同意申请，等待发货
-            </button>
+            </p>
         </div>
         <%
                     }else if(orderProduct.getExitStatus()==3){
                         %>
-        <div class="ui-border-b block operateBlock">
-            <button class="ui-btn ui-btn-danger">
-                已发货
-            </button>
+        <div class="textRight">
+            <p class="">退款中<br>已发货
+            </p>
         </div>
         <%
                     }else if(orderProduct.getExitStatus()==4){
                         %>
-        <div class="ui-border-b block operateBlock">
-            <button class="ui-btn ui-btn-danger">
-                已退款
-            </button>
+        <div class="textRight">
+            <p class="">已退款
+            </p>
         </div>
         <%
                     }else if(orderProduct.getExitStatus()==9){

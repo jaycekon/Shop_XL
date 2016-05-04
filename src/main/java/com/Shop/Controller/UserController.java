@@ -256,6 +256,7 @@ public class UserController {
         float roleProfit = 0;
         float totalPV = 0;
         userService.addOrders(orders);
+        //通过累加每个订单项的总PV获取到订单的总PV
         for (OrderProduct orderProduct : orderProducts) {
             orderProduct.setCart(null);
             //累加每个订单项的PV值
@@ -264,13 +265,12 @@ public class UserController {
             userService.updateOrderProduct(orderProduct);
             count += orderProduct.getCount();
             prices += orderProduct.getPrices() * orderProduct.getCount();
-            areaProfit += orderProduct.getAreaProfit();
-            roleProfit += orderProduct.getRoleProfit();
         }
         log.info("平台总盈利:"+prices+"大区佣金："+areaProfit+"角色佣金："+roleProfit);
         log.info("总的PV值:"+totalPV);
         orders.setNumber(count);
         orders.setPrices(prices);
+        //设置货款
         orders.setTotalProfit(prices-totalPV);
 
         //如果店家上级不为空，则划分佣金，为空佣金归平台
@@ -279,12 +279,9 @@ public class UserController {
             orders.setRoles(roles);
             Areas areas = userService.getAreas(roles.getAreas().getId());
             orders.setAreas(areas);
-            orders.setAreaProfit(areaProfit);
-            orders.setRolesProfit(roleProfit);
-            totalPV = totalPV-areaProfit-roleProfit;
         }
 
-
+        //用于计算总的pv，货款通过总价减去pv获得
         orders.setTotalPV(totalPV);
         cartService.deleteCart(cart);
         userService.updateOrders(orders);

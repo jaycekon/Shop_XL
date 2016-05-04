@@ -562,16 +562,18 @@ public class OrdersController {
             if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
                 String uuid = (String)map.get("out_trade_no");
                 Orders orders = ordersService.findOrdersByUid(uuid);
+                Profit profit = terraceService.findProfit();
+                //判断订单中有没有角色和大区，如果有，将佣金划分入大区和角色中待结算佣金中
                 if(orders.getRoles()!=null) {
                     Roles roles = orders.getRoles();
-                    float total = roles.getTotalCommission() + orders.getRolesProfit();
-                    float wait = roles.getWaitCommission() +orders.getRolesProfit();
+                    float total = roles.getTotalCommission() + (orders.getTotalPV()*profit.getRole_count())/100;
+                    float wait = roles.getWaitCommission() +(orders.getTotalPV()*profit.getRole_count())/100;
                     roles.setTotalCommission(total);
                     roles.setWaitCommission(wait);
                     userService.updateRoles(roles);
                     Areas areas = orders.getAreas();
-                    total = areas.getTotalCommission() + orders.getAreaProfit();
-                    wait = areas.getWaitCommission()+orders.getAreaProfit();
+                    total = areas.getTotalCommission() + (orders.getTotalPV()*profit.getArea_count())/100;
+                    wait = areas.getWaitCommission()+(orders.getTotalPV()*profit.getArea_count())/100;
                     areas.setWaitCommission(wait);
                     areas.setTotalCommission(total);
                     userService.updateAreas(areas);
@@ -582,6 +584,8 @@ public class OrdersController {
                 ordersService.updateOrders(orders);
                 //跟新商品的销量和库存
                 ordersService.updateOrderProductAfterPay(orders.getId());
+
+
             }
         }catch(Exception e){
             e.printStackTrace();
@@ -916,18 +920,52 @@ public class OrdersController {
             System.out.println(responseContent);
             if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
                 if(resultMap.get("result_code").equals("FAIL")){
-                    log.info("退款失败");
+                    log.info("退货失败");
                 }else{
-                    log.info("退款成功!");
-                    float roleProfit = orderProduct.getRoleProfit();
-                    float areaProfit = orderProduct.getAreaProfit();
-                    roleProfit = orders.getRolesProfit() - roleProfit;
-                    areaProfit = orders.getAreaProfit() - areaProfit;
-                    orders.setRolesProfit(roleProfit);
-                    orders.setAreaProfit(areaProfit);
-                    orders.setTotalProfit(orders.getTotalProfit()-areaProfit-roleProfit);
+                    log.info("退货成功!");
+                    Profit profit = terraceService.findProfit();
+                    float prices = orderProduct.getPrices() * orderProduct.getCount();
+                    float pv = orderProduct.getPv()*orderProduct.getCount();
+                    float totalPv = orders.getTotalPV();
+                    int count = orders.getNumber() - orderProduct.getCount();
+                    orders.setNumber(count);
+                    prices = orders.getPrices() - prices;
+                    orders.setPrices(prices);
+                    totalPv = totalPv-pv;
+                    orders.setTotalPV(totalPv);   //退款后设置总的pv
+                    orders.setTotalProfit(prices - totalPv);
+
+
+                    if(orders.getRoles()!=null) {
+
+
+                        //更新角色中的佣金
+                        Roles roles = orders.getRoles();
+                        float totalCommission = roles.getTotalCommission();
+                        float waitCommission = roles.getWaitCommission();
+                        //总佣金减去订单项佣金
+                        totalCommission = totalCommission - (pv * profit.getRole_count())/100;
+                        waitCommission = waitCommission - (pv * profit.getRole_count())/100;
+                        roles.setWaitCommission(waitCommission);
+                        roles.setTotalCommission(totalCommission);
+                        userService.updateRoles(roles);
+
+                        //更新大区中的佣金
+                        Areas areas = orders.getAreas();
+                        totalCommission = areas.getTotalCommission();
+                        waitCommission = areas.getWaitCommission();
+                        totalCommission = totalCommission - (pv * profit.getArea_count())/100;
+                        waitCommission = waitCommission - (pv * profit.getArea_count())/100;
+                        areas.setTotalCommission(totalCommission);
+                        areas.setWaitCommission(waitCommission);
+                        userService.updateAreas(areas);
+
+
+                    }
+
                     orderProduct.setExitStatus(4);
                     orders.setStatus(0);
+                    orders.setT(2);
                     ordersService.updateOrderProduct(orderProduct);
                     ordersService.updateOrders(orders);
                 }
@@ -948,4 +986,6 @@ public class OrdersController {
         ordersService.updateOrders(orders);
         return "redirect:/getOrders";
     }
+
+
 }

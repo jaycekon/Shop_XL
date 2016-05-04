@@ -142,6 +142,10 @@
                                 </button>
 
                                 <%
+                                }else if(orderProduct.getExitStatus()==2){
+                                    %>
+                                <span class="status">等待买家发货</span><br/>
+                                <%
                                 }else if(orderProduct.getExitStatus()==3){
                                     %>
                                 <button class="btn btn-warning"

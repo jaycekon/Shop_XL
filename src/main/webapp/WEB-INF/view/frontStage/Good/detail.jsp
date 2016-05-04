@@ -200,7 +200,7 @@
     });
 
     $('.selectNum input').blur(function(){
-        if( parseInt( $(this).val() ) < min ) {
+        if( parseInt( $(this).val() ) < min||$(this).val()==null ) {
             $(this).val(min);
         }
     });
