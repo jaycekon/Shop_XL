@@ -1,4 +1,4 @@
-4月6
+﻿4月6
 1.更新lib文件夹里的frozen.js  (修正点透问题)
 2.购物车  引入了新建的js   shopCart.js     (添加了修改产品数量的校验  只能是数字且数字必须大于0小于最大库存量)
 
@@ -39,3 +39,32 @@ table外层包裹一个div  <div class="table-responsive"></div>  div：table-re
 
 4月25
 增加填写物流信息页面   editLogisticInfo.html
+
+4月26
+1.商品数量选择包括 最小值和最大值的范围（设定好）
+
+2.首页 查看倾销价 对话框  按钮修改成立即支付 （<div>查看需要支付<span class="productMoney">XX</span>倾销币</div> 价格用一个元素包裹来突出）
+
+3.购物车商品总价变为商品单价  （所以js商品价格要修改）
+修改步骤：1.把页面的单价data-unitPrice属性去掉
+	  2.js页面 把函数editPrice去掉 （所有调用editPrice函数的地方改为调用acountPrice）
+/*总价的计算*/
+function acountPrice() {
+
+    var totalPrice = 0;
+    var price;
+    $('.productBox').each(function(index,value){
+        var num = parseFloat( $(value).find('input[title="number"]').val() );
+        var price = parseFloat( $(value).find('.price').text().substr(1) );
+        totalPrice = parseFloat(parseFloat(totalPrice) + parseFloat(num*price)).toFixed(2);
+    });
+
+    $('#amount').html('&#165; ' + totalPrice);
+}
+
+5月4日
+更新订单详情的评论内容 更新了productDetail.html和produt.css
+功能点： 点击不同的 评论按钮  会把相对应的评论内容保存起来
+	提交的数据包括商品id和评论内容，提交后评论按钮移除
+
+

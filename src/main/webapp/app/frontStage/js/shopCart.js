@@ -1,10 +1,9 @@
-
 var thisProduct;
 /* 商品删除 */
 function delProduct(obj,id){
     var $targetDel = $(this).parents('div').eq(3);
     console.log($targetDel.attr("id"));
-/*    console.log( $targetDel.parent() );*/
+    /*    console.log( $targetDel.parent() );*/
     /* 弹窗 */
     var dia=$.dialog({
         content:'确定删除该商品么',

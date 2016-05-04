@@ -176,8 +176,18 @@
     height: 100px;
     margin: 0 10px 0 0;
 }
+/*订单详情页*/
+.textRight, .textMid {
+    height: 100px;
+}
 .textRight {
     text-align: right;
+    position: relative;
+}
+.commentBtn {
+    position: absolute;
+    bottom: 0;
+    right: 0;
 }
 
 /*
@@ -274,6 +284,13 @@
 /* 订单操作 */
 .operateBlock {
     text-align: right;
+}
+/*评论*/
+.myComment {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    z-index: 200;
 }
 
 /*
