@@ -38,6 +38,8 @@ public class UserController {
     private TerraceService terraceService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private OrdersService ordersService;
     Logger log = Logger.getLogger(UserController.class);
 
     /**
@@ -387,9 +389,11 @@ public class UserController {
                     time = new Date().getTime() - orders.getSentTime().getTime();
                     long day = time / nd;
                     log.info("发货时间" + orders.getSentTime().getTime() + ",现在时间" + new Date().getTime());
-                    log.info("发货后时间：" + day);
+                    log.info("发货后天数：" + day);
                     if (day > 14 && orders.getStatus() == 0) {
                         orders.setD(1);
+                        ordersService.updateOrders(orders);
+
                     }
                 }
             }
@@ -538,8 +542,12 @@ public class UserController {
         if(session.getAttribute("loginUser")==null){
             return "redirect:/login";
         }
+        Profit profit = terraceService.findProfit();
+        float prices = profit.getCountPrices()*count;
+
         User user =(User)session.getAttribute("loginUser");
         CountOrder countOrder =new CountOrder();
+        countOrder.setPrices(prices);
         countOrder.setCount(count);
         countOrder.setStatus(0);
         countOrder.setType("充值");
@@ -655,6 +663,8 @@ public class UserController {
         addressService.deleteAddress(id);
         return "redirect:/listAddress";
     }
+
+
 
 
 

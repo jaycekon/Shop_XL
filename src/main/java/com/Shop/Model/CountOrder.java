@@ -12,7 +12,7 @@ public class CountOrder {
     private int id;
     private User user;
     private int count;
-    private String type;
+    private String types;
     private int status;
     private float prices;
     private Date date;
@@ -39,11 +39,11 @@ public class CountOrder {
     }
 
     public String getType() {
-        return type;
+        return types;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setType(String types) {
+        this.types = types;
     }
 
     public int getStatus() {

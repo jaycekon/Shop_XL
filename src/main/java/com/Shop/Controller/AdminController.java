@@ -101,15 +101,15 @@ public class AdminController {
             return "redirect:/loginTerrace";
         }else{
             session.setAttribute("loginTerrace",t);
-           return "redirect:/listGood";
+           return "redirect:/backStage";
         }
     }
-
-    @RequestMapping(value = "logoutTerrace",method = RequestMethod.GET)
+    @RequestMapping(value="logOut",method = RequestMethod.GET)
     public String logOut(HttpSession session){
         session.setAttribute("loginTerrace",null);
-        return "redirect:/loginTerrace";
+        return "backStage/login";
     }
+
 
     @RequestMapping(value ="updateTerrace",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
     @ResponseBody
@@ -329,6 +329,33 @@ public class AdminController {
         System.out.println("getOrderLogisticTrack   expressBean : "+expressBean);
         return "frontStage/User/logistics";
     }
+
+    @RequestMapping(value="listMember",method = RequestMethod.GET)
+    public String test(Model model){
+        List<CountOrder> countOrders  =userService.listCountOrderByType("会员认证");
+        model.addAttribute("countOrders",countOrders);
+        return "backStage/financingManage/taxList";
+
+    }
+
+
+    @RequestMapping(value="listCharge",method = RequestMethod.GET)
+    public String chargeList(Model model){
+        List<CountOrder> countOrders  =userService.listCountOrderByType("充值");
+        model.addAttribute("countOrders",countOrders);
+        return "backStage/financingManage/chargeList";
+    }
+
+
+    @RequestMapping(value="listMoney",method = RequestMethod.GET)
+    public String orderList(Model model){
+        List<Orders> orderses = userService.listOrders();
+        Profit profit = terraceService.findProfit();
+        model.addAttribute("profit",profit);
+        model.addAttribute("orderses",orderses);
+        return "backStage/financingManage/orderList";
+    }
+
 
 
 //    @RequestMapping(value="/getProductLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})

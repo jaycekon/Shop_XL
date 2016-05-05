@@ -21,7 +21,7 @@
             height: 100%;
         }
         body {
-            background: url(../image/bg1.jpg) right bottom no-repeat;
+            background: url(<%=request.getContextPath()%>/app/backStage/image/bg1.jpg) right bottom no-repeat;
             background-color: #F0F9F8;
         }
     </style>
@@ -31,18 +31,18 @@
 <div class="login_panel">
     <div class="login_header"><h1>一内购后台登录</h1></div>
     <div class="login_body">
-        <form class="form-horizontal">
+        <form class="form-horizontal" action = "<%=request.getContextPath()%>/loginTerrace" method="post">
             <div id="loginTip"></div>
             <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-                <input type="text" class="form-control" id="userName" placeholder="用户名">
+                <input type="text" class="form-control" id="userName" name="name" placeholder="用户名">
             </div>
             <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-                <input type="password" class="form-control" id="inputPassword" placeholder="密码" onkeydown="keyCheck()">
+                <input type="password" name="password" class="form-control" id="inputPassword" placeholder="密码" onkeydown="keyCheck()">
             </div>
             <div class="input-group">
-                <button type="button" class="btn btn-info" id="login_btn">登录</button>
+                <button type="submit" class="btn btn-info" id="login_btn">登录</button>
             </div>
         </form>
 

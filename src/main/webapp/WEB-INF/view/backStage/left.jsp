@@ -37,9 +37,9 @@
     <li>
         <div class="navItem"><span class="glyphicon glyphicon-credit-card"></span>财务管理</div>
         <ul class="subNav">
-            <li><a href="./../financingManage/loadList.html">贷款列表</a></li>
-            <li><a href="./../financingManage/recharge.html">充值列表</a></li>
-            <li><a href="./../financingManage/taxList.html">会费列表</a></li>
+            <li><a href="<%=request.getContextPath()%>/listMoney">贷款列表</a></li>
+            <li><a href="<%=request.getContextPath()%>/listCharge">充值列表</a></li>
+            <li><a href="<%=request.getContextPath()%>/listMember">会费列表</a></li>
         </ul>
     </li>
     <li>

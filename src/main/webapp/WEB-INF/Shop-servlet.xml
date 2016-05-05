@@ -26,8 +26,14 @@
 
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/*"></mvc:mapping>
+            <mvc:mapping path="/"></mvc:mapping>
             <bean class="com.Shop.interceptor.WechatInterceptor"></bean>
         </mvc:interceptor>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/list*"></mvc:mapping>
+            <bean class="com.Shop.interceptor.TerraceInterceptor"></bean>
+        </mvc:interceptor>
     </mvc:interceptors>
+
 </beans>

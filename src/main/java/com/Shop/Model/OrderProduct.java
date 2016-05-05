@@ -23,6 +23,7 @@ public class OrderProduct {
     private float pv;                       //订单项PV
     private int stauts;                     //订单状态  1.申请退款，2.同意退款
     private int exitStatus;                 //订单退货状态 1.申请退货，2.同意退货，3.买家发货，4.平台退货
+    private int commentStatus;              //订单项评论状态
     private float areaProfit;
     private float roleProfit;
     private ExitOrders exitOrders;          //退货订单
@@ -177,5 +178,13 @@ public class OrderProduct {
 
     public void setPv(float pv) {
         this.pv = pv;
+    }
+
+    public int getCommentStatus() {
+        return commentStatus;
+    }
+
+    public void setCommentStatus(int commentStatus) {
+        this.commentStatus = commentStatus;
     }
 }

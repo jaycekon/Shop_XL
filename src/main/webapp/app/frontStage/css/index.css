@@ -104,13 +104,21 @@ header, footer, section, div, li, i {
     margin-bottom: 10px;
 }
 .gapTB {
-     margin: 10px 0;
- }
+    margin: 10px 0;
+}
 .block {
     background-color: #fff;
-    padding: 10px;
     padding: 15px;
     line-height: 1.8;
+}
+.table-responsive {
+    width: 100%;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    overflow-x: auto;
+}
+.table-responsive  td:not([class='wrap']), .table-responsive th:not([class='wrap']) {
+    white-space: nowrap;
 }
 
 /* header */
@@ -161,7 +169,7 @@ header, footer, section, div, li, i {
     padding: 6px;
 }
 .productImg {
-   width: 100%;
+    width: 100%;
 }
 .productName a{
     color: #000;
@@ -181,8 +189,8 @@ header, footer, section, div, li, i {
 店家中心
  */
 .picture {
-    width: 30px;
-    height: 30px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
 }
 

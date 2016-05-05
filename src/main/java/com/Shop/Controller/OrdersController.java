@@ -1,10 +1,7 @@
 package com.Shop.Controller;
 
 import com.Shop.Model.*;
-import com.Shop.Service.CartService;
-import com.Shop.Service.OrdersService;
-import com.Shop.Service.TerraceService;
-import com.Shop.Service.UserService;
+import com.Shop.Service.*;
 import com.Shop.Util.MD5;
 import com.Shop.Util.OrderPoJo;
 import com.Shop.Util.WebChatUtil;
@@ -49,6 +46,8 @@ public class OrdersController {
     private CartService cartService;
     @Autowired
     private TerraceService terraceService;
+    @Autowired
+    private AddressService addressService;
     Logger log = Logger.getLogger(OrdersController.class);
     /**
      * 获取未付款订单(后台）
@@ -378,14 +377,19 @@ public class OrdersController {
     public String reCommentOrders(HttpSession session,Model model){
         User user =(User)session.getAttribute("loginUser");
         List<Orders> orderses = ordersService.findOrdersByCAndUserId(0,user.getId());
-        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        List<OrderProduct> orderProducts = new ArrayList<>();
         for(Orders orders :orderses){
-            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-            OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
-            orderPoJos.add(orderPoJo);
+            List<OrderProduct> os = userService.findOrderProductByOrderId(orders.getId());
+            for(OrderProduct orderProduct :os){
+                if(orderProduct.getCommentStatus() ==0 &&orderProduct.getExitStatus()==0&&orderProduct.getStauts()==0){
+                    log.info("订单项退款状态："+orderProduct.getStauts());
+                    log.info("订单项退货状态："+orderProduct.getExitStatus());
+                    orderProducts.add(orderProduct);
+                }
+            }
         }
-        model.addAttribute("orderPoJos",orderPoJos);
-        return "frontStage/User/orderList";
+        model.addAttribute("orderProducts",orderProducts);
+        return "frontStage/User/commentList";
     }
 
     /**
@@ -594,7 +598,7 @@ public class OrdersController {
     }
 
     /**
-     * 创建体现订单
+     * 创建提现订单
      * @param cout
      * @param session
      * @return
@@ -864,6 +868,12 @@ public class OrdersController {
 //    }
 
 
+    /**
+     * 退货 收货后退款给用户
+     * @param id
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value="/signOrders/{id}",method=RequestMethod.GET)
     public String signOrders(@PathVariable("id")int id) throws Exception {
         //统计要付的钱
@@ -871,8 +881,6 @@ public class OrdersController {
         Orders orders = orderProduct.getOrders();
 //        int money = (int)(orders.getPrices()*100);
         int money = (int)(orderProduct.getPrices()*orderProduct.getCount()*100);
-        log.info(money);
-        money=100;
         log.info(money);
         User user = orders.getUser();
         String openId =user.getOpenId();
@@ -987,5 +995,28 @@ public class OrdersController {
         return "redirect:/getOrders";
     }
 
+
+
+    @RequestMapping(value = "/commentProduct",method = RequestMethod.POST)
+    @ResponseBody
+    public String commentProduct(int id,String text,HttpSession session){
+        log.info("评论商品ID：=>>>>>>>>>>>>>>>>>>"+id);
+        log.info("评论商品内容：=>>>>>>>>>>>>"+text);
+        Comment comment = new Comment();
+        User user = (User)session.getAttribute("loginUser");
+        comment.setUser(user);
+        comment.setUsername(user.getUsername());
+        comment.setText(text);
+        OrderProduct orderProduct =ordersService.findOrderProductById(id);
+        comment.setGood_id(orderProduct.getGood_id());
+        comment.setOrderProduct(orderProduct);
+        comment.setDate(new Date());
+        orderProduct.setCommentStatus(1);
+        ordersService.updateOrderProduct(orderProduct);
+        addressService.addComment(comment);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status","success");
+        return jsonObject.toString();
+    }
 
 }

@@ -14,7 +14,8 @@ public class Comment {
     private Date  date;
     private String username;
     private User user;
-    private Good good;
+    private OrderProduct orderProduct;
+    private int good_id;
 
 
     @Id
@@ -52,14 +53,7 @@ public class Comment {
         this.user = user;
     }
 
-    @ManyToOne
-    public Good getGood() {
-        return good;
-    }
 
-    public void setGood(Good good) {
-        this.good = good;
-    }
 
     public String getUsername() {
         return username;
@@ -67,5 +61,23 @@ public class Comment {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    @OneToOne
+    public OrderProduct getOrderProduct() {
+        return orderProduct;
+    }
+
+    public void setOrderProduct(OrderProduct orderProduct) {
+        this.orderProduct = orderProduct;
+    }
+
+    public int getGood_id() {
+        return good_id;
+    }
+
+    public void setGood_id(int good_id) {
+        this.good_id = good_id;
     }
 }

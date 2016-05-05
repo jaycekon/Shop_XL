@@ -23,10 +23,7 @@
 
 <div class="wrapper">
     <!-- [[头部 -->
-    <header class="header">
-        <img src="" alt="一内购" class="logo">
-        <button class="btnExit" type="button"><span class="glyphicon glyphicon-off"></span>退出</button>
-    </header>
+    <%@ include file="../header.jsp"%>
     <!-- 头部]] -->
 
     <!-- [[页面主体 -->

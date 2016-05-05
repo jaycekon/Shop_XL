@@ -290,6 +290,10 @@ public class UserService {
         return countOrderDao.findAllByUserId(page,user_id);
     }
 
+    public List<CountOrder> listCountOrderByType(String type){
+        return countOrderDao.findAllByType(type);
+    }
+
     public CountOrder findCountOrderById(int id){
         return countOrderDao.findById(id);
     }

@@ -79,8 +79,10 @@
                 <h4 class="ui-nowrap"><%=orderProduct.getDescribes()%></h4>
             </div>
             <div class="textRight">
+
                 <p class="">&#165; <%=orderProduct.getPrices()%></p>
                 <p class="unMarjorColor">X<%=orderProduct.getCount()%></p>
+
             </div>
             <%
                 if(orderProduct.getExitStatus()==2){
@@ -135,7 +137,7 @@
 
         %></span></p>
     </div>
-
+<input type="hidden" name="id" value="" class="id"/>
     <!-- [[联系热线 -->
     <div class="contact ui-row">
         <div class="ui-col ui-col-50">
@@ -148,7 +150,10 @@
         </div>
     </div><!-- 联系热线]] -->
 
+
+
 </section>
+
 
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/zepto.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>

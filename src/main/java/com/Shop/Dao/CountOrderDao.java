@@ -34,6 +34,14 @@ public class CountOrderDao extends BaseDao implements IGeneralDao<CountOrder> {
         return countOrders;
     }
 
+    public List<CountOrder> findAllByType(String type) {
+        Session session = super.openSession();
+        String hql ="from CountOrder where types=:types order by date desc";
+        List<CountOrder> countOrders = session.createQuery(hql).setParameter("types",type).list();
+        session.close();
+        return countOrders;
+    }
+
     public List<CountOrder> findAllByUserId(Page page,int user_id) {
         Session session = super.openSession();
         String hql ="from CountOrder where user_id=:user_id order by date desc";

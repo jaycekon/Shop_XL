@@ -200,8 +200,8 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
 
     public List<Orders> findAllByCAndUserId(int c,int user_id) {
         Session session = super.openSession();
-        String hql ="from Orders where c=:c and d=1 and user_id=:user_id order by setTime desc";
-        List<Orders> orders = session.createQuery(hql).setParameter("c",c).setParameter("user_id",user_id).list();
+        String hql ="from Orders where p=2 and user_id=:user_id order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("user_id",user_id).list();
         session.close();
         return orders;
     }

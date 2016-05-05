@@ -1,7 +1,9 @@
 <%@ page import="com.Shop.Model.Good" %>
 <%@ page import="com.Shop.Model.Comment" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.Shop.Model.Image" %><%--
+<%@ page import="com.Shop.Model.Image" %>
+<%@ page import="com.Shop.Model.OrderProduct" %>
+<%@ page import="java.text.SimpleDateFormat" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/20 0020
@@ -37,6 +39,8 @@
 
         <ul class="ui-slider-content" style="width: 300%">
             <%
+                String model = "yyyy-MM-dd";
+                SimpleDateFormat format=new SimpleDateFormat(model);
                 List<Image> images =(List<Image>)request.getAttribute("images");
                 if(images!=null){
                     for(Image image:images){
@@ -118,15 +122,17 @@
                 <ul class="ui-list ui-list-pure ui-border-tb">
                     <%
                         List<Comment> comments =(List<Comment>)request.getAttribute("comments");
-                        if(comments!=null){
-                            for(Comment comment:comments){
+                        for(Comment comment:comments){
                     %>
                     <li class="ui-border-t">
-                        <p><span><%=comment.getUsername()%></span><span class="date"> 2月12日</span></p>
+                        <p><span><%=comment.getUsername()%></span><span class="date" style="float: right;"><%
+                            if(comment.getDate()!=null){
+                                out.println(format.format(comment.getDate()));
+                            }%></span></p>
+
                         <h4><%=comment.getText()%></h4>
                     </li>
                     <%
-                            }
                         }
                     %>
 

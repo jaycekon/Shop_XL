@@ -58,8 +58,8 @@ public class CommentDao extends BaseDao implements IGeneralDao<Comment> {
 
     public List<Comment> findCommentByGoodId(int good_id){
         Session session = super.openSession();
-        String hql = "from Comment where good_id=:good_id";
-        List<Comment>  comments = session.createQuery(hql).setParameter("good_id","good_id").list();
+        String hql = "from Comment where good_id=:good_id order by date desc ";
+        List<Comment>  comments = session.createQuery(hql).setParameter("good_id",good_id).list();
         session.close();
         return comments;
 
