@@ -1,5 +1,7 @@
 <%@ page import="com.Shop.Model.Areas" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/13 0013
@@ -45,13 +47,16 @@
                             <td>头像</td>
                             <td class="textLeft">昵称</td>
                             <td>关注时间</td>
+                            <td class="textRight">总收益佣金（元）</td>
                             <td class="textRight">可支配佣金（元）</td>
                             <td class="textRight">待收益佣金（元）</td>
-                            <td class="textRight">冻结佣金（元）</td>
                         </tr>
                         </thead>
                         <%
-                            List<Areas> areas =(List<Areas>)request.getAttribute("areas");
+                            String model = "yyyy-MM-dd HH:mm:ss";
+                            SimpleDateFormat format = new SimpleDateFormat(model);
+                            Page<Areas> pages = (Page<Areas>)request.getAttribute("page");
+                            List<Areas> areas =pages.getList();
                         %>
                         <tbody>
                         <%
@@ -62,10 +67,14 @@
                                 <img src="<%=a.getImg()%>" alt="">
                             </td>
                             <td class="textLeft"><%=a.getName()%></td>
-                            <td>2016-01-01 06:06:06</td>
-                            <td class="textRight">10.22</td>
-                            <td class="textRight">9.99</td>
-                            <td class="textRight">9.99</td>
+                            <td><%
+                                if(a.getDate()!=null){
+                                    out.println(format.format(a.getDate()));
+                                }
+                            %></td>
+                            <td class="textRight"><%=a.getTotalCommission()%></td>
+                            <td class="textRight"><%=a.getExitCommission()%></td>
+                            <td class="textRight"><%=a.getWaitCommission()%></td>
                         </tr>
                         <%
                             }
@@ -76,8 +85,20 @@
 
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/listAreas/<%=(pages.getBeginIndex()-10)%>'">上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary"  onclick="window.location.href='<%=request.getContextPath()%>/listAreas/<%=(pages.getBeginIndex()+10)%>'">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
             </div>

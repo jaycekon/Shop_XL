@@ -4,6 +4,7 @@ import com.Shop.Model.*;
 import com.Shop.Service.AddressService;
 import com.Shop.Service.GoodService;
 import com.Shop.Service.UserService;
+import com.Shop.Util.Page;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.FileUtils;
 import org.aspectj.util.FileUtil;
@@ -92,21 +93,7 @@ public class GoodController {
 
 
 
-    /**
-     * 显示所有商品，从数据库中获取所有商品
-     * @param model
-     * @param session
-     * @return
-     */
-    @RequestMapping(value = "listGood",method = RequestMethod.GET)
-    public String listGood(Model model,HttpSession session){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-        List<Good> goods = goodService.listGood();
-        model.addAttribute("goods",goods);
-        return "backStage/Product/productList";
-    }
+
 
     /**
      * 通过姓名查找商品
@@ -275,10 +262,15 @@ public class GoodController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "listGoodUp",method = RequestMethod.GET)
-    public String listGoodUp(Model model){
+    @RequestMapping(value = "listGoodUp/{pages}",method = RequestMethod.GET)
+    public String listGoodUp(Model model,@PathVariable("pages")int pages){
+        Page<Good> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
         List<Good> goods = goodService.listGoodUp(1);
-        model.addAttribute("goods",goods);
+        page.setTotalCount(goods.size());
+        page.setList(goodService.listGoodUp(1,page));
+        model.addAttribute("page",page);
         return "backStage/Product/productList";
     }
 
@@ -287,10 +279,15 @@ public class GoodController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "listGoodDown",method = RequestMethod.GET)
-    public String listGoodDown(Model model){
+    @RequestMapping(value = "listGoodDown/{pages}",method = RequestMethod.GET)
+    public String listGoodDown(Model model,@PathVariable("pages")int pages){
+        Page<Good> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
         List<Good> goods = goodService.listGoodUp(0);
-        model.addAttribute("goods",goods);
+        page.setTotalCount(goods.size());
+        page.setList(goodService.listGoodUp(0,page));
+        model.addAttribute("page",page);
         return "backStage/Product/productList";
     }
 

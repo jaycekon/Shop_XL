@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.Good" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/3/29 0029
@@ -39,8 +40,9 @@
             <div class="content col-md-10">
 
                 <div class="tab">
-                    <a href="<%=request.getContextPath()%>/listGoodUp"><button class="btn btn-primary">已上架</button></a>
-                    <a href="<%=request.getContextPath()%>/listGoodDown"><button class="btn btn-primary">已下架</button></a>
+                    <a href="<%=request.getContextPath()%>/listGood"><button class="btn">所有商品</button></a>
+                    <a href="<%=request.getContextPath()%>/listGoodUp/0"><button class="btn">已上架</button></a>
+                    <a href="<%=request.getContextPath()%>/listGoodDown/0"><button class="btn">已下架</button></a>
                 </div>
 
                 <div class="table-responsive">
@@ -57,7 +59,8 @@
                         </thead>
                         <tbody>
                         <%
-                            List<Good> goods =(List<Good>)request.getAttribute("goods");
+                            Page<Good> pages = (Page<Good>)request.getAttribute("page");
+                            List<Good> goods =pages.getList();
                             for(Good good:goods){
                         %>
                         <tr>
@@ -87,11 +90,23 @@
                         </tbody>
                     </table>
                 </div>
-
+                <input id="recordNum" hidden="hidden" value="<%=pages.getBeginIndex()%>" />
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" id="prevPage" >上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary" id="nextPage">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
 
@@ -145,7 +160,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">确定</button>
+                <button type="button" class="btn btn-primary" >确定</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -174,6 +189,37 @@
 <script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/backStage/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/backStage/js/common.js"></script>
+
+<script>
+var num = parseInt( $('#recordNum').val() );
+$("#prevPage").click(function(){
+var suffix = num-10;
+// 返回url
+var url = handleURL(suffix);
+// 跳转url
+window.location.href = url;
+});
+
+$("#nextPage").click(function(){
+var suffix = num+10;
+// 返回url
+var url = handleURL(suffix);
+// 跳转url
+window.location.href = url;
+});
+
+// 处理url的函数
+function handleURL(suffix){    // suffix 后缀 为int类型
+var pathname = window.location.pathname.split('/');
+    if(pathname.length==2){
+        pathname = pathname.concat(suffix);
+    }else{
+        pathname.pop();
+        pathname = pathname.concat(suffix);
+    }
+return url = pathname.join('/');
+}
+</script>
 
 </body>
 </html>

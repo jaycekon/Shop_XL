@@ -70,10 +70,13 @@
             <td><%=format.format(withdrawalsOrder.getDate())%></td>
             <td><%=withdrawalsOrder.getPrices()%></td>
             <td><%
-                if(withdrawalsOrder.getStatus()==1){
-                    out.println("已结算");
-                }else{
-                    out.println("待结算");
+                switch(withdrawalsOrder.getStatus()){
+                    case 0:out.println("待审核");
+                        break;
+                    case 1:out.println("通过审核");
+                        break;
+                    case 2:out.println("未通过审核");
+                        break;
                 }
             %></td>
         </tr>

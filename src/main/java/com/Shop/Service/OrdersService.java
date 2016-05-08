@@ -2,6 +2,7 @@ package com.Shop.Service;
 
 import com.Shop.Dao.*;
 import com.Shop.Model.*;
+import com.Shop.Util.Page;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -139,8 +140,35 @@ public class OrdersService {
         return withdrawalsOrderDao.findById(id);
     }
 
+    public List<WithdrawalsOrder> findAllWithdrawalsOrder(){
+        return withdrawalsOrderDao.findAll();
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByRole(){
+        return withdrawalsOrderDao.findAllByRole();
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByRoleAndPage(Page page){
+        return withdrawalsOrderDao.findAllByRoleAndPage(page);
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByAreas(){
+        return withdrawalsOrderDao.findAllByArea();
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByAreasAndPage(Page page){
+        return withdrawalsOrderDao.findAllByAreaAndPage(page);
+    }
     public List<WithdrawalsOrder> findWithdrawalsOrderByAreaId(int area_id){
         return withdrawalsOrderDao.findAllByAreaId(area_id);
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByAreasAndStatus(int status){
+        return  withdrawalsOrderDao.findAllByAreaAndStatus(status);
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByRolesAndStatus(int status){
+        return  withdrawalsOrderDao.findAllByRoleAndStatus(status);
     }
 
     public List<WithdrawalsOrder> findWithdrawalsOrderByRoleId(int role_id){

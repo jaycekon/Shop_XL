@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.Good;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -62,6 +63,20 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
         String hql ="from Good where status=:status";
         Session session = super.openSession();
         List<Good> goods = session.createQuery(hql).setParameter("status",status).list();
+        return goods;
+    }
+    public List<Good> findAllByStatus(int status,Page page){
+        String hql ="from Good where status=:status";
+        Session session = super.openSession();
+        List<Good> goods = session.createQuery(hql).setParameter("status",status).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        return goods;
+    }
+
+    public List<Good> findAllByPage(Page<Good> page) {
+        Session session = super.openSession();
+        String hql ="from Good";
+        List<Good> goods = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
         return goods;
     }
 

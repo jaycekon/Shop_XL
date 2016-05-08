@@ -2,10 +2,7 @@ package com.Shop.Controller;
 
 import com.Shop.Model.*;
 import com.Shop.Service.*;
-import com.Shop.Util.MD5;
-import com.Shop.Util.OrderPoJo;
-import com.Shop.Util.WebChatUtil;
-import com.Shop.Util.XMLUtil;
+import com.Shop.Util.*;
 import com.google.gson.Gson;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -606,6 +603,7 @@ public class OrdersController {
     @RequestMapping(value = "/witdraw",method =RequestMethod.POST)
     public String withdraw(float cout,HttpSession session){
         WithdrawalsOrder withdrawalsOrder = new WithdrawalsOrder();
+        //大区提现申请
         if(session.getAttribute("areas")!=null){
 
             Areas areas =(Areas) session.getAttribute("areas");
@@ -620,13 +618,16 @@ public class OrdersController {
             withdrawalsOrder.setAreas(areas);
             withdrawalsOrder.setPrices(cout);
             withdrawalsOrder.setDate(new Date());
+            withdrawalsOrder.setStatus(0);
             ordersService.addWithdrawalsOrder(withdrawalsOrder);
             float exit = areas.getExitCommission()-cout;
             areas.setExitCommission(exit);
             float total = areas.getTotalCommission()-cout;
             areas.setTotalCommission(total);
             userService.updateAreas(areas);
-        }else if(session.getAttribute("roles")!=null){
+        }else
+        //角色提现申请
+        if(session.getAttribute("roles")!=null){
             Roles roles =(Roles)session.getAttribute("roles");
             if(cout<50){
                 return "redirect:/Withdraw";
@@ -645,16 +646,19 @@ public class OrdersController {
             roles.setTotalCommission(total);
             userService.updateRoles(roles);
         }
-        return "redirect:/refund/"+withdrawalsOrder.getId();
+//        return "redirect:/refund/"+withdrawalsOrder.getId();
+        return "redirect:/withdrawDetail";
     }
 
 
     @RequestMapping(value ="listOrder",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
-    public String listOrder(HttpSession session, Model model){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-        List<Orders> orders = userService.listOrders();
+    public String listOrder(Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> o = userService.listOrders();
+        page.setTotalCount(o.size());
+        List<Orders> orders = userService.listOrdersByPage(page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         long time =0;
         long nd = 1000*24*60*60;
@@ -674,66 +678,307 @@ public class OrdersController {
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
 
-    @RequestMapping(value ="listOrderByF/{f}",method = RequestMethod.GET)
-    public String listOrderByF(HttpSession session, Model model,@PathVariable("f") int f){
-        List<Orders> orders = userService.listOrdersByF(f);
+    @RequestMapping(value ="listOrder/{page}",method = RequestMethod.GET,produces = "application/json;charset=UTF-8")
+    public String listOrder(Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> o = userService.listOrders();
+        page.setTotalCount(o.size());
+        List<Orders> orders = userService.listOrdersByPage(page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        long time =0;
+        long nd = 1000*24*60*60;
+        for(Orders order:orders){
+            if(order.getSentTime()!=null) {
+                if(order.getD()==0&&order.getP()==2) {
+                    time = new Date().getTime() - order.getSentTime().getTime();
+                    long day = time / nd;
+                    log.info("发货时间" + order.getSentTime().getTime() + ",现在时间" + new Date().getTime());
+                    log.info("发货后时间：" + day);
+                    if (day > 14&&order.getStatus()==0) {
+                        order.setD(1);
+                    }
+                }
+            }
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+
+    @RequestMapping(value ="listOrderByF0",method = RequestMethod.GET)
+    public String listOrderByF0(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByF(0);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByFAndPage(0,page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
 
-    @RequestMapping(value ="listOrderByP/{p}",method = RequestMethod.GET)
-    public String listOrderByP(HttpSession session, Model model,@PathVariable(value ="p") int p){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-        List<Orders> orders = userService.listOrdersByP(p);
+    @RequestMapping(value ="listOrderByF0/{page}",method = RequestMethod.GET)
+    public String listOrderByF0ByPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByF(0);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByFAndPage(0,page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
 
-    @RequestMapping(value ="listOrderByD/{d}",method = RequestMethod.GET)
-    public String listOrderByD(HttpSession session, Model model,@PathVariable("d") int d){
-        List<Orders> orders = userService.listOrdersByD(d);
+    @RequestMapping(value ="listOrderByF1",method = RequestMethod.GET)
+    public String listOrderByF1(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByF(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByFAndPage(1,page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
 
-    @RequestMapping(value ="listOrderByT/{t}",method = RequestMethod.GET)
-    public String listOrderByT(HttpSession session, Model model,@PathVariable("t") int t){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-
-        List<Orders> orders = userService.listOrdersByT(t);
+    @RequestMapping(value ="listOrderByF1/{page}",method = RequestMethod.GET)
+    public String listOrderByF1ByPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByF(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByFAndPage(1,page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByP2",method = RequestMethod.GET)
+    public String listOrderByP2(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByP(2);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByPAndPage(2,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByP2/{page}",method = RequestMethod.GET)
+    public String listOrderByP2ByPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByP(2);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByPAndPage(2,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByP1",method = RequestMethod.GET)
+    public String listOrderByP1(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByP(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByPAndPage(2,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByP1/{page}",method = RequestMethod.GET)
+    public String listOrderByP1ByPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByP(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByPAndPage(2,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByD1",method = RequestMethod.GET)
+    public String listOrderByD(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByD(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByDAndPage(1,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByD1/{page}",method = RequestMethod.GET)
+    public String listOrderByDAndPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByD(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByDAndPage(1,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByD2",method = RequestMethod.GET)
+    public String listOrderByD2(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByD(2);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByDAndPage(2,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByD2/{page}",method = RequestMethod.GET)
+    public String listOrderByD2AndPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByD(2);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByDAndPage(2,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByT",method = RequestMethod.GET)
+    public String listOrderByT(HttpSession session, Model model){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByT(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByTAndPage(1,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
+        return "backStage/Orders/listOrders";
+    }
+
+    @RequestMapping(value ="listOrderByT/{page}",method = RequestMethod.GET)
+    public String listOrderByT(HttpSession session, Model model,@PathVariable("page") int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByT(1);
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByTAndPage(1,page);
+        List<OrderPoJo> orderPoJos = new ArrayList<>();
+        for(Orders order:orders){
+            List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
+            OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
+            orderPoJos.add(orderPoJo);
+        }
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
 
@@ -741,36 +986,42 @@ public class OrdersController {
 
     @RequestMapping(value ="listOrderByS",method = RequestMethod.GET)
     public String listOrderByS(HttpSession session, Model model){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         List<Orders> orders = userService.listOrdersByStatus();
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByStatusAndPage(page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
 
-    @RequestMapping(value ="listOrderByC/{c}",method = RequestMethod.GET)
-    public String listOrderByC(HttpSession session, Model model,@PathVariable("c") int c){
-//        if(session.getAttribute("loginTerrace") == null){
-//            return "redirect:/loginTerrace";
-//        }
-        List<Orders> orders = userService.listOrdersByC(c);
+    @RequestMapping(value ="listOrderByS/{page}",method = RequestMethod.GET)
+    public String listOrderBySAndPage(HttpSession session, Model model,@PathVariable("page")int pages){
+        Page<OrderPoJo> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orders = userService.listOrdersByStatus();
+        page.setTotalCount(orders.size());
+        orders = userService.listOrdersByStatusAndPage(page);
         List<OrderPoJo> orderPoJos = new ArrayList<>();
         for(Orders order:orders){
             List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(order.getId());
             OrderPoJo orderPoJo = new OrderPoJo(order,orderProducts);
             orderPoJos.add(orderPoJo);
         }
-        model.addAttribute("orderPoJos",orderPoJos);
+        page.setList(orderPoJos);
+        model.addAttribute("page",page);
         return "backStage/Orders/listOrders";
     }
+
 
     @RequestMapping(value="editOrderProductNum",method = RequestMethod.GET)
     @ResponseBody

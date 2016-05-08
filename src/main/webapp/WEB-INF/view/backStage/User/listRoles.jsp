@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.Roles" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/14 0014
@@ -42,17 +43,18 @@
                         <tr>
                             <td>头像</td>
                             <td class="textLeft">姓名</td>
-                            <td>联系方式</td>
+                            <td>关注时间</td>
                             <td class="textLeft">常用邮箱</td>
+                            <td class="textRight">总收益佣金（元）</td>
                             <td class="textRight">可支配佣金（元）</td>
                             <td class="textRight">待收益佣金（元）</td>
-                            <td class="textRight">冻结佣金（元）</td>
                         </tr>
                         </thead>
 
                         <tbody>
                         <%
-                            List<Roles> roles = (List<Roles>)request.getAttribute("roles");
+                            Page<Roles> pages = (Page<Roles>)request.getAttribute("page");
+                            List<Roles> roles = pages.getList();
                             for(Roles r:roles){
                         %>
                         <tr>
@@ -60,11 +62,11 @@
                                 <img src="<%=r.getImg()%>" alt="">
                             </td>
                             <td class="textLeft"><%=r.getName()%></td>
-                            <td>2016-01-01 06:06:06</td>
-                            <td class="textLeft">654472342@qq.com</td>
-                            <td class="textRight">10.22</td>
-                            <td class="textRight">9.99</td>
-                            <td class="textRight">9.99</td>
+                            <td><%=r.getDate()%></td>
+                            <td class="textLeft"><%=r.getEMail()%></td>
+                            <td class="textRight"><%=r.getTotalCommission()%></td>
+                            <td class="textRight"><%=r.getExitCommission()%></td>
+                            <td class="textRight"><%=r.getWaitCommission()%></td>
                         </tr>
 
                         <%
@@ -76,8 +78,20 @@
 
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/listRoles/<%=(pages.getBeginIndex()-10)%>'">上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary"  onclick="window.location.href='<%=request.getContextPath()%>/listRoles/<%=(pages.getBeginIndex()+10)%>'">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
 

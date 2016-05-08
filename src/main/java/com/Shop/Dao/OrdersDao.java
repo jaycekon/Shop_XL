@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.Orders;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
@@ -80,6 +81,14 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         return orders;
     }
 
+    public List<Orders> findAllByFAndPage(int f,Page page) {
+        Session session = super.openSession();
+        String hql ="from Orders where f=:f and d=0 and p=0 and t=0 order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("f",f).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
+        return orders;
+    }
+
     /**
      * 通过付款状态以及用户ID获取订单(用户）
      * @param f
@@ -103,6 +112,14 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         Session session = super.openSession();
         String hql ="from Orders where p=:p and f=1 and d=0 order by setTime desc";
         List<Orders> orders = session.createQuery(hql).setParameter("p",p).list();
+        session.close();
+        return orders;
+    }
+
+    public List<Orders> findAllByPAndPage(int p,Page page) {
+        Session session = super.openSession();
+        String hql ="from Orders where p=:p and f=1 and d=0 order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("p",p).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
         session.close();
         return orders;
     }
@@ -134,6 +151,14 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         return orders;
     }
 
+    public List<Orders> findAllByTAndPage(int t,Page page) {
+        Session session = super.openSession();
+        String hql ="from Orders where t=:t and d=0 order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("t",t).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
+        return orders;
+    }
+
     /**
      * 获取正在申请退款的订单
      * @return
@@ -142,6 +167,14 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         Session session = super.openSession();
         String hql ="from Orders where status = 1 order by setTime desc";
         List<Orders> orders = session.createQuery(hql).list();
+        session.close();
+        return orders;
+    }
+
+    public List<Orders> findAllByStatusAndPage(Page page) {
+        Session session = super.openSession();
+        String hql ="from Orders where status = 1 order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
         session.close();
         return orders;
     }
@@ -219,6 +252,14 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         return orders;
     }
 
+    public List<Orders> findAllByDAndPage(int d,Page page) {
+        Session session = super.openSession();
+        String hql ="from Orders where d=:d order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setParameter("d",d).setMaxResults(page.getEveryPage()).setFirstResult(page.getBeginIndex()).list();
+        session.close();
+        return orders;
+    }
+
     /**
      * 通过订单状态以及用户ID获取订单
      * @param d
@@ -266,6 +307,16 @@ public class OrdersDao extends BaseDao implements  IGeneralDao<Orders> {
         Session session = super.openSession();
         String hql ="from Orders where uuid like:uuid order by setTime desc";
         Orders orders =(Orders)session.createQuery(hql).setParameter("uuid","%"+uuid+"%").uniqueResult();
+        session.close();
+        return orders;
+    }
+
+
+
+    public List<Orders> findAllByPage(Page page) {
+        Session session = super.openSession();
+        String hql ="from Orders order by setTime desc";
+        List<Orders> orders = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
         session.close();
         return orders;
     }

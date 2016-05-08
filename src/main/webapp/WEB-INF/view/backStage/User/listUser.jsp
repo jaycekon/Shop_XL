@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.User" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/14 0014
@@ -49,7 +50,8 @@
                         </thead>
                         <tbody>
                         <%
-                            List<User> users = (List<User>)request.getAttribute("users");
+                            Page<User> pages = (Page<User>)request.getAttribute("page");
+                            List<User> users = pages.getList();
                             for(User user :users){
                         %>
                         <tr>
@@ -74,8 +76,20 @@
 
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/listUser/<%=(pages.getBeginIndex()-10)%>'">上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary"  onclick="window.location.href='<%=request.getContextPath()%>/listUser/<%=(pages.getBeginIndex()+10)%>'">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
 

@@ -45,8 +45,8 @@
     <li>
         <div class="navItem"><span class="glyphicon glyphicon-open"></span>提现管理</div>
         <ul class="subNav">
-            <li><a href="./../withdrawManage/largeCommission.html">大区佣金提现</a></li>
-            <li><a href="./../withdrawManage/roleCommission.html">角色佣金提现</a></li>
+            <li><a href="<%=request.getContextPath()%>/listAreaCommission">大区佣金提现</a></li>
+            <li><a href="<%=request.getContextPath()%>/listRoleCommission">角色佣金提现</a></li>
         </ul>
     </li>
     <li>

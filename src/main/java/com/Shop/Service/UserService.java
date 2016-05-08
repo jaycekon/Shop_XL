@@ -63,6 +63,10 @@ public class UserService {
         return userDao.findAll();
     }
 
+    public List<User> listUserByPage(Page page){
+        return userDao.findAllByPage(page);
+    }
+
     public List<User> listUserByRolesId(int roles_id){
         return userDao.findAllByRolesId(roles_id);
     }
@@ -89,6 +93,10 @@ public class UserService {
         return rolesDao.findAll();
     }
 
+    public List<Roles> listRolesByPage(Page page){
+        return rolesDao.findAllByPage(page);
+    }
+
     public List<Roles> listRolesByAreas(int areas_id){
         return rolesDao.findAllByAreasId(areas_id);
     }
@@ -113,6 +121,12 @@ public class UserService {
     }
     public List<Areas> listAreas(){
         return areasDao.findAll();
+    }
+
+    public List<Areas> listAreasByPage(Page<Areas> page){
+        List<Areas> areas = areasDao.findAll();
+        page.setTotalCount(areas.size());
+        return areasDao.findAllByPage(page);
     }
 
     public User loginUser(User user){
@@ -237,6 +251,10 @@ public class UserService {
     public List<Orders> listOrders(){
         return ordersDao.findAll();
     }
+
+    public List<Orders> listOrdersByPage(Page page){
+        return ordersDao.findAllByPage(page);
+    }
     public List<Orders> listOrdersByUser(int user_id){
         return ordersDao.findAllByUser(user_id);
     }
@@ -244,8 +262,15 @@ public class UserService {
     public List<Orders> listOrdersByF(int f){
         return ordersDao.findAllByF(f);
     }
+
+    public List<Orders> listOrdersByFAndPage(int f,Page page){
+        return ordersDao.findAllByFAndPage(f,page);
+    }
     public List<Orders> listOrdersByP(int p){
         return ordersDao.findAllByP(p);
+    }
+    public List<Orders> listOrdersByPAndPage(int p,Page page){
+        return ordersDao.findAllByPAndPage(p,page);
     }
     public List<Orders> listOrdersByC(int c){
         return ordersDao.findAllByC(c);
@@ -253,12 +278,22 @@ public class UserService {
     public List<Orders> listOrdersByT(int t){
         return ordersDao.findAllByT(t);
     }
+    public List<Orders> listOrdersByTAndPage(int t,Page page){
+        return ordersDao.findAllByTAndPage(t,page);
+    }
 
     public List<Orders> listOrdersByStatus(){
         return ordersDao.findAllByStatus();
     }
+
+    public List<Orders> listOrdersByStatusAndPage(Page page){
+        return ordersDao.findAllByStatusAndPage(page);
+    }
     public List<Orders> listOrdersByD(int d){
         return ordersDao.findAllByD(d);
+    }
+    public List<Orders> listOrdersByDAndPage(int d,Page page){
+        return ordersDao.findAllByDAndPage(d,page);
     }
 
     public List<OrderProduct> findOrderProductByOrderId(int order_id){
@@ -292,6 +327,9 @@ public class UserService {
 
     public List<CountOrder> listCountOrderByType(String type){
         return countOrderDao.findAllByType(type);
+    }
+    public List<CountOrder> listCountOrderByTypeAndPage(String type,Page page){
+        return countOrderDao.findAllByTypeAndPage(type,page);
     }
 
     public CountOrder findCountOrderById(int id){

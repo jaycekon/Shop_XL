@@ -173,3 +173,79 @@ function acountNum() {
     });
     $("#num").text(totalNum)
 }
+
+var x = 20;
+function test(){
+    this.x = 2;
+    console.log(x) // or console.log(this.x)
+}
+// 结果为2
+
+var x = 5;
+function test(){
+    console.log(this.x);
+}
+var o = {};
+o.x = 1;
+o.m = test;
+o.m();
+// 输出 1
+
+function test() {
+    this.x = 2;
+}
+var o =  new test();
+console.log(o)
+// 输出 test {x:2}
+console.log(o.x)
+// 输出 2
+o()
+// 报错，不能作为函数调用
+
+var x = 0;
+function test(){
+    console.log(this.x);
+}
+var o = {};
+o.x = 1;
+o.m = test;
+o.m.apply();
+// 输出0  因为当apply()的参数为空时，默认调用全局对象golbal
+o.m.apply(o);
+// 输出1
+
+
+
+
+function People(name){
+    this.name = name;
+    this.Introduce = function(){
+        console.log('Hello,my name is '+this.name)
+    }
+}
+
+People.Run() = function(){
+    console.log("I can run")
+}
+
+People.prototype.Introduce = function(){
+    console.log('Hello,my name is '+this.name)
+}
+
+var p1 = new People("lanlan");
+p1.Introduce();
+
+
+function baseClass(){
+    this.showMsg = function(){
+        alert("baseClass::showMsg");
+    }
+}
+
+function extendClass(){
+
+}
+
+extendClass.prototype = new baseClass();
+var instance = new extendClass();
+instance.showMsg();

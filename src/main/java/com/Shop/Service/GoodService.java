@@ -5,6 +5,7 @@ import com.Shop.Dao.GoodDao;
 import com.Shop.Dao.ImageDao;
 import com.Shop.Model.Good;
 import com.Shop.Model.Image;
+import com.Shop.Util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,8 +32,17 @@ public class GoodService {
         return goodDao.findAll();
     }
 
+    public List<Good> listGoodByPage(Page<Good> page){
+        return goodDao.findAllByPage(page);
+    }
+
+
     public List<Good> listGoodUp(int status){
         return goodDao.findAllByStatus(status);
+    }
+
+    public List<Good> listGoodUp(int status,Page page){
+        return goodDao.findAllByStatus(status,page);
     }
 
     public List<Good> listGoodByName(String name){

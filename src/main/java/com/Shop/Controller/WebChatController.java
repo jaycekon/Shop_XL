@@ -307,7 +307,12 @@ public class WebChatController {
         //统计要付的钱
         WithdrawalsOrder withdrawalsOrder  = ordersService.findWithdrawalsOrderById(order_id);
         int money = (int)(withdrawalsOrder.getPrices()*100);
-        String openId =(String)session.getAttribute("openId");
+        String openId;
+        if(withdrawalsOrder.getRoles()!=null) {
+            openId = withdrawalsOrder.getRoles().getOpenId();
+        }else{
+            openId = withdrawalsOrder.getAreas().getOpenId();
+        }
         String nonce_str = WebChatUtil.generateStr(32);
         String ip = "131.25.0.7";
         int orderId = order_id;
@@ -355,6 +360,7 @@ public class WebChatController {
                 if(resultMap.get("return_code").equals("FAIL")){
                 }else{
                     withdrawalsOrder.setStatus(1);
+                    withdrawalsOrder.setCommitDate(new Date());
                     ordersService.updateWithdrawalsOrder(withdrawalsOrder);
                     log.info(resultMap.get("prepay_id"));
                 }
@@ -363,7 +369,11 @@ public class WebChatController {
         catch (Exception e){
             throw new RuntimeException(e);
         }finally{
-            return "redirect:/withdrawDetail";
+            if(withdrawalsOrder.getRoles()!=null) {
+                return "redirect:/listRoleCommission";
+            }else{
+                return "redirect:/listAreaCommission";
+            }
         }
     }
 

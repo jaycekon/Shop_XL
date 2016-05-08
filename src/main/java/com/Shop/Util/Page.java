@@ -1,9 +1,11 @@
 package com.Shop.Util;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/4/19 0019.
  */
-public class Page {
+public class Page<T> {
     // 1.每页显示数量(everyPage)
     private int everyPage;
     // 2.总记录数(totalCount)
@@ -18,6 +20,8 @@ public class Page {
     private boolean hasPrePage;
     // 7.是否有下一页(hasNextPage)
     private boolean hasNextPage;
+
+    private List<T> list;
 
     public Page(int everyPage, int totalCount, int totalPage, int currentPage,
                 int beginIndex, boolean hasPrePage, boolean hasNextPage) {
@@ -90,5 +94,13 @@ public class Page {
 
     public void setHasNextPage(boolean hasNextPage) {
         this.hasNextPage = hasNextPage;
+    }
+
+    public List<T> getList() {
+        return list;
+    }
+
+    public void setList(List<T> list) {
+        this.list = list;
     }
 }

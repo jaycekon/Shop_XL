@@ -12,6 +12,7 @@ public class WithdrawalsOrder {
     private int id ;
     private String uuid;
     private Date date;
+    private Date commitDate;
     private float prices;
     private int status;
     private Areas areas;
@@ -76,5 +77,13 @@ public class WithdrawalsOrder {
 
     public void setRoles(Roles roles) {
         this.roles = roles;
+    }
+
+    public Date getCommitDate() {
+        return commitDate;
+    }
+
+    public void setCommitDate(Date commitDate) {
+        this.commitDate = commitDate;
     }
 }

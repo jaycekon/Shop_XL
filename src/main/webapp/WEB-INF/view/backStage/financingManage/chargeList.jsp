@@ -1,6 +1,7 @@
 <%@ page import="com.Shop.Model.CountOrder" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/5/5 0005
@@ -54,7 +55,8 @@
                         <%
                             String model = "yyyy-MM-dd HH:mm:ss";
                             SimpleDateFormat format=new SimpleDateFormat(model);
-                            List<CountOrder> countOrders =(List<CountOrder>)request.getAttribute("countOrders");
+                            Page<CountOrder> pages = (Page<CountOrder>)request.getAttribute("page");
+                            List<CountOrder> countOrders =pages.getList();
                             for(CountOrder countOrder:countOrders){
                         %>
                         <tr>
@@ -82,8 +84,20 @@
 
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/listCharge/<%=(pages.getBeginIndex()-10)%>'">上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary"  onclick="window.location.href='<%=request.getContextPath()%>/listCharge/<%=(pages.getBeginIndex()+10)%>'">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
 

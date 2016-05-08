@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.WithdrawalsOrder;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 
 import java.util.List;
@@ -16,7 +17,11 @@ public class WithdrawalsOrderDao extends BaseDao implements IGeneralDao<Withdraw
 
     @Override
     public List<WithdrawalsOrder> findAll() {
-        return null;
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).list();
+        session.close();
+        return withdrawalsOrders;
     }
 
     @Override
@@ -69,4 +74,53 @@ public class WithdrawalsOrderDao extends BaseDao implements IGeneralDao<Withdraw
         session.close();
         return withdrawalsOrders;
     }
+
+    public List<WithdrawalsOrder> findAllByRole(){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where roles_id !=null order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
+    public List<WithdrawalsOrder> findAllByRoleAndPage(Page page){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where roles_id !=null order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
+    public List<WithdrawalsOrder> findAllByRoleAndStatus(int status){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where roles_id !=null and status=:status order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setParameter("status",status).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
+    public List<WithdrawalsOrder> findAllByArea(){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where areas_id !=null order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
+    public List<WithdrawalsOrder> findAllByAreaAndPage(Page page){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where areas_id !=null order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setMaxResults(page.getEveryPage()).setFirstResult(page.getBeginIndex()).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
+    public List<WithdrawalsOrder> findAllByAreaAndStatus(int status){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where areas_id !=null and status=:status order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setParameter("status",status).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
 }

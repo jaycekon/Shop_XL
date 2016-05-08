@@ -1,6 +1,7 @@
 <%@ page import="com.Shop.Model.CountOrder" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/5/5 0005
@@ -54,7 +55,8 @@
                         <%
                             String model = "yyyy-MM-dd HH:mm:ss";
                             SimpleDateFormat format=new SimpleDateFormat(model);
-                            List<CountOrder> countOrders =(List<CountOrder>)request.getAttribute("countOrders");
+                            Page<CountOrder> pages = (Page<CountOrder>)request.getAttribute("page");
+                            List<CountOrder> countOrders =pages.getList();
                             for(CountOrder countOrder:countOrders){
                         %>
                         <tr>
@@ -82,8 +84,20 @@
 
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" id="prevPage" >上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary" id="nextPage">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
 
@@ -95,7 +109,36 @@
     <!-- 页面主体]] -->
 </div>
 <!-- wrapper]] -->
+<script>
+    var num = parseInt( $('#recordNum').val() );
+    $("#prevPage").click(function(){
+        var suffix = num-10;
+// 返回url
+        var url = handleURL(suffix);
+// 跳转url
+        window.location.href = url;
+    });
 
+    $("#nextPage").click(function(){
+        var suffix = num+10;
+// 返回url
+        var url = handleURL(suffix);
+// 跳转url
+        window.location.href = url;
+    });
+
+    // 处理url的函数
+    function handleURL(suffix){    // suffix 后缀 为int类型
+        var pathname = window.location.pathname.split('/');
+        if(pathname.length==2){
+            pathname = pathname.concat(suffix);
+        }else{
+            pathname.pop();
+            pathname = pathname.concat(suffix);
+        }
+        return url = pathname.join('/');
+    }
+</script>
 
 <script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/backStage/lib/bootstrap/js/bootstrap.min.js"></script>

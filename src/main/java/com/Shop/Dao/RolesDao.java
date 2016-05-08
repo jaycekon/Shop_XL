@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.Roles;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
         Session session = super.openSession();
         String hql = "from Roles";
         List<Roles> roles = session.createQuery(hql).list();
+        session.close();
         return roles;
     }
 
@@ -26,6 +28,7 @@ public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
         Session session = super.openSession();
         String hql = "from Roles where areas_id=:areas_id";
         List<Roles> roles = session.createQuery(hql).setParameter("areas_id",areas_id).list();
+        session.close();
         return roles;
     }
 
@@ -62,13 +65,25 @@ public class RolesDao extends BaseDao implements IGeneralDao<Roles> {
     public Roles findByName(String name){
         Session session = super.openSession();
         String hql = "from Roles where name=:name";
-        return (Roles) session.createQuery(hql).setParameter("name",name).uniqueResult();
+        Roles roles = (Roles) session.createQuery(hql).setParameter("name",name).uniqueResult();
+        session.close();
+        return roles;
     }
 
     public Roles findByOpenId(String openId){
         Session session = super.openSession();
         String hql = "from Roles where openId=:openId";
-        return (Roles) session.createQuery(hql).setParameter("openId",openId).uniqueResult();
+        Roles roles = (Roles) session.createQuery(hql).setParameter("openId",openId).uniqueResult();
+        session.close();
+        return roles;
+    }
+
+    public List<Roles> findAllByPage(Page page) {
+        Session session = super.openSession();
+        String hql = "from Roles";
+        List<Roles> roles = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
+        return roles;
     }
 
 }

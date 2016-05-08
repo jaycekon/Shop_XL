@@ -2,7 +2,8 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.Shop.Model.Orders" %>
-<%@ page import="com.Shop.Model.Profit" %><%--
+<%@ page import="com.Shop.Model.Profit" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/5/5 0005
@@ -59,7 +60,8 @@
                             String model = "yyyy-MM-dd HH:mm:ss";
                             SimpleDateFormat format=new SimpleDateFormat(model);
                             Profit profit =(Profit) request.getAttribute("profit");
-                            List<Orders> orderses = (List<Orders>)request.getAttribute("orderses");
+                            Page<Orders> pages = (Page<Orders>)request.getAttribute("page");
+                            List<Orders> orderses = pages.getList();
                             for(Orders orders:orderses){
                         %>
                         <tr>
@@ -93,8 +95,20 @@
 
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" onclick="window.location.href='<%=request.getContextPath()%>/listMoney/<%=(pages.getBeginIndex()-10)%>'">上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary"  onclick="window.location.href='<%=request.getContextPath()%>/listMoney/<%=(pages.getBeginIndex()+10)%>'">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
 

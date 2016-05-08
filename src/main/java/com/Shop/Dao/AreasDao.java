@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.Areas;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 import org.springframework.stereotype.Repository;
 
@@ -60,5 +61,12 @@ public class AreasDao extends BaseDao implements IGeneralDao<Areas> {
         Session session = super.openSession();
         String hql = "from Areas where flag=:flag";
         return (Areas) session.createQuery(hql).setParameter("flag",flag).uniqueResult();
+    }
+
+    public List<Areas> findAllByPage(Page page) {
+        Session session = super.openSession();
+        String hql = "from Areas";
+        List<Areas> areases = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        return areases;
     }
 }

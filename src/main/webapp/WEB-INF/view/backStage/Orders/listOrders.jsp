@@ -1,7 +1,8 @@
 <%@ page import="com.Shop.Util.OrderPoJo" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Shop.Model.Orders" %>
-<%@ page import="com.Shop.Model.OrderProduct" %><%--
+<%@ page import="com.Shop.Model.OrderProduct" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/3/31 0031
@@ -37,18 +38,19 @@
             <!-- [[右边操作页面 -->
             <div class="content col-md-10 orderManager">
                 <div class="order-type text-left">
-                    <a href ="<%=request.getContextPath()%>/listOrderByF/0"><button class="btn btn-default">待付款</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByF/1"><button class="btn btn-default">待发货</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByP/1"><button class="btn btn-default">待收货</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByP/2"><button class="btn btn-default">已收货</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByD/1"><button class="btn btn-default">已完成</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByF0"><button class="btn btn-default">待付款</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByF1"><button class="btn btn-default">待发货</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByP1"><button class="btn btn-default">待收货</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByP2"><button class="btn btn-default">已收货</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByD1"><button class="btn btn-default">已完成</button></a>
                     <a href ="<%=request.getContextPath()%>/listOrderByS"><button class="btn btn-default">退款中</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByT/1"><button class="btn btn-default">退货中</button></a>
-                    <a href ="<%=request.getContextPath()%>/listOrderByD/2"><button class="btn btn-default">已关闭</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByT"><button class="btn btn-default">退货中</button></a>
+                    <a href ="<%=request.getContextPath()%>/listOrderByD2"><button class="btn btn-default">已关闭</button></a>
                 </div>
                 <!-- [[订单-->
                 <%
-                    List<OrderPoJo> orderPoJos = (List<OrderPoJo>)request.getAttribute("orderPoJos");
+                    Page<OrderPoJo> pages = (Page<OrderPoJo>)request.getAttribute("page");
+                    List<OrderPoJo> orderPoJos = pages.getList();
                     for(OrderPoJo orderPoJo:orderPoJos){
                         Orders orders = orderPoJo.getOrders();
                         List<OrderProduct> orderProducts = orderPoJo.getOrderProduct();
@@ -137,8 +139,20 @@
                 <!-- 订单]]-->
                 <!-- [[分页-->
                 <div class="paging">
-                    <span class="prev btn btn-primary">上一页</span>
-                    <span class="next btn btn-primary">下一页</span>
+                    <%
+                        if(pages.getBeginIndex()!=0){
+                    %>
+                    <span class="prev btn btn-primary" id="prevPage" >上一页</span>
+                    <%
+                        }
+
+                        if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+                    %>
+
+                    <span class="next btn btn-primary" id="nextPage">下一页</span>
+                    <%
+                        }
+                    %>
                 </div>
                 <!-- 分页]]-->
             </div>
@@ -153,6 +167,37 @@
 <script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/backStage/lib/bootstrap/js/bootstrap.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/backStage/js/common.js"></script>
+
+<script>
+    var num = parseInt( $('#recordNum').val() );
+    $("#prevPage").click(function(){
+        var suffix = num-10;
+// 返回url
+        var url = handleURL(suffix);
+// 跳转url
+        window.location.href = url;
+    });
+
+    $("#nextPage").click(function(){
+        var suffix = num+10;
+// 返回url
+        var url = handleURL(suffix);
+// 跳转url
+        window.location.href = url;
+    });
+
+    // 处理url的函数
+    function handleURL(suffix){    // suffix 后缀 为int类型
+        var pathname = window.location.pathname.split('/');
+        if(pathname.length==2){
+            pathname = pathname.concat(suffix);
+        }else{
+            pathname.pop();
+            pathname = pathname.concat(suffix);
+        }
+        return url = pathname.join('/');
+    }
+</script>
 
 </body>
 </html>

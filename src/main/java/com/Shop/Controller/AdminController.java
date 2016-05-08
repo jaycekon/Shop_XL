@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -182,27 +183,111 @@ public class AdminController {
         return "backStage/Orders/orderDetail";
     }
 
-
     @RequestMapping(value ="listAreas",method = RequestMethod.GET)
     public String listAreas(Model model){
+        Page<Areas> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(0);
         List<Areas> areas = userService.listAreas();
-        model.addAttribute("areas",areas);
+        page.setTotalCount(areas.size());
+        List<Areas> a = userService.listAreasByPage(page);
+        page.setList(a);
+        model.addAttribute("page",page);
+        return "backStage/User/listArea";
+    }
+
+    @RequestMapping(value ="listAreas/{pages}",method = RequestMethod.GET)
+    public String listAreas(Model model,@PathVariable("pages") int pages){
+        Page<Areas> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(pages);
+        List<Areas> areas = userService.listAreas();
+        page.setTotalCount(areas.size());
+        List<Areas> a = userService.listAreasByPage(page);
+        page.setList(a);
+        model.addAttribute("page",page);
         return "backStage/User/listArea";
     }
 
     @RequestMapping(value ="listRoles",method = RequestMethod.GET)
     public String listRoles(Model model){
+        Page<Roles> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(0);
         List<Roles> roles = userService.listRoles();
-        model.addAttribute("roles",roles);
+        page.setTotalCount(roles.size());
+        page.setList(userService.listRolesByPage(page));
+        model.addAttribute("page",page);
         return "backStage/User/listRoles";
     }
 
+    @RequestMapping(value ="listRoles/{pages}",method = RequestMethod.GET)
+    public String listRoles(Model model,@PathVariable("pages")int pages){
+        Page<Roles> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(pages);
+        List<Roles> roles = userService.listRoles();
+        page.setTotalCount(roles.size());
+        page.setList(userService.listRolesByPage(page));
+        model.addAttribute("page",page);
+        return "backStage/User/listRoles";
+    }
+
+
     @RequestMapping(value ="listUser",method = RequestMethod.GET)
     public String listUser(Model model){
+        Page<User> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(0);
         List<User> users = userService.listUser();
-        model.addAttribute("users",users);
+        page.setTotalCount(users.size());
+        page.setList(userService.listUserByPage(page));
+        model.addAttribute("page",page);
         return "backStage/User/listUser";
     }
+
+    @RequestMapping(value ="listUser/{pages}",method = RequestMethod.GET)
+    public String listUser(Model model,@PathVariable("pages")int pages){
+        Page<User> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(pages);
+        List<User> users = userService.listUser();
+        page.setTotalCount(users.size());
+        page.setList(userService.listUserByPage(page));
+        model.addAttribute("page",page);
+        return "backStage/User/listUser";
+    }
+
+
+    /**
+     * 显示所有商品，从数据库中获取所有商品
+     * @param model
+     * @return
+     */
+    @RequestMapping(value = "listGood",method = RequestMethod.GET)
+    public String listGood(Model model){
+        Page<Good> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(0);
+        List<Good> goods = goodService.listGood();
+        page.setTotalCount(goods.size());
+        page.setList(goodService.listGoodByPage(page));
+        model.addAttribute("page",page);
+        return "backStage/Product/productList";
+    }
+
+    @RequestMapping(value = "listGood/{pages}",method = RequestMethod.GET)
+    public String listGood(Model model,@PathVariable("pages")int pages){
+        Page<Good> page = new Page();
+        page.setEveryPage(10);
+        page.setBeginIndex(pages);
+        List<Good> goods = goodService.listGood();
+        page.setTotalCount(goods.size());
+        page.setList(goodService.listGoodByPage(page));
+        model.addAttribute("page",page);
+        return "backStage/Product/productList";
+    }
+
 
     @RequestMapping(value ="orderCheck",method = RequestMethod.GET)
     public String checkOrder(){
@@ -332,8 +417,29 @@ public class AdminController {
 
     @RequestMapping(value="listMember",method = RequestMethod.GET)
     public String test(Model model){
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         List<CountOrder> countOrders  =userService.listCountOrderByType("会员认证");
-        model.addAttribute("countOrders",countOrders);
+        page.setTotalCount(countOrders.size());
+        countOrders = userService.listCountOrderByTypeAndPage("会员认证",page);
+        page.setList(countOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/taxList";
+
+    }
+
+
+    @RequestMapping(value="listMember/{page}",method = RequestMethod.GET)
+    public String test(Model model,@PathVariable("page")int pages){
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<CountOrder> countOrders  =userService.listCountOrderByType("会员认证");
+        page.setTotalCount(countOrders.size());
+        countOrders = userService.listCountOrderByTypeAndPage("会员认证",page);
+        page.setList(countOrders);
+        model.addAttribute("page",page);
         return "backStage/financingManage/taxList";
 
     }
@@ -341,22 +447,151 @@ public class AdminController {
 
     @RequestMapping(value="listCharge",method = RequestMethod.GET)
     public String chargeList(Model model){
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         List<CountOrder> countOrders  =userService.listCountOrderByType("充值");
-        model.addAttribute("countOrders",countOrders);
+        page.setTotalCount(countOrders.size());
+        countOrders = userService.listCountOrderByTypeAndPage("充值",page);
+        page.setList(countOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/chargeList";
+    }
+
+    @RequestMapping(value="listCharge/{page}",method = RequestMethod.GET)
+    public String chargeList(Model model,@PathVariable("page")int pages){
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<CountOrder> countOrders  =userService.listCountOrderByType("充值");
+        page.setTotalCount(countOrders.size());
+        countOrders = userService.listCountOrderByTypeAndPage("充值",page);
+        page.setList(countOrders);
+        model.addAttribute("page",page);
         return "backStage/financingManage/chargeList";
     }
 
 
     @RequestMapping(value="listMoney",method = RequestMethod.GET)
     public String orderList(Model model){
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         List<Orders> orderses = userService.listOrders();
+        page.setTotalCount(orderses.size());
+        orderses = userService.listOrdersByPage(page);
+        page.setList(orderses);
         Profit profit = terraceService.findProfit();
         model.addAttribute("profit",profit);
-        model.addAttribute("orderses",orderses);
+        model.addAttribute("page",page);
         return "backStage/financingManage/orderList";
     }
 
+    @RequestMapping(value="listMoney/{page}",method = RequestMethod.GET)
+    public String orderList(Model model,@PathVariable("page")int pages){
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<Orders> orderses = userService.listOrders();
+        page.setTotalCount(orderses.size());
+        orderses = userService.listOrdersByPage(page);
+        page.setList(orderses);
+        Profit profit = terraceService.findProfit();
+        model.addAttribute("profit",profit);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/orderList";
+    }
 
+    @RequestMapping(value="listRoleCommission",method = RequestMethod.GET)
+    public String roleCommissionWithdraw(Model model){
+        model.addAttribute("status","0");
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRole();
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRoleAndPage(page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+    @RequestMapping(value="listRoleCommission/{page}",method = RequestMethod.GET)
+    public String roleCommissionWithdraw(Model model,@PathVariable("page")int pages){
+        model.addAttribute("status","0");
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRole();
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRoleAndPage(page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+    @RequestMapping(value="listAreaCommission",method = RequestMethod.GET)
+    public String AreaCommissionWithdraw(Model model){
+        model.addAttribute("status","1");
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreas();
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndPage(page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+    @RequestMapping(value="listAreaCommission/{page}",method = RequestMethod.GET)
+    public String AreaCommissionWithdraw(Model model,@PathVariable("page")int pages){
+        model.addAttribute("status","1");
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreas();
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndPage(page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+    @RequestMapping(value="commissionWithdraw/{id}",method = RequestMethod.GET)
+    public String commissionWithdraw(@PathVariable("id")int id){
+        WithdrawalsOrder withdrawalsOrder = ordersService.findWithdrawalsOrderById(id);
+        return "redirect:/refund/"+withdrawalsOrder.getId();
+    }
+
+    @RequestMapping(value="refuseWithdraw/{id}",method = RequestMethod.GET)
+    public String refuseWithdraw(@PathVariable("id")int id){
+        WithdrawalsOrder withdrawalsOrder = ordersService.findWithdrawalsOrderById(id);
+        withdrawalsOrder.setCommitDate(new Date());
+        withdrawalsOrder.setStatus(2);
+        ordersService.updateWithdrawalsOrder(withdrawalsOrder);
+        if(withdrawalsOrder.getRoles()!=null) {
+            return "redirect:/listRoleCommission";
+        }else{
+            return "redirect:/listAreaCommission";
+        }
+    }
+
+    @RequestMapping(value="listAreaCommissionStatus",method = RequestMethod.GET)
+    public String AreaCommissionWithdraw(int status,Model model){
+        model.addAttribute("status","1");
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndStatus(status);
+        model.addAttribute("withdrawalsOrders",withdrawalsOrders);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+
+    @RequestMapping(value="listRoleCommissionStatus",method = RequestMethod.GET)
+    public String RoleCommissionWithdraw(int status,Model model){
+        model.addAttribute("status","0");
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRolesAndStatus(status);
+        model.addAttribute("withdrawalsOrders",withdrawalsOrders);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
 
 //    @RequestMapping(value="/getProductLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})
 //    public String getProductLogisticTrack(@PathVariable("id")int id, HttpSession session,Model model){

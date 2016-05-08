@@ -1,6 +1,7 @@
 package com.Shop.Dao;
 
 import com.Shop.Model.User;
+import com.Shop.Util.Page;
 import org.hibernate.Session;
 
 import org.springframework.stereotype.Repository;
@@ -72,6 +73,14 @@ public class UserDao extends BaseDao implements IGeneralDao<User>{
         Session session = super.openSession();
         String hql = "from User where openId=:openId";
         return (User)session.createQuery(hql).setParameter("openId",openId).uniqueResult();
+    }
+
+
+    public List<User> findAllByPage(Page page) {
+        Session session = super.openSession();
+        String hql = "from User";
+        List<User> users = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        return users;
     }
 
 
