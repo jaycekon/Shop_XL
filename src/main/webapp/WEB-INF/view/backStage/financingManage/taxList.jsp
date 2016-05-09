@@ -79,6 +79,7 @@
                             }
                         %>
                         </tbody>
+                        <input id="recordNum" hidden="hidden" value="<%=pages.getBeginIndex()%>" />
                     </table>
                 </div><!-- [[平台佣金提现列表 -->
 
@@ -109,6 +110,11 @@
     <!-- 页面主体]] -->
 </div>
 <!-- wrapper]] -->
+
+
+<script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
+<script src="<%=request.getContextPath()%>/app/backStage/lib/bootstrap/js/bootstrap.min.js"></script>
+<script src="<%=request.getContextPath()%>/app/backStage/js/common.js"></script>
 <script>
     var num = parseInt( $('#recordNum').val() );
     $("#prevPage").click(function(){
@@ -139,10 +145,5 @@
         return url = pathname.join('/');
     }
 </script>
-
-<script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
-<script src="<%=request.getContextPath()%>/app/backStage/lib/bootstrap/js/bootstrap.min.js"></script>
-<script src="<%=request.getContextPath()%>/app/backStage/js/common.js"></script>
-
 </body>
 </html>

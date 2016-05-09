@@ -148,6 +148,13 @@
     <script>
         $(function() {
 
+        	// 跳转到详情页
+        	$('.productList').click(function(e){
+        		if(  $(e.target).attr("class").indexOf('watchPrice') == -1 ) {
+        			window.location.href="./productDetail.html";
+        		}
+        	});
+
             /* 上滑加载更多 */
             var page = 0; // 当前页
             var pages = 3 // 总页数

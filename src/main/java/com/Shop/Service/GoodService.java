@@ -74,6 +74,10 @@ public class GoodService {
         List<Image> imgs = imageDao.findAllByGoodId(id);
         return imgs;
     }
+    public List<Image> findImageByGoodIdAndStatus(int id,int status){
+        List<Image> imgs = imageDao.findAllByGoodIdAndStatus(id,status);
+        return imgs;
+    }
 
     public List<Image> findImage(){
         return imageDao.findImage();

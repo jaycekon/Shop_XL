@@ -50,7 +50,7 @@
             for (Good good : goods) {
         %>
         <!-- [[产品列表 -->
-        <div class="productList">
+        <div class="productList" title="<%=good.getId()%>">
             <div class="ui-row-flex">
 
                 <div class="ui-col ui-col-2">
@@ -71,7 +71,7 @@
                 </div>
                 <div class="ui-col ui-col-3 ui-row-flex ui-whitespace ui-row-flex-ver productCol2">
                     <p class="ui-col ui-nowrap ui-flex-align-center productName"><a
-                            href="<%=request.getContextPath()%>/Detail/<%=good.getId()%>"><%=good.getDescribes()%>
+                            href="<%=request.getContextPath()%>/Detail/<%=good.getId()%>"><%=good.getName()%>
                     </a></p>
                     <p class="ui-col ui-flex  ui-flex-align-center productSpec">销售价：<span
                             class="productMoney">&#165;<%=good.getProductPrices()%></span></p>
@@ -148,6 +148,15 @@
     </div>
 </div><!-- 点击查看需要倾销]] -->
 <script>
+
+        // 跳转到详情页
+        $('.productList').click(function (e) {
+            var pId = $(this).attr("title")
+            if ($(e.target).attr("class").indexOf('watchPrice') == -1) {
+                window.location.href = "<%=request.getContextPath()%>/Detail/"+pId;
+            }
+        });
+
     function displayPrice(price,id){
         var sign = $("#sign").val();
         if(sign == 1){

@@ -11,6 +11,7 @@ public class Image {
     private int id;
     private String address;
     private Good good;
+    private int status;
 
 
     @Id
@@ -38,5 +39,13 @@ public class Image {
 
     public void setGood(Good good) {
         this.good = good;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

@@ -99,6 +99,15 @@ public class WithdrawalsOrderDao extends BaseDao implements IGeneralDao<Withdraw
         return withdrawalsOrders;
     }
 
+    public List<WithdrawalsOrder> findAllByRoleAndStatusAndPage(int status,Page page){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where roles_id !=null and status=:status order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setParameter("status",status)
+                .setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
     public List<WithdrawalsOrder> findAllByArea(){
         Session session = super.openSession();
         String hql="from WithdrawalsOrder where areas_id !=null order by date desc ";
@@ -119,6 +128,15 @@ public class WithdrawalsOrderDao extends BaseDao implements IGeneralDao<Withdraw
         Session session = super.openSession();
         String hql="from WithdrawalsOrder where areas_id !=null and status=:status order by date desc ";
         List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setParameter("status",status).list();
+        session.close();
+        return withdrawalsOrders;
+    }
+
+    public List<WithdrawalsOrder> findAllByAreaAndStatusAndPage(int status,Page page){
+        Session session = super.openSession();
+        String hql="from WithdrawalsOrder where areas_id !=null and status=:status order by date desc ";
+        List<WithdrawalsOrder> withdrawalsOrders = session.createQuery(hql).setParameter("status",status)
+                .setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
         session.close();
         return withdrawalsOrders;
     }

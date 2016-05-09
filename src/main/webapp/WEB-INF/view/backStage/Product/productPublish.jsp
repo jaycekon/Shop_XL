@@ -48,7 +48,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control" name="productPrices" id="retailPrice"/>
+                                <input  type="text" class="form-control" name="productPrices" id="retailPrice"/>
                                 <span class="input-group-addon">元</span>
                             </div>
                         </div>
@@ -58,7 +58,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control" name="wholesalePrices" id="tradePrice"/>
+                                <input  type="text" class="form-control" name="wholesalePrices" id="tradePrice"/>
                                 <span class="input-group-addon">元</span>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control" name="dumpingPrices" id="dumpingPrice"/>
+                                <input  type="text" class="form-control" name="dumpingPrices" id="dumpingPrice"/>
                                 <span class="input-group-addon">元</span>
                             </div>
                         </div>
@@ -84,7 +84,7 @@
                         <div class="col-xs-10 textShow">
                             <div class="input-group">
                                 <span class="input-group-addon">&#165;</span>
-                                <input  type="number" class="form-control"name = "pv" id="PV"/>
+                                <input  type="text" class="form-control"name = "pv" id="PV"/>
                                 <span class="input-group-addon">元</span>
                             </div>
                         </div>
@@ -109,12 +109,18 @@
                     <%--</div>--%>
                     <div class="form-group frontPage">
                         <label class="col-xs-2">商品封面(最多5张)：</label>
-                        <div class="col-xs-10 img-content">
-                            <div class="col-xs-2 add">
-                                <span class="addIcon">+</span>
-                                <span class="cancel">X</span>
-                                <input  type="file" accept="image/*" name="files" class="file"/>
-                            </div>
+                        <div class="col-xs-10 imgArea" id="carouselImg">
+
+                            <!-- [[添加图片 -->
+                            <div class="col-xs-6 col-sm-2 col-lg-2">
+                                <div class="img-content add-content">
+                                    <input type="file" accept="image/*" class="fileInp" name="files"/>
+                                    <span class="add">&#43;</span>
+                                    <img src="" alt="" class="img-responsive" />
+                                    <span class="cancel" >&#88;</span>
+                                </div>
+                            </div><!-- 添加图片]] -->
+
                         </div>
                     </div>
                     <div class="form-group">
@@ -123,11 +129,34 @@
                             <textarea name="describes" class="form-control" id="detail" rows="10"></textarea>
                         </div>
                     </div>
+
+                    <!-- [[商品附图 -->
+                    <div class="form-group">
+                        <label class="control-label col-xs-2">
+                            商品附图（最多10张）：
+                        </label>
+                        <div class="col-xs-10 imgArea" id="illustration">
+
+                            <!-- [[添加图片 -->
+                            <div class="col-xs-6 col-sm-2 col-lg-2">
+                                <div class="img-content add-content">
+                                    <input type="file" accept="image/*" class="fileInp" name="detailfiles"/>
+                                    <span class="add">&#43;</span>
+                                    <img src="" alt="" class="img-responsive" />
+                                    <span class="cancel" >&#88;</span>
+                                </div>
+                            </div><!-- 添加图片]] -->
+
+                        </div>
+                    </div><!-- [[商品附图 -->
+
                     <div class="from-group">
                         <div class="col-xs-offset-2 col-xs-10">
                             <button class="btn btn-primary"  type="submit">保存</button>
                         </div>
                     </div>
+
+
                 </form>
             </div>
             <!-- 右边操作页面]] -->

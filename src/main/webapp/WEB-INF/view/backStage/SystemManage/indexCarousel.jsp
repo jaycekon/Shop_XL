@@ -64,6 +64,26 @@
 
                     <%
                         }
+                        if(images.size()<3){
+                            for(int i=0;i<(3-images.size());i++){
+                            %>
+                    <form class="col-md-6 img-form" action="<%=request.getContextPath()%>/setImage/0" enctype="multipart/form-data" method="post">
+                        <img src="" alt=""/>
+                        <div class="oprate clearfix">
+                            <input type="file" accept="image/*" name ="files" class="col-md-4 selFile" />
+                            <span class="col-md-4">图一</span>
+                            <span class="col-md-4 text-right">
+                                <button type="submit" class="btn btn-primary">更新</button>
+                            </span>
+                        </div>
+                    </form>
+
+
+
+                    <%
+                            }
+                        }
+
                     %>
                 </div>
             </div>

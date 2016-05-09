@@ -71,9 +71,9 @@
                                 else{ out.println("已下架");}
                             %></td>
                             <td>
-                                <a href="editGood/<%=good.getId()%>" class="table_a">编辑</a>
-                                <a href="goodDetail/<%=good.getId()%>" class="table_a">预览</a>
-                                <a href="changeStatus/<%=good.getId()%>" class="table_a"><%
+                                <a href="<%=request.getContextPath()%>/editGood/<%=good.getId()%>" class="table_a">编辑</a>
+                                <a href="<%=request.getContextPath()%>/goodDetail/<%=good.getId()%>" class="table_a">预览</a>
+                                <a href="<%=request.getContextPath()%>/changeStatus/<%=good.getId()%>" class="table_a"><%
                                     if (good.getStatus() == 1) {
                                         out.println("下架");
                                     } else {

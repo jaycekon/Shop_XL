@@ -1,9 +1,6 @@
-<%@ page import="com.Shop.Model.Good" %>
-<%@ page import="com.Shop.Model.Comment" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.Shop.Model.Image" %>
-<%@ page import="com.Shop.Model.OrderProduct" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.Shop.Model.*" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/20 0020
@@ -41,6 +38,7 @@
             <%
                 String model = "yyyy-MM-dd";
                 SimpleDateFormat format=new SimpleDateFormat(model);
+                User user = (User)session.getAttribute("loginUser");
                 List<Image> images =(List<Image>)request.getAttribute("images");
                 if(images!=null){
                     for(Image image:images){
@@ -61,7 +59,7 @@
 
     <!-- [[商品参数 -->
     <div class="ui-row productSpecBlock">
-
+        <input type="hidden" name="sign" id="sign" value="<%=user.getSign()%>"/>
         <%
             Good good = (Good) request.getAttribute("good");
         %>
@@ -81,13 +79,21 @@
         <%
             if(request.getAttribute("watchProduct")==null){
         %>
-        <button class="ui-btn productBtn watchPrice">查看倾销价</button>
+        <p class="ui-col ui-flex  ui-flex-align-center">
+            <button class="ui-btn productBtn watchPrice" onclick="displayPrice(<%=good.getwPrices()%>,<%=good.getId()%>)">查看倾销价</button>
+        </p>
         <%
             }
         %>
 
         <form action="<%=request.getContextPath()%>/buyGood" method = "post">
+            <%
+                if(request.getAttribute("watchProduct")!=null){
+            %>
             <button class="ui-btn addCartBtn" id="addCartBtn" type="submit"><i class="ui-icon-cart"></i></button>
+            <%
+                }
+            %>
             <input type ="hidden" value="<%=good.getId()%>" name="good_id" id="id"/>
 
         <div class="selectNum">
@@ -112,10 +118,18 @@
         </ul>
         <ul class="ui-tab-content" style="width:300%">
             <!-- [[商品介绍内容 -->
-            <li class="productIntro"><!--
-                <p class="content">这是正文内容</p>-->
-                <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
-                <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
+            <li class="productIntro">
+                <p class="content">${good.getDescribes()}</p>
+                <%
+                    List<Image> iamge = (List<Image>) request.getAttribute("detailImages");
+                    if(iamge!=null){
+                    for(Image image :iamge){
+                %>
+                <img src="<%=image.getAddress()%>" alt="">
+                <%
+                        }
+                    }
+                %>
             </li><!-- 商品介绍内容]] -->
             <!-- [[商品评价内容 -->
             <li class="productComment">
@@ -150,11 +164,24 @@
 <div class="ui-dialog" id="goPayDialog">
     <div class="ui-dialog-cnt">
         <div class="ui-dialog-bd">
-            <div>查看需要支付<%=good.getwPrices()%>倾销币</div>
+            <div></div>
         </div>
         <div class="ui-dialog-ft">
             <button type="button" data-role="button">取消</button>
-            <button type="button" data-role="button">支付查看</button>
+            <button type="button" data-role="button">确认支付</button>
+        </div>
+    </div>
+</div><!-- 点击查看需要倾销]] -->
+
+
+<div class="ui-dialog" id="goSignDialog">
+    <div class="ui-dialog-cnt">
+        <div class="ui-dialog-bd">
+            <div></div>
+        </div>
+        <div class="ui-dialog-ft">
+            <button type="button" data-role="button">取消</button>
+            <button type="button" data-role="button">去认证</button>
         </div>
     </div>
 </div><!-- 点击查看需要倾销]] -->
@@ -163,6 +190,18 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script src="<%=request.getContextPath()%>/app/frontStage/js/index.js?12"></script>
 <script>
+
+    function displayPrice(price,id){
+        var sign = $("#sign").val();
+        if(sign == 1){
+            $(".ui-dialog-bd").find("div").html("查看需要支付"+price+"倾销币");
+            $("#id").val(id);
+            watchPrice();
+        }else if(sign ==0){
+            $(".ui-dialog-bd").find("div").html("您当前尚未认证会员，请前往认证");
+            signUser();
+        }
+    }
 
     /* 加入购物车 */
     $('#addCartBtn').tap(function(){

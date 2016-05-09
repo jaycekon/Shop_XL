@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.Address" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Model.Area" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/2 0002
@@ -42,7 +43,20 @@
             <input type="hidden" value="<%=address.getId()%>" class="addressId"/>
             <p>姓名：<%=address.getUsername()%></p>
             <p>电话：<%=address.getPhone()%></p>
+            <%
+                if(address.getA()!=null){
+                    Area city = address.getA().getArea();
+                    Area s = city.getArea();
+            %>
+            <p>地址：<%=s.getName()+city.getName()+address.getA().getName()+address.getAddress()%></p>
+            <%
+            }else{
+            %>
             <p>地址：<%=address.getAddress()%></p>
+
+            <%
+                }
+            %>
             <button class="icon iconfont RTIcon" onclick="window.location.href='<%=request.getContextPath()%>/editAddress/<%=address.getId()%>?flagt=1'">&#xe603;</button>
         </li>
         <%

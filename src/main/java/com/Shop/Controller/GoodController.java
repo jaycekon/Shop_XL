@@ -50,23 +50,19 @@ public class GoodController {
     /**
      * 添加商品进入数据库，默认显示已下架
      * @param good
-     * @param session
      * @param files
      * @return
      */
     @RequestMapping(value = "addGoodDown",method = RequestMethod.POST,produces = "application/json;charset=UTF-8")
-    public String addGoodDown(Good good,HttpSession session,@RequestParam("files")MultipartFile[] files){
-//        if(session.getAttribute("loginTerrace") == null){
-//            JsonObject jsonObject = new JsonObject();
-//            jsonObject.addProperty("status",false);
-//            return jsonObject.toString();
-//        }
+    public String addGoodDown(Good good,@RequestParam("files")MultipartFile[] files,@RequestParam("detailfiles")MultipartFile[] detailfiles){
         good.setStatus(0);
         String fileName =UUID.randomUUID().toString()+".jpg";
         String file = "http://115.29.141.108/Shop_XL_war/"+fileName;
         good.setImg(file);
+        good.setCreateTime(new Date());
         goodService.addGood(good);
-        System.out.println(files.length);
+        System.out.println("封面图片数量"+files.length);
+        System.out.println("商品详情图片数量"+detailfiles.length);
         String path=File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
         for(int i = 0;i<files.length;i++){
             System.out.println(i);
@@ -80,6 +76,28 @@ public class GoodController {
                     System.out.println("上传出错");
                 }
                 Image image = new Image();
+                image.setStatus(0);
+                image.setAddress(file);
+                image.setGood(good);
+                goodService.addImage(image);
+
+                fileName =UUID.randomUUID().toString()+".jpg";
+                file = "http://115.29.141.108/Shop_XL_war/"+fileName;
+            }
+        }
+        for(int i = 0;i<detailfiles.length;i++){
+            System.out.println(i);
+            if(!detailfiles[i].isEmpty()){
+
+                try {
+                    FileUtils.copyInputStreamToFile(detailfiles[i].getInputStream(),new File(path,fileName));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("上传出错");
+                }
+                Image image = new Image();
+                image.setStatus(1);
                 image.setAddress(file);
                 image.setGood(good);
                 goodService.addImage(image);
@@ -155,19 +173,17 @@ public class GoodController {
      */
     @RequestMapping(value = "Detail/{id}",method = RequestMethod.GET)
     public String detail(@PathVariable(value ="id")int id,HttpSession session,Model model){
-        if(session.getAttribute("loginUser")==null){
-            return "redirect:/";
-        }
         User user = (User)session.getAttribute("loginUser");
         WatchProduct watchProduct = userService.findWatchProductByUIdAndGId(user.getId(),id);
         Good good= goodService.findGoodById(id);
         model.addAttribute("good",good);
-        List<Image> images = goodService.findImageByGoodId(good.getId());
-
+        List<Image> images = goodService.findImageByGoodIdAndStatus(good.getId(),0);
+        List<Image> detailImages =goodService.findImageByGoodIdAndStatus(good.getId(),1);
         List<Comment> comments = addressService.findCommentByGoodId(good.getId());
 
 
         model.addAttribute("images",images);
+        model.addAttribute("detailImages",detailImages);
         model.addAttribute("comments",comments);
         model.addAttribute("watchProduct",watchProduct);
         return "frontStage/Good/detail";

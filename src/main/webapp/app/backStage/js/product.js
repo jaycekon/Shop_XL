@@ -1,101 +1,165 @@
 /**
  * Created by Administrator on 2016/3/22.
  */
+
+/* 商品详情 */
 $(function(){
-    //**添加商品封面图**//
-
-    /*图片显示*/
-    var setImagePreview = function(file){
-        var docObj = file;
-
-        if (docObj.files && docObj.files[0]) {
-            //火狐下，直接设img属性
-            if (window.navigator.userAgent.indexOf("Chrome") >= 1 || window.navigator.userAgent.indexOf("Safari") >= 1) {
-                return window.URL.createObjectURL(docObj.files[0]);
-            }
-            else {
-                return window.URL.createObjectURL(docObj.files[0]);
-            }
-        }
-    };
-
-
     var dom = {
-        $form : $('.product-message')
+        $carouselImg : $('#carouselImg'),
+        $illustration : $('#illustration'),
+        $img_content : $(".img-content")
     };
+    var cMaxNum = 5, cMinNum = 1;   // 商品轮播张数限制
+    var fMaxNum = 10, fMinNum = 0;   // 商品配图张数限制
 
-    dom.$form.on('click','.file',function(){
+    // 设置图片大小
+    resizeImg( dom.$img_content );
 
-        $(this).on('change',function(){
+    $(window).resize(function(){
+        resizeImg( dom.$img_content );
+    });
 
-            var imgcontent = $(this).parents('.img-content'),
-                parent = $(this).parent();
+    // 设置图片大小 1:1
+    function resizeImg( ){
+        var imgContainer = $(".img-content");
+        var oWidth = imgContainer.width();
+        imgContainer.height( oWidth );
+        imgContainer.css("line-height", oWidth + "px");
+    }
 
-            $(this).hide();
-            $(this).siblings().hide();
-            $(this).siblings('.cancel').show();
-            parent.removeClass('add');
+    var method = {
+        addDom : function(judge){
 
-            var src = setImagePreview($(this)[0]);
-            var img = $('<img>');
-            img[0].src = src;
-
-            parent.append(img);
-
-            if(imgcontent.children().length == 5){
-                return;
-            }else{
-                imgcontent.append(
-                    '<div class="col-xs-2 add">'+
-                    '<span class="addIcon">+</span>'+
-                    '<span class="cancel">X</span>'+
-                    '<input type="file" accept="image/*" name="files" class="file"/>'+
-                    '</div>')
+            var fileName;
+            if(judge=="#carouselImg") {
+                fileName = "files";
+            }else if(judge=="#illustration") {
+                fileName = "detailfiles";
             }
 
-            /*用ajax把数据上传到后台*/
-            var formData = new FormData()
-            // fileInput
-            formData.append('imgfile',this.files[0]);
-            
-            $.ajax({
-                url: './../../uploadImg',
-                type: 'POST',
-                data: formData,
-                processData: false,   // 告诉jquery不要去处理发送的数据
-                contentType: false,   // 告诉jquery不要去设置Content-Type请求头
+            return    '<div class="col-xs-6 col-sm-2 col-lg-2">' +
+                '<div class="img-content add-content">'+
+                '<input type="file" class="fileInp" name=' + fileName + ' />' +
+                '<span class="add">&#43;</span>' +
+                '<img src="" alt="" class="img" style="display: none" />'+
+                '<span class="cancel" style="display: none;">&#88;</span>'+
+                '</div>'+
+                '</div>';
+        },
+
+        changeFile : function(_this,maxNum,par){
+            $(_this).on('change',function(){
+                var imgcontent = $(_this).parents('.img-content'),src,that=_this;
+
+                /*
+                 // 利用formData对象异步上传图片 但存在兼容性问题
+                 var file = $(_this)[0].files[0];
+                 var data = new FormData();
+                 data.append('carouselImg',file);
+
+                 $.ajax({
+                 type : 'POST',
+                 data : data,
+                 processData : false,
+                 contentType : false,
+                 url : '',
+                 success : function(data){
+                 if(data.code == 1){
+                 src = data.data;
+                 $(that).hide();
+                 imgcontent.find('.add').hide();
+                 imgcontent.find('img').attr({'src':src}).show();
+                 imgcontent.find('.cancel').show();
+                 imgcontent.find('.imgSrc').val(src);
+                 imgcontent.removeClass('add-content');
+
+                 var index = $(par).find('.img-content').length;
+                 if(index < maxNum) {
+                 imgcontent.parents(par).append(method.addDom());
+                 resizeImg(dom.$img_content);
+                 }
+                 }else{
+                 alert('上传失败！');
+                 }
+                 },
+                 error:function(data){
+                 alert('系统错误！');
+                 }
+                 });*/
+
+                //    前台模拟上传成功后
+                // 替换原来的添加图片为图片区
+                var file = $(_this)[0].files[0];
+                src = getObjectURL(file);
+                $(that).hide();
+                imgcontent.find('.add').hide();
+                imgcontent.find('img').attr({'src':src}).show();
+                imgcontent.find('.cancel').show();
+                imgcontent.find('.imgSrc').val(src);
+                imgcontent.removeClass('add-content');
+
+                // 增加新的增加图片区
+                var index = $(par).find('.img-content').length;
+                if(index < maxNum) {
+                    imgcontent.parents(par).append(method.addDom(par));
+                    resizeImg();
+                }
+
             });
+        },
 
-        });
+        cancelImg : function(_this,par, maxNum){
+            var parent = $(_this).parents('.img-content').parent(),
+                perParent = $(_this).parents(par);
 
+            parent.remove();      // 删除图片的父容器
 
-    });
+            // 上传到最大张数
+            if ( perParent.find('img-content').length == maxNum - 1 ) {
+                perParent.find('add-content').remove();
+            }
 
-    dom.$form.on('click','.cancel',function(){
+            //  删除图片后小于最大张数
+            var index = perParent.find('.add-content').length;
+            if(index == 0){
+                perParent.append(method.addDom(par));
+                resizeImg( dom.$img_content);
+            }
 
-        var imgcontent = $(this).parents('.img-content');
-
-        $(this).parents('.col-xs-2').remove();
-
-        if(imgcontent.children().length < 5 && imgcontent.find('.add').length > 0){
-            return;
-        }else{
-            imgcontent.append(
-                '<div class="col-xs-2 add">'+
-                '<span class="addIcon">+</span>'+
-                '<span class="cancel">X</span>'+
-                '<input type="file" accept="image/*" name="" class="file"/>'+
-                '</div>')
         }
+
+    };
+
+    dom.$carouselImg.on('click','.fileInp',function(){
+        method.changeFile(this,cMaxNum,'#carouselImg');
     });
 
-    $('#addspecbtn').on('click',function(){
-        $(this).parents('.form-group').after(addSpec());
+    dom.$illustration.on('click','.fileInp',function(){
+        method.changeFile(this,fMaxNum,'#illustration');
     });
 
-    dom.$form.on('click','.glyphicconDel',function(){
-        $(this).parents('.specific').remove();
+    dom.$carouselImg.on('click','.cancel',function(){
+        method.cancelImg(this,'#carouselImg',cMaxNum);
     });
 
+    dom.$illustration.on('click','.cancel',function(){
+        method.cancelImg(this,'#illustration',fMaxNum);
+    });
+
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
 
 });
+
+
+

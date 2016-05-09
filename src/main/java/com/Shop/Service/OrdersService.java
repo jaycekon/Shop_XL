@@ -167,8 +167,16 @@ public class OrdersService {
         return  withdrawalsOrderDao.findAllByAreaAndStatus(status);
     }
 
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByAreasAndStatusAndPage(int status,Page page){
+        return  withdrawalsOrderDao.findAllByAreaAndStatusAndPage(status,page);
+    }
+
     public List<WithdrawalsOrder> findAllWithdrawalsOrderByRolesAndStatus(int status){
         return  withdrawalsOrderDao.findAllByRoleAndStatus(status);
+    }
+
+    public List<WithdrawalsOrder> findAllWithdrawalsOrderByRolesAndStatusAndPage(int status,Page page){
+        return  withdrawalsOrderDao.findAllByRoleAndStatusAndPage(status,page);
     }
 
     public List<WithdrawalsOrder> findWithdrawalsOrderByRoleId(int role_id){

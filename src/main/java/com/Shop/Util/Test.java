@@ -7,8 +7,13 @@ import com.Shop.Service.OrdersService;
  */
 public class Test {
 
-    public static void main(String[] args){
-        OrdersService ordersService = new OrdersService();
-        System.out.println(ordersService.findOrdersByUid("89a9f347-edd6"));
+    public static void main(String[] args) {
+        int i = 0;
+        int j = 0;
+        for(;i<100;i++){
+            i++;
+            j= j++;
+        }
+        System.out.println(i+","+j);
     }
 }

@@ -17,8 +17,9 @@ public class Good {
     private String name;  //商品名
     private int num;        //商品库存
     private String describes;       //商品描述备注
-    private Timestamp subTime;      //上架时间
-    private Timestamp downTime;         //下架时间
+    private Date subTime;      //上架时间
+    private Date downTime;         //下架时间
+    private Date createTime;         //创建时间
     private int status;                 //商品状态 1.上架 0.下架
     private String img;                     //图片地址
     private String firm;                    //商品厂家
@@ -64,19 +65,19 @@ public class Good {
         this.describes = describes;
     }
 
-    public Timestamp getSubTime() {
+    public Date getSubTime() {
         return subTime;
     }
 
-    public void setSubTime(Timestamp subTime) {
+    public void setSubTime(Date subTime) {
         this.subTime = subTime;
     }
 
-    public Timestamp getDownTime() {
+    public Date getDownTime() {
         return downTime;
     }
 
-    public void setDownTime(Timestamp downTime) {
+    public void setDownTime(Date downTime) {
         this.downTime = downTime;
     }
 
@@ -159,5 +160,13 @@ public class Good {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

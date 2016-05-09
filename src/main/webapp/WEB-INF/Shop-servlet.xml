@@ -32,6 +32,8 @@
 
         <mvc:interceptor>
             <mvc:mapping path="/list*"></mvc:mapping>
+            <mvc:mapping path="/list*/**"></mvc:mapping>
+            <mvc:exclude-mapping path="/listAddress"></mvc:exclude-mapping>
             <bean class="com.Shop.interceptor.TerraceInterceptor"></bean>
         </mvc:interceptor>
     </mvc:interceptors>

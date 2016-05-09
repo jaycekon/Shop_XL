@@ -27,7 +27,7 @@ public class ImageDao extends BaseDao implements IGeneralDao<Image> {
 
     @Override
     public void update(Image image) {
-
+        super.hibernateTemplate.update(image);
     }
 
     @Override
@@ -60,6 +60,10 @@ public class ImageDao extends BaseDao implements IGeneralDao<Image> {
         return super.openSession().createQuery(hql).setParameter("id",id).list();
     }
 
+    public List<Image> findAllByGoodIdAndStatus(int id,int status){
+        String hql ="from Image where good_Id =:id and status =:status";
+        return super.openSession().createQuery(hql).setParameter("id",id).setParameter("status",status).list();
+    }
 
     public List<Image> findImage(){
         Session session = super.openSession();

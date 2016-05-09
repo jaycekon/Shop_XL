@@ -369,15 +369,23 @@ public class AdminController {
         String fileNames = UUID.randomUUID().toString()+".jpg";
         String file = "http://115.29.141.108/Shop_XL_war/"+fileNames;
         Image image = goodService.findImageById(id);
+        if(image ==null){
+            image = new Image();
+            image.setAddress(file);
+            goodService.addImage(image);
+        }else{
+            image.setAddress(file);
+            goodService.updateImage(image);
+        }
         String path= File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
                 try {
                     FileUtils.copyInputStreamToFile(files.getInputStream(),new File(path,fileNames));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                image.setAddress(file);
+
                 log.info(file);
-                goodService.addImage(image);
+
         return "redirect:/indexCarousel";
     }
 
@@ -505,6 +513,7 @@ public class AdminController {
     @RequestMapping(value="listRoleCommission",method = RequestMethod.GET)
     public String roleCommissionWithdraw(Model model){
         model.addAttribute("status","0");
+        model.addAttribute("flag","9");
         Page page = new Page();
         page.setBeginIndex(0);
         page.setEveryPage(10);
@@ -519,6 +528,7 @@ public class AdminController {
     @RequestMapping(value="listRoleCommission/{page}",method = RequestMethod.GET)
     public String roleCommissionWithdraw(Model model,@PathVariable("page")int pages){
         model.addAttribute("status","0");
+        model.addAttribute("flag","9");
         Page page = new Page();
         page.setBeginIndex(pages);
         page.setEveryPage(10);
@@ -532,6 +542,7 @@ public class AdminController {
     @RequestMapping(value="listAreaCommission",method = RequestMethod.GET)
     public String AreaCommissionWithdraw(Model model){
         model.addAttribute("status","1");
+        model.addAttribute("flag","9");
         Page page = new Page();
         page.setBeginIndex(0);
         page.setEveryPage(10);
@@ -546,6 +557,7 @@ public class AdminController {
     @RequestMapping(value="listAreaCommission/{page}",method = RequestMethod.GET)
     public String AreaCommissionWithdraw(Model model,@PathVariable("page")int pages){
         model.addAttribute("status","1");
+        model.addAttribute("flag","9");
         Page page = new Page();
         page.setBeginIndex(pages);
         page.setEveryPage(10);
@@ -579,8 +591,30 @@ public class AdminController {
     @RequestMapping(value="listAreaCommissionStatus",method = RequestMethod.GET)
     public String AreaCommissionWithdraw(int status,Model model){
         model.addAttribute("status","1");
+        model.addAttribute("flag",status);
         List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndStatus(status);
-        model.addAttribute("withdrawalsOrders",withdrawalsOrders);
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndStatusAndPage(status,page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+    @RequestMapping(value="listAreaCommissionStatus/{page}",method = RequestMethod.GET)
+    public String AreaCommissionWithdraw(int status,Model model,@PathVariable("page")int pages){
+        model.addAttribute("status","1");
+        model.addAttribute("flag",status);
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndStatus(status);
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByAreasAndStatusAndPage(status,page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
         return "backStage/financingManage/memberCommissionWithdraw";
     }
 
@@ -588,8 +622,30 @@ public class AdminController {
     @RequestMapping(value="listRoleCommissionStatus",method = RequestMethod.GET)
     public String RoleCommissionWithdraw(int status,Model model){
         model.addAttribute("status","0");
+        model.addAttribute("flag",status);
+        Page page = new Page();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRolesAndStatus(status);
-        model.addAttribute("withdrawalsOrders",withdrawalsOrders);
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRolesAndStatusAndPage(status,page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
+        return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+    @RequestMapping(value="listRoleCommissionStatus/{page}",method = RequestMethod.GET)
+    public String RoleCommissionWithdraw(int status,Model model,@PathVariable("page")int pages){
+        model.addAttribute("status","0");
+        model.addAttribute("flag",status);
+        Page page = new Page();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        List<WithdrawalsOrder> withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRolesAndStatus(status);
+        page.setTotalCount(withdrawalsOrders.size());
+        withdrawalsOrders = ordersService.findAllWithdrawalsOrderByRolesAndStatusAndPage(status,page);
+        page.setList(withdrawalsOrders);
+        model.addAttribute("page",page);
         return "backStage/financingManage/memberCommissionWithdraw";
     }
 

@@ -161,6 +161,7 @@
                     }
                 %>
                 <input id="recordNum" hidden="hidden" value="<%=pages.getBeginIndex()%>" />
+                <input id="status" hidden="hidden" value="<%=request.getAttribute("flag")%>" />
                 <!-- [[分页-->
                 <div class="paging">
                     <%
@@ -192,11 +193,18 @@
 <script>
 
     var num = parseInt( $('#recordNum').val() );
+    var flag =  parseInt( $('#status').val() );
     $("#prevPage").click(function(){
         var suffix = num-10;
 // 返回url
         var url = handleURL(suffix);
 // 跳转url
+        if(flag ==9){
+            window.location.href = url;
+        }else{
+            url+="?status="+flag;
+            window.location.href = url;
+        }
         window.location.href = url;
     });
 
@@ -205,7 +213,12 @@
 // 返回url
         var url = handleURL(suffix);
 // 跳转url
-        window.location.href = url;
+        if(flag ==9){
+            window.location.href = url;
+        }else{
+            url+="?status="+flag;
+            window.location.href = url;
+        }
     });
 
     // 处理url的函数

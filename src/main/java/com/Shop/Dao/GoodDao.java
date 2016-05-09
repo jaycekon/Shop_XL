@@ -18,7 +18,7 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
 
     public List<Good> findAll() {
         Session session = super.openSession();
-        String hql ="from Good";
+        String hql ="from Good order by createTime desc ";
         List<Good> goods = session.createQuery(hql).list();
         session.close();
         return goods;
@@ -53,20 +53,20 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
     }
 
     public List<Good> findAllByName(String name){
-        String hql ="from Good where name like:name";
+        String hql ="from Good where name like:name order by createTime desc ";
         Session session = super.openSession();
         List<Good> goods = session.createQuery(hql).setParameter("name","%"+name+"%").list();
         return goods;
     }
 
     public List<Good> findAllByStatus(int status){
-        String hql ="from Good where status=:status";
+        String hql ="from Good where status=:status order by createTime desc ";
         Session session = super.openSession();
         List<Good> goods = session.createQuery(hql).setParameter("status",status).list();
         return goods;
     }
     public List<Good> findAllByStatus(int status,Page page){
-        String hql ="from Good where status=:status";
+        String hql ="from Good where status=:status order by createTime desc ";
         Session session = super.openSession();
         List<Good> goods = session.createQuery(hql).setParameter("status",status).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
         return goods;
@@ -74,7 +74,7 @@ public class GoodDao extends BaseDao implements IGeneralDao<Good> {
 
     public List<Good> findAllByPage(Page<Good> page) {
         Session session = super.openSession();
-        String hql ="from Good";
+        String hql ="from Good order by createTime desc ";
         List<Good> goods = session.createQuery(hql).setFirstResult(page.getBeginIndex()).setMaxResults(page.getEveryPage()).list();
         session.close();
         return goods;

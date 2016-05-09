@@ -8,6 +8,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <html>
 <head>
     <meta charset="UTF-8">
@@ -98,7 +100,8 @@
             <!-- [[价格合计 -->
             <ul class="countBlock ui-border-b">
                 <li>商品合计： <span class="themeColor"
-                                id="amount">&#165; <%=cart.getTotalPrices()%></span>（共<span id="num"><%=cart.getCount()%></span>件）
+                                id="amount">&#165; <fmt:formatNumber value = "<%=cart.getTotalPrices()%>" pattern="#0.00"/></span>（共<span id="num"><%=cart.getCount()%></span>件）
+
                 </li>
                 <li>运费合计： <span class="themeColor" id="freight">&#165; 0.00</span></li>
             </ul><!-- 价格合计]] -->
