@@ -3,6 +3,7 @@ package com.Shop.Service;
 import com.Shop.Dao.AddressDao;
 import com.Shop.Dao.AreaDao;
 import com.Shop.Dao.CommentDao;
+import com.Shop.Model.Address;
 import com.Shop.Model.Area;
 import com.Shop.Model.Comment;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class AddressService {
         return areaDao.findById(id);
     }
 
+    public List<Address> listAddressByUserAndFlag(int user_id){
+       return addressDao.findByUserIdAndFlag(user_id);
+    }
 
     public List<Area> findTopArea(){
         return areaDao.findTopArea();
@@ -64,5 +68,9 @@ public class AddressService {
 
     public void deleteAddress(int id){
         addressDao.deleteById(id);
+    }
+
+    public void updateAddress(Address address){
+        addressDao.update(address);
     }
 }

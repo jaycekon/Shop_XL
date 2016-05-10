@@ -226,9 +226,12 @@ public class UserController {
         if (cart == null) {
             return "redirect:/";
         }
-        List<Address> addresses = userService.listAddress(user.getId());
-        model.addAttribute("addresses", addresses);
+        List<Address> addresses = addressService.listAddressByUserAndFlag(user.getId());
+
         List<OrderProduct> orderProducts = userService.findOrderProductByCartId(cart.getId());
+        if(addresses.size()>0) {
+            model.addAttribute("address", addresses.get(0));
+        }
         model.addAttribute("orderProducts", orderProducts);
         model.addAttribute("cart", cart);
         return "frontStage/User/createOrder";
@@ -254,8 +257,6 @@ public class UserController {
         orders.setSetTime(new Date());
         int count = 0;
         float prices = 0;
-        float areaProfit = 0;
-        float roleProfit = 0;
         float totalPV = 0;
         userService.addOrders(orders);
         //通过累加每个订单项的总PV获取到订单的总PV
@@ -268,7 +269,6 @@ public class UserController {
             count += orderProduct.getCount();
             prices += orderProduct.getPrices() * orderProduct.getCount();
         }
-        log.info("平台总盈利:"+prices+"大区佣金："+areaProfit+"角色佣金："+roleProfit);
         log.info("总的PV值:"+totalPV);
         orders.setNumber(count);
         orders.setPrices(prices);
@@ -587,6 +587,14 @@ public class UserController {
         address.setA(area);
         log.info("添加地址");
         address.setUser(u);
+        if (address.getFlag()==1){
+            List<Address> addresses = addressService.listAddressByUserAndFlag(u.getId());
+            for(Address a:addresses){
+                a.setFlag(0);
+                log.info("更新地址为普通地址");
+                addressService.updateAddress(a);
+            }
+        }
         userService.addAddress(address);
         if(flagt==0) {
             return "redirect:/listAddress";
@@ -638,17 +646,57 @@ public class UserController {
 
     @RequestMapping(value = "roleList",method = RequestMethod.GET)
     public String roleList(HttpSession session,Model model){
+        Page<Roles> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         Areas areas =(Areas)session.getAttribute("areas");
         List<Roles> roles = userService.listRolesByAreas(areas.getId());
-        model.addAttribute("roles",roles);
+        page.setTotalCount(roles.size());
+        roles = userService.listRolesByAreasAndPage(areas.getId(),page);
+        page.setList(roles);
+        model.addAttribute("page",page);
+        return "frontStage/User/roleList";
+    }
+
+    @RequestMapping(value = "roleList/{page}",method = RequestMethod.GET)
+    public String roleList(HttpSession session,Model model,@PathVariable("page") int pages){
+        Page<Roles> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        Areas areas =(Areas)session.getAttribute("areas");
+        List<Roles> roles = userService.listRolesByAreas(areas.getId());
+        page.setTotalCount(roles.size());
+        roles = userService.listRolesByAreasAndPage(areas.getId(),page);
+        page.setList(roles);
+        model.addAttribute("page",page);
         return "frontStage/User/roleList";
     }
 
     @RequestMapping(value = "userList",method = RequestMethod.GET)
     public String userList(HttpSession session ,Model model){
+        Page<User> page = new Page<>();
+        page.setBeginIndex(0);
+        page.setEveryPage(10);
         Roles roles =(Roles)session.getAttribute("roles");
         List<User> users = userService.listUserByRolesId(roles.getId());
-        model.addAttribute("users",users);
+        page.setTotalCount(users.size());
+        users = userService.listUserByRolesIdAndPage(roles.getId(),page);
+        page.setList(users);
+        model.addAttribute("page",page);
+        return "frontStage/User/userList";
+    }
+
+    @RequestMapping(value = "userList/{page}",method = RequestMethod.GET)
+    public String userList(HttpSession session ,Model model,@PathVariable("page")int pages){
+        Page<User> page = new Page<>();
+        page.setBeginIndex(pages);
+        page.setEveryPage(10);
+        Roles roles =(Roles)session.getAttribute("roles");
+        List<User> users = userService.listUserByRolesId(roles.getId());
+        page.setTotalCount(users.size());
+        users = userService.listUserByRolesIdAndPage(roles.getId(),page);
+        page.setList(users);
+        model.addAttribute("page",page);
         return "frontStage/User/userList";
     }
 

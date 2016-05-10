@@ -83,8 +83,8 @@ public class GoodService {
         return imageDao.findImage();
     }
 
-    public void clearImage(int id){
-        List<Image> imgs = imageDao.findAllByGoodId(id);
+    public void deleteImage(int id,int status){
+        List<Image> imgs = imageDao.findAllByGoodIdAndStatus(id,status);
         for(Image img:imgs){
             imageDao.delete(img);
         }

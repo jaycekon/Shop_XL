@@ -37,7 +37,7 @@
             <!-- [[右边操作页面 -->
             <div class="content col-xs-9 publishProduct">
                 <!-- [[商品信息-->
-                <form class="product-message form-horizontal" action = "<%=good.getId()%>" method = POST enctype="multipart/form-data">
+                <form class="product-message form-horizontal" action = "<%=request.getContextPath()%>/editGood/<%=good.getId()%>" method = POST enctype="multipart/form-data">
 
 
                     <div class="form-group">
@@ -109,18 +109,44 @@
                     </div>
                     <div class="form-group frontPage">
                         <label class="col-xs-2">商品封面(最多5张)：</label>
-                        <div class="col-xs-10 img-content">
-                            <div class="col-xs-2 add">
-                                <span class="addIcon">+</span>
-                                <span class="cancel">X</span>
-                                <input  type="file" accept="image/*" name="files" class="file"/>
-                            </div>
+                        <div class="col-xs-10 imgArea" id="carouselImg">
+
+                            <!-- [[添加图片 -->
+                            <div class="col-xs-6 col-sm-2 col-lg-2">
+                                <div class="img-content add-content">
+                                    <input type="file" accept="image/*" class="fileInp" name="files"/>
+                                    <span class="add">&#43;</span>
+                                    <img src="" alt="" class="img-responsive" />
+                                    <span class="cancel" >&#88;</span>
+                                </div>
+                            </div><!-- 添加图片]] -->
+
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="detail" class="col-xs-2 control-label">详情介绍：</label>
                         <div class="col-xs-10">
-                            <textarea name="describes" class="form-control" value ="<%=good.getDescribes()%>" id="detail" rows="10"></textarea>
+                            <textarea name="describes" class="form-control" id="detail" value="<%=good.getDescribes()%>" rows="10"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- [[商品附图 -->
+                    <div class="form-group">
+                        <label class="control-label col-xs-2">
+                            商品附图（最多10张）：
+                        </label>
+                        <div class="col-xs-10 imgArea" id="illustration">
+
+                            <!-- [[添加图片 -->
+                            <div class="col-xs-6 col-sm-2 col-lg-2">
+                                <div class="img-content add-content">
+                                    <input type="file" accept="image/*" class="fileInp" name="detailfiles"/>
+                                    <span class="add">&#43;</span>
+                                    <img src="" alt="" class="img-responsive" />
+                                    <span class="cancel" >&#88;</span>
+                                </div>
+                            </div><!-- 添加图片]] -->
+
                         </div>
                     </div>
                     <div class="from-group">

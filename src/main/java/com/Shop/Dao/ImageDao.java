@@ -37,7 +37,7 @@ public class ImageDao extends BaseDao implements IGeneralDao<Image> {
 
     @Override
     public void delete(Image image) {
-
+        super.hibernateTemplate.delete(image);
     }
 
     @Override

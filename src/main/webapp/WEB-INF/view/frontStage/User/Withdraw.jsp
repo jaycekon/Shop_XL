@@ -53,7 +53,7 @@
     <i class="icon iconfont withdrawIcon">&#xe604;</i>
     <p>总佣金：&#165; <%=roles.getTotalCommission()%></p>
     <p>可支配佣金：&#165; <%=roles.getExitCommission()%></p>
-
+    <p>提现金额不能低于50元</p>
     <%
         }else if(session.getAttribute("areas")!=null){
             Areas areas = (Areas) session.getAttribute("areas");
@@ -61,7 +61,7 @@
     <i class="icon iconfont withdrawIcon">&#xe604;</i>
     <p>总佣金：&#165; <%=areas.getTotalCommission()%></p>
     <p>可支配佣金：&#165; <%=areas.getExitCommission()%></p>
-
+    <p>提现金额不能低于50元</p>
     <%
         }
     %>

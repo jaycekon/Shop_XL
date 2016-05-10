@@ -509,6 +509,7 @@ public class OrdersController {
     @RequestMapping(value = "/roleCommission",method = RequestMethod.GET)
     public String roleCommission(HttpSession session,Model model){
         List<Orders> orderses = new ArrayList<>();
+        Profit profit = terraceService.findProfit();
             Roles roles = (Roles) session.getAttribute("roles");
             orderses = ordersService.findOrdersByRoleId(roles.getId());
         List<OrderPoJo> orderPoJos = new ArrayList<>();
@@ -517,6 +518,7 @@ public class OrdersController {
             OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
             orderPoJos.add(orderPoJo);
         }
+        model.addAttribute("profit",profit);
         model.addAttribute("orderPoJos",orderPoJos);
         return "frontStage/User/roleCommission";
     }
@@ -524,6 +526,7 @@ public class OrdersController {
     @RequestMapping(value = "/areaCommission",method = RequestMethod.GET)
     public String areaCommission(HttpSession session,Model model){
         List<Orders> orderses = new ArrayList<>();
+        Profit profit = terraceService.findProfit();
         Areas areas = (Areas) session.getAttribute("areas");
         orderses = ordersService.findOrdersByAreaId(areas.getId());
         List<OrderPoJo> orderPoJos = new ArrayList<>();
@@ -532,6 +535,7 @@ public class OrdersController {
             OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
             orderPoJos.add(orderPoJo);
         }
+        model.addAttribute("profit",profit);
         model.addAttribute("orderPoJos",orderPoJos);
         return "frontStage/User/areaCommission";
     }
@@ -607,10 +611,10 @@ public class OrdersController {
         if(session.getAttribute("areas")!=null){
 
             Areas areas =(Areas) session.getAttribute("areas");
-//            if(cout<50) {
-//                return "redirect:/withDraw";
-//            }
-//              else
+            if(cout<50) {
+                return "redirect:/withDraw";
+            }
+              else
             if (areas.getExitCommission() < cout) {
                     return "redirect:/withDraw";
                 }
@@ -630,10 +634,10 @@ public class OrdersController {
         if(session.getAttribute("roles")!=null){
             Roles roles =(Roles)session.getAttribute("roles");
             if(cout<50){
-                return "redirect:/Withdraw";
+                return "redirect:/withDraw";
             } else
               if(roles.getExitCommission()<cout){
-                return "redirect:/Withdraw";
+                return "redirect:/withDraw";
             }
             withdrawalsOrder.setUuid(UUID.randomUUID().toString());
             withdrawalsOrder.setRoles(roles);
@@ -1148,7 +1152,7 @@ public class OrdersController {
         map.put("nonce_str", nonce_str);
         map.put("openid", openId);
         map.put("partner_trade_no", orderProduct.getUuid());
-        map.put("spbill_create_ip",ip);
+        map.put("spbill_witdrawe_ip",ip);
 
 
         String stringA=XMLUtil.mapToStr(map);
@@ -1189,7 +1193,6 @@ public class OrdersController {
                     int count = orders.getNumber() - orderProduct.getCount();
                     orders.setNumber(count);
                     prices = orders.getPrices() - prices;
-                    orders.setPrices(prices);
                     totalPv = totalPv-pv;
                     orders.setTotalPV(totalPv);   //退款后设置总的pv
                     orders.setTotalProfit(prices - totalPv);
@@ -1225,6 +1228,19 @@ public class OrdersController {
                     orderProduct.setExitStatus(4);
                     orders.setStatus(0);
                     orders.setT(2);
+                    List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                    int flag=0;
+                    for(OrderProduct o:orderProducts){
+                        log.info("订单项退款状态："+o.getStauts()+",订单退货状态"+o.getExitStatus());
+                        if(o.getStauts()==0&&o.getExitStatus()==0){
+                            flag = 1;
+                            break;
+                        }
+                    }
+                    log.info("标识符："+flag);
+                    if(flag==0){
+                        orders.setD(2);
+                    }
                     ordersService.updateOrderProduct(orderProduct);
                     ordersService.updateOrders(orders);
                 }

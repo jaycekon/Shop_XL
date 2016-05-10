@@ -2,7 +2,9 @@
 <%@ page import="com.Shop.Model.Orders" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.Shop.Util.OrderPoJo" %>
-<%@ page import="com.Shop.Model.OrderProduct" %><%--
+<%@ page import="com.Shop.Model.OrderProduct" %>
+<%@ page import="com.Shop.Model.Profit" %>
+<%@ page import="java.text.SimpleDateFormat" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/19 0019
@@ -39,6 +41,7 @@
 <section class="ui-container">
 <%
     Roles roles = (Roles)session.getAttribute("roles");
+    Profit profit = (Profit)request.getAttribute("profit");
 %>
     <!-- [[佣金统计 -->
     <ul class="ui-list ui-border-tb commissionTop">
@@ -49,12 +52,15 @@
             <div class="ui-list-info">
                 <h4 class="ui-nowrap">总佣金：<span class="themeColor">&#165; <%=roles.getTotalCommission()%></span></h4>
                 <h4 class="ui-nowrap">可提现佣金：<span class="themeColor">&#165; <%=roles.getExitCommission()%></span></h4>
+                <h4 class="ui-nowrap">待结算佣金：<span class="themeColor">&#165; <%=roles.getWaitCommission()%></span></h4>
             </div>
         </li>
     </ul> <!-- 佣金统计]] -->
 
     <%
         List<OrderPoJo> orderPoJos = (List<OrderPoJo>) request.getAttribute("orderPoJos");
+        String model = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat format=new SimpleDateFormat(model);
         for(OrderPoJo orderPoJo:orderPoJos){
             Orders orders =orderPoJo.getOrders();
             List<OrderProduct> orderProducts  =orderPoJo.getOrderProduct();
@@ -63,41 +69,47 @@
         <!-- [[订单头部 -->
         <li class="ui-border-b">
             <div class="ui-list-info">
-                <h4 class="ui-nowrap">时间：<%=orders.getSetTime()%></h4>
+                <h4 class="ui-nowrap">时间：<%=format.format(orders.getSetTime())%></h4>
             </div>
             <div class="ui-list-info" style="text-align: right;">
                 <div class="ui-list-action"><span class="themeColor"><%
-                    if(orders.getD()==1){
-                        out.println("已结算");
-                    }else{
+                    if (orders.getD() == 0) {
                         out.println("待结算");
+                    } else if (orders.getD() == 1) {
+                        out.println("已结算");
+                    } else {
+                        out.println("结算失败");
                     }
                 %></span></div>
             </div>
         </li><!-- 订单头部]] -->
         <!-- [[单个商品 -->
         <%
-            for(OrderProduct orderProduct:orderProducts){
-
-
         %>
         <div class="productBox ui-border-b">
-
-            <div class="col imgCol">
-                <img src="<%=orderProduct.getImage()%>" alt="">
-            </div>
-
             <div class="col describeCol">
                 <p>昵称：<%=orders.getUser().getUsername()%></p>
-                <p>金额：&#165; <%=orderProduct.getPrices() * orderProduct.getCount()%></p>
-                <p>佣金：&#165; <%=orderProduct.getRoleProfit()%></p>
-                <p>订单状态：待收货</p>
+                <p>金额：&#165; <%=orders.getPrices()%></p>
+                <p>佣金：&#165; <%=(orders.getTotalPV()* profit.getRole_count())/100%></p>
+                <p>订单状态：<%
+                    if (orders.getD() == 0) {
+                        if (orders.getF() == 0) {
+                            out.println("未付款");
+                        } else if (orders.getP() == 0) {
+                            out.println("未发货");
+                        } else if (orders.getP() == 1) {
+                            out.println("未收货");
+                        } else if(orders.getP()==2){
+                            out.println("已收货");
+                        }
+                    } else if (orders.getD() == 1) {
+                        out.println("已完成");
+                    } else {
+                        out.println("已关闭");
+                    }
+                %></p>
             </div>
-
         </div><!-- 单个商品]] -->
-        <%
-            }
-        %>
     </ul>
 <%
     }

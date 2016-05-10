@@ -1,5 +1,6 @@
 <%@ page import="com.Shop.Model.Roles" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="com.Shop.Util.Page" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/15 0015
@@ -44,7 +45,8 @@
 
         <tbody>
         <%
-            List<Roles> roles = (List<Roles>)request.getAttribute("roles");
+            Page<Roles> pages = (Page<Roles>)request.getAttribute("page");
+            List<Roles> roles = pages.getList();
             for(Roles r:roles){
         %>
         <tr>
@@ -58,11 +60,25 @@
        %>
         </tbody>
     </table><!-- 店家列表]] -->
-
+    <input id="recordNum" hidden="hidden" value="<%=pages.getBeginIndex()%>" />
+    <!-- [[分页-->
     <div class="paging">
-        <button class="ui-btn">上一頁</button>
-        <button class="ui-btn">下一頁</button>
+        <%
+            if(pages.getBeginIndex()!=0){
+        %>
+        <span class="prev btn btn-primary" id="prevPage" >上一页</span>
+        <%
+            }
+
+            if((pages.getBeginIndex()+10) < pages.getTotalCount()){
+        %>
+
+        <span class="next btn btn-primary" id="nextPage">下一页</span>
+        <%
+            }
+        %>
     </div>
+    <!-- 分页]]-->
 
 </section>
 
@@ -70,6 +86,35 @@
 <script src="<%=request.getContextPath()%>/app/frontStage/lib/js/frozen.js"></script>
 <script class="demo-script">
     $(".ui-dialog").dialog("show");
+
+    var num = parseInt( $('#recordNum').val() );
+    $("#prevPage").click(function(){
+        var suffix = num-10;
+// 返回url
+        var url = handleURL(suffix);
+// 跳转url
+        window.location.href = url;
+    });
+
+    $("#nextPage").click(function(){
+        var suffix = num+10;
+// 返回url
+        var url = handleURL(suffix);
+// 跳转url
+        window.location.href = url;
+    });
+
+    // 处理url的函数
+    function handleURL(suffix){    // suffix 后缀 为int类型
+        var pathname = window.location.pathname.split('/');
+        if(pathname.length==2){
+            pathname = pathname.concat(suffix);
+        }else{
+            pathname.pop();
+            pathname = pathname.concat(suffix);
+        }
+        return url = pathname.join('/');
+    }
 </script>
 
 </body>

@@ -51,7 +51,7 @@
         }
         else{
     %>
-        <section class="receiveInfo">
+        <section class="receiveInfo" onclick="window.location.href='<%=request.getContextPath()%>/myAddress'">
         <p><span><%=address.getUsername()%></span><span style="float: right;"><%=address.getPhone()%></span></p>
             <%
                 if(address.getA()!=null){

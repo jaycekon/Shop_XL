@@ -70,4 +70,12 @@ public class AddressDao extends BaseDao implements IGeneralDao<Address> {
         session.close();
         return addresses;
     }
+
+    public List<Address> findByUserIdAndFlag(int id){
+        Session session =super.openSession();
+        String hql="from Address where user_id=:id and flag =1";
+        List<Address> addresses = session.createQuery(hql).setParameter("id",id).list();
+        session.close();
+        return addresses;
+    }
 }

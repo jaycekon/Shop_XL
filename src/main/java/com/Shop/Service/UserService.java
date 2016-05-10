@@ -71,6 +71,10 @@ public class UserService {
         return userDao.findAllByRolesId(roles_id);
     }
 
+    public List<User> listUserByRolesIdAndPage(int roles_id,Page page){
+        return userDao.findAllByRolesId(roles_id,page);
+    }
+
     public boolean addRoles(Roles roles){
         Roles roles1 = rolesDao.findByName(roles.getName());
         if(roles1 ==null){
@@ -99,6 +103,9 @@ public class UserService {
 
     public List<Roles> listRolesByAreas(int areas_id){
         return rolesDao.findAllByAreasId(areas_id);
+    }
+    public List<Roles> listRolesByAreasAndPage(int areas_id,Page page){
+        return rolesDao.findAllByAreasIdAndPage(areas_id,page);
     }
 
     public boolean addArea(Areas areas){

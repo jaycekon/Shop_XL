@@ -29,7 +29,7 @@
 <body>
 
 <div class="login_panel">
-    <div class="login_header"><h1>一内购后台登录</h1></div>
+    <div class="login_header"><h1>百城万店倾销网后台登录</h1></div>
     <div class="login_body">
         <form class="form-horizontal" action = "<%=request.getContextPath()%>/loginTerrace" method="post">
             <div id="loginTip"></div>

@@ -206,13 +206,12 @@ public class GoodController {
     /**
      * 编辑商品后将商品信息存入数据库
      * @param id
-     * @param session
      * @param good
      * @param files
      * @return
      */
     @RequestMapping(value = "editGood/{id}",method = RequestMethod.POST)
-    public String editGood(@PathVariable(value = "id") int id,HttpSession session,Good good,@RequestParam("files")MultipartFile[] files){
+    public String editGood(@PathVariable(value = "id") int id,Good good,@RequestParam("files")MultipartFile[] files,@RequestParam("detailfiles")MultipartFile[] detailfiles){
         Good g = goodService.findGoodById(id);
         g.setName(good.getName());
         g.setWholesaleCount(good.getWholesaleCount());
@@ -228,23 +227,52 @@ public class GoodController {
         String file = "http://115.29.141.108/Shop_XL_war/"+fileName;
         g.setImg(file);
         goodService.updateGood(g);
-        goodService.clearImage(g.getId());
-        String path=File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
-        for(int i = 0;i<files.length;i++){
-            if(!files[i].isEmpty()){
-                try {
-                    FileUtils.copyInputStreamToFile(files[i].getInputStream(),new File(path,fileName));
 
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.out.println("上传出错");
+        String path=File.separator+"var"+File.separator+"www"+File.separator+"html"+File.separator+"Shop_XL_war"+File.separator;
+        if(files.length > 0) {
+            goodService.deleteImage(g.getId(),0);
+            for (int i = 0; i < files.length; i++) {
+                if (!files[i].isEmpty()) {
+                    try {
+                        FileUtils.copyInputStreamToFile(files[i].getInputStream(), new File(path, fileName));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("上传出错");
+                    }
+                    Image image = new Image();
+                    image.setStatus(0);
+                    image.setAddress(file);
+                    image.setGood(good);
+                    goodService.addImage(image);
+                    fileName = UUID.randomUUID().toString() + ".jpg";
+                    file = "http://115.29.141.108/Shop_XL_war/" + fileName;
                 }
-                Image image = new Image();
-                image.setAddress(file);
-                image.setGood(good);
-                goodService.addImage(image);
-                fileName =UUID.randomUUID().toString()+".jpg";
-                file = "http://115.29.141.108/Shop_XL_war/"+fileName;
+            }
+        }
+
+        if(detailfiles.length>0) {
+            goodService.deleteImage(g.getId(),1);
+            for (int i = 0; i < detailfiles.length; i++) {
+                System.out.println(i);
+                if (!detailfiles[i].isEmpty()) {
+
+                    try {
+                        FileUtils.copyInputStreamToFile(detailfiles[i].getInputStream(), new File(path, fileName));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        System.out.println("上传出错");
+                    }
+                    Image image = new Image();
+                    image.setStatus(1);
+                    image.setAddress(file);
+                    image.setGood(good);
+                    goodService.addImage(image);
+
+                    fileName = UUID.randomUUID().toString() + ".jpg";
+                    file = "http://115.29.141.108/Shop_XL_war/" + fileName;
+                }
             }
         }
         return "redirect:/listGood";

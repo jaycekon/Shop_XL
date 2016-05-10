@@ -26,10 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/4/14.
@@ -387,11 +384,9 @@ public class WebChatController {
         //统计要付的钱
         OrderProduct orderProduct = ordersService.findOrderProductById(id);
         Orders orders = orderProduct.getOrders();
-//        int money = (int)(orders.getPrices()*100);
         int money = (int)(orderProduct.getPrices()*orderProduct.getCount()*100);
         log.info(money);
         money=100;
-        log.info(money);
         User user = orders.getUser();
         String openId =user.getOpenId();
         String nonce_str = WebChatUtil.generateStr(32);
@@ -452,7 +447,6 @@ public class WebChatController {
                     prices = orders.getPrices() - prices;
                     totalPv = totalPv-pv;
                     orders.setTotalPV(totalPv);   //退款后设置总的pv
-                    orders.setPrices(prices);     //退款后设置订单总金额
                     orders.setTotalProfit(prices - totalPv);
                     if(orders.getRoles()!=null) {
 
@@ -479,6 +473,18 @@ public class WebChatController {
 
                     }
                     ordersService.updateOrderProduct(orderProduct);
+                    List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                    int flag=0;
+                    for(OrderProduct o:orderProducts){
+                        log.info("订单项退款状态："+o.getStauts());
+                        if(o.getStauts()==0){
+                            flag = 1;
+                        }
+                    }
+                    log.info("标识符："+flag);
+                    if(flag==0){
+                        orders.setD(2);
+                    }
                     ordersService.updateOrders(orders);
                 }
             }
