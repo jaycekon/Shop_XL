@@ -153,6 +153,10 @@ public class AdminController {
         p.setDumpingCount(profit.getDumpingCount());
         p.setRecordPrices(profit.getRecordPrices());
         p.setRole_count(profit.getRole_count());
+        p.setLevel1(profit.getLevel1());
+        p.setLevel1Rate(profit.getLevel1Rate());
+        p.setLevel2(profit.getLevel2());
+        p.setLevel2Rate(profit.getLevel2Rate());
         terraceService.updateProfit(p);
         model.addAttribute(profit);
         return "backStage/SystemManage/parameter";
@@ -177,9 +181,13 @@ public class AdminController {
     @RequestMapping(value ="orderDetail/{id}",method = RequestMethod.GET)
     public String orderDetail(@PathVariable(value ="id")int id,Model model){
         Orders orders = userService.findOrdersById(id);
+        Profit profit = terraceService.findProfit();
         List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
         OrderPoJo orderPoJo = new OrderPoJo(orders,orderProducts);
+        List<Logistic> logistics = terraceService.listLogistic();
         model.addAttribute("orderPojo",orderPoJo);
+        model.addAttribute("logistics",logistics);
+        model.addAttribute("profit",profit);
         return "backStage/Orders/orderDetail";
     }
 
@@ -462,6 +470,7 @@ public class AdminController {
         page.setTotalCount(countOrders.size());
         countOrders = userService.listCountOrderByTypeAndPage("充值",page);
         page.setList(countOrders);
+        log.info("充值列表信息数量："+countOrders.size());
         model.addAttribute("page",page);
         return "backStage/financingManage/chargeList";
     }
@@ -475,6 +484,7 @@ public class AdminController {
         page.setTotalCount(countOrders.size());
         countOrders = userService.listCountOrderByTypeAndPage("充值",page);
         page.setList(countOrders);
+        log.info("充值列表信息数量："+countOrders.size());
         model.addAttribute("page",page);
         return "backStage/financingManage/chargeList";
     }

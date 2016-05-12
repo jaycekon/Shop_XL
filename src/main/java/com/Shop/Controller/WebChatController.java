@@ -439,24 +439,29 @@ public class WebChatController {
                     orderProduct.setStauts(2);
                     orders.setStatus(0);
                     Profit profit = terraceService.findProfit();
-                    float pv = orderProduct.getPv()*orderProduct.getCount();
+                    float pv = orderProduct.getPv() * orderProduct.getCount();
                     float prices  = orderProduct.getPrices() * orderProduct.getCount();
                     float totalPv = orders.getTotalPV();
+                    float total = orders.getTotalProfit();
+                    total = total - (pv -prices);
                     int count = orders.getNumber() - orderProduct.getCount();
                     orders.setNumber(count);
-                    prices = orders.getPrices() - prices;
-                    totalPv = totalPv-pv;
+                    log.info("总的PV值:"+totalPv+" 商品PV值："+pv);
+                    totalPv = totalPv - pv;
+                    log.info("总的PV值："+totalPv);
+                    log.info("总的货款："+total);
                     orders.setTotalPV(totalPv);   //退款后设置总的pv
-                    orders.setTotalProfit(prices - totalPv);
+                    orders.setTotalProfit(total);        //设置货款
                     if(orders.getRoles()!=null) {
-
 
                         //更新角色中的佣金
                         Roles roles = orders.getRoles();
                         float totalCommission = roles.getTotalCommission();
                         float waitCommission = roles.getWaitCommission();
+                        log.info("角色总佣金："+totalCommission+" 角色待结算佣金："+waitCommission);
                         totalCommission = totalCommission - (pv * profit.getRole_count())/100;
                         waitCommission = waitCommission - (pv * profit.getRole_count())/100;
+                        log.info("角色总佣金："+totalCommission+" 角色待结算佣金："+waitCommission);
                         roles.setWaitCommission(waitCommission);
                         roles.setTotalCommission(totalCommission);
                         userService.updateRoles(roles);
@@ -465,8 +470,10 @@ public class WebChatController {
                         Areas areas = orders.getAreas();
                         totalCommission = areas.getTotalCommission();
                         waitCommission = areas.getWaitCommission();
+                        log.info("大区总佣金："+totalCommission+" 大区待结算佣金："+waitCommission);
                         totalCommission = totalCommission - (pv * profit.getArea_count())/100;
                         waitCommission = waitCommission - (pv * profit.getArea_count())/100;
+                        log.info("大区总佣金："+totalCommission+" 大区待结算佣金："+waitCommission);
                         areas.setTotalCommission(totalCommission);
                         areas.setWaitCommission(waitCommission);
                         userService.updateAreas(areas);

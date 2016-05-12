@@ -1,6 +1,7 @@
 <%@ page import="com.Shop.Model.Good" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.Shop.Model.Image" %><%--
+<%@ page import="com.Shop.Model.Image" %>
+<%@ page import="com.Shop.Model.Comment" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/3/29 0029
@@ -79,7 +80,7 @@
                         </tr>
                         <tr>
                             <td>备注：</td>
-                            <td colspan="3">这里是备注信息这里是备注信息这里是备注信息这里是备注信息</td>
+                            <td colspan="3"><%=good.getDescribes()%></td>
                         </tr>
                         <tr>
                             <td>商品图片：</td>
@@ -108,34 +109,39 @@
                         <span class="">商品评价</span>
                     </div>
                     <div class="introduce-content">
-                        <div class="introduce-msg">呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒呵呵哒</div>
-                        <img src="<%=request.getContextPath()%>/app/backStage/image/carousel2.jpg" alt=""/>
+                        <div class="introduce-msg"><%=good.getDescribes()%></div>
+                        <%
+                            List<Image> images0 = (List<Image>)request.getAttribute("images0");
+                            for(Image image:images0){
+                        %>
+                        <img src="<%=image.getAddress()%>" alt=""/>
+                        <%
+                            }
+                        %>
                     </div>
                     <div class="evalute-content text-center" style="display: none;">
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                             <tr>
                                 <td>用户昵称</td>
-                                <td>产品规格</td>
                                 <td>评价</td>
                             </tr>
                             </thead>
                             <tbody>
+                            <%
+                                List<Comment> comments = (List<Comment>)request.getAttribute("comments");
+                                if(comments !=null){
+                                for(Comment comment:comments){
+                            %>
                             <tr>
-                                <td>魔鬼的翅膀</td>
-                                <td>规格1</td>
-                                <td>真心不错啊</td>
+                                <td><%=comment.getUsername()%></td>
+                                <td><%=comment.getText()%></td>
                             </tr>
-                            <tr>
-                                <td>我是撒旦</td>
-                                <td>规格2</td>
-                                <td>真心黑啊</td>
-                            </tr>
-                            <tr>
-                                <td>我是宙斯</td>
-                                <td>规格3</td>
-                                <td>骗你的啦</td>
-                            </tr>
+                            <%
+                                    }
+                                }
+                            %>
+
                             </tbody>
                         </table>
                     </div>

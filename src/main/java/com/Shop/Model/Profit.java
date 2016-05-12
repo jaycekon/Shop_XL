@@ -17,6 +17,10 @@ public class Profit {
     private float recordPrices;         //认证费用
     private int dumpingCount;           //赠送倾销币
     private float countPrices;          //倾销币价格
+    private int level1;                 //1级人数
+    private int level1Rate;             //1级佣金
+    private int level2;                 //2级人数
+    private int level2Rate;             //2级佣金
 
     @Id
     @GeneratedValue
@@ -67,5 +71,37 @@ public class Profit {
 
     public void setCountPrices(float countPrices) {
         this.countPrices = countPrices;
+    }
+
+    public int getLevel1() {
+        return level1;
+    }
+
+    public void setLevel1(int level1) {
+        this.level1 = level1;
+    }
+
+    public int getLevel1Rate() {
+        return level1Rate;
+    }
+
+    public void setLevel1Rate(int level1Rate) {
+        this.level1Rate = level1Rate;
+    }
+
+    public int getLevel2() {
+        return level2;
+    }
+
+    public void setLevel2(int level2) {
+        this.level2 = level2;
+    }
+
+    public int getLevel2Rate() {
+        return level2Rate;
+    }
+
+    public void setLevel2Rate(int level2Rate) {
+        this.level2Rate = level2Rate;
     }
 }

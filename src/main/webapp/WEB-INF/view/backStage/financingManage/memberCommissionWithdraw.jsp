@@ -89,7 +89,7 @@
                     SimpleDateFormat format = new SimpleDateFormat(model);
                     Page<WithdrawalsOrder> pages = (Page<WithdrawalsOrder>)request.getAttribute("page");
                     List<WithdrawalsOrder> withdrawalsOrders = pages.getList();
-                    for (WithdrawalsOrder withdrawalsOrder : withdrawalsOrders) {
+
 
                 %>
                 <!-- [[会员佣金提现列表 -->
@@ -97,10 +97,20 @@
                     <table class="table table-hover table-bordered tablestriped productQueryShow">
                         <tbody>
                         <tr>
-                            <td>提现编号：</td>
-                            <td><%=withdrawalsOrder.getUuid()%>
-                            </td>
-                            <td>用户昵称：</td>
+                            <td>提现编号</td>
+                            <td>用户昵称</td>
+                            <td>金额</td>
+                            <td>申请时间</td>
+                            <td>审核时间</td>
+                            <td>提现状态</td>
+                            <td>操作</td>
+                        </tr>
+                        <%
+                            for (WithdrawalsOrder withdrawalsOrder : withdrawalsOrders) {
+                        %>
+                        <tr>
+
+                            <td><%=withdrawalsOrder.getUuid()%></td>
                             <td><%
                                 if (withdrawalsOrder.getRoles() != null) {
                                     out.println(withdrawalsOrder.getRoles().getName());
@@ -108,17 +118,9 @@
                                     out.println(withdrawalsOrder.getAreas().getName());
                                 }
                             %></td>
-                        </tr>
-                        <tr>
-                            <td>申请时间：</td>
+                            <td><%=withdrawalsOrder.getPrices()%>
                             <td><%=format.format(withdrawalsOrder.getDate())%>
                             </td>
-                            <td>金额：</td>
-                            <td><%=withdrawalsOrder.getPrices()%>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>审核时间：</td>
                             <td>
                                 <%
                                     if (withdrawalsOrder.getCommitDate() != null) {
@@ -126,7 +128,6 @@
                                     }
                                 %>
                             </td>
-                            <td>提现状态：</td>
                             <td><%
                                 switch (withdrawalsOrder.getStatus()) {
                                     case 0:
@@ -140,26 +141,30 @@
                                         break;
                                 }
                             %></td>
+                            <td> <%
+                                if (withdrawalsOrder.getStatus() == 0) {
+                            %>
+                                <button type="submit" class="btn btn-primary"
+                                        onclick="window.location.href='<%=request.getContextPath()%>/commissionWithdraw/<%=withdrawalsOrder.getId()%>'">
+                                    审核通过
+                                </button>
+                                <button type="button" class="btn btn-danger"
+                                        onclick="window.location.href='<%=request.getContextPath()%>/refuseWithdraw/<%=withdrawalsOrder.getId()%>'">
+                                    审核不通过
+                                </button>
+
+                                <%
+                                        }
+
+                                %></td>
+                            <%
+                                }
+                            %>
                         </tr>
                         </tbody>
                     </table>
                 </div><!-- [[会员佣金提现列表 -->
-                <%
-                    if (withdrawalsOrder.getStatus() == 0) {
-                %>
-                <button type="submit" class="btn btn-primary"
-                        onclick="window.location.href='<%=request.getContextPath()%>/commissionWithdraw/<%=withdrawalsOrder.getId()%>'">
-                    审核通过
-                </button>
-                <button type="button" class="btn btn-danger"
-                        onclick="window.location.href='<%=request.getContextPath()%>/refuseWithdraw/<%=withdrawalsOrder.getId()%>'">
-                    审核不通过
-                </button>
 
-                <%
-                        }
-                    }
-                %>
                 <input id="recordNum" hidden="hidden" value="<%=pages.getBeginIndex()%>" />
                 <input id="status" hidden="hidden" value="<%=request.getAttribute("flag")%>" />
                 <!-- [[分页-->

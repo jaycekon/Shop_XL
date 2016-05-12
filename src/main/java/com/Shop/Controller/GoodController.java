@@ -151,16 +151,19 @@ public class GoodController {
     /**
      * 查看商品信息详情(后台）
      * @param id
-     * @param session
      * @param model
      * @return
      */
     @RequestMapping(value = "goodDetail/{id}",method = RequestMethod.GET)
-    public String goodDetail(@PathVariable(value ="id")int id,HttpSession session,Model model){
+    public String goodDetail(@PathVariable(value ="id")int id,Model model){
         Good good= goodService.findGoodById(id);
         model.addAttribute("good",good);
-        List<Image> images = goodService.findImageByGoodId(good.getId());
+        List<Image> images = goodService.findImageByGoodIdAndStatus(good.getId(),0);
+        List<Image> images0 = goodService.findImageByGoodIdAndStatus(good.getId(),1);
+        List<Comment> comments = addressService.findCommentByGoodId(good.getId());
         model.addAttribute("images",images);
+        model.addAttribute("images0",images0);
+        model.addAttribute("comments",comments);
         return "backStage/Product/previewProduct";
     }
 

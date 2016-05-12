@@ -181,7 +181,7 @@ public class UserController {
         CountOrder countOrder = new CountOrder();
         countOrder.setUser(user);
         countOrder.setDate(new Date());
-        countOrder.setType("使用");
+        countOrder.setTypes("使用");
         countOrder.setStatus(1);
         countOrder.setCount(good.getwPrices());
         int count = user.getCount() - good.getwPrices();
@@ -429,7 +429,11 @@ public class UserController {
     }
 
     @RequestMapping(value ="/personSign",method = RequestMethod.GET)
-    public String memberSign(Model model){
+    public String memberSign(Model model,HttpSession session){
+        User user =(User)session.getAttribute("loginUser");
+        if(user.getSign()==1){
+            return "redirect:/index";
+        }
         Profit profit = terraceService.findProfit();
         model.addAttribute("profit",profit);
         return "frontStage/User/memberCeritification";
@@ -447,7 +451,7 @@ public class UserController {
         Profit profit = terraceService.findProfit();
         CountOrder countOrder = new CountOrder();
         countOrder.setDate(new Date());
-        countOrder.setType("会员认证");
+        countOrder.setTypes("会员认证");
         countOrder.setCount(profit.getDumpingCount());
         countOrder.setStatus(0);
         countOrder.setPrices(profit.getRecordPrices());
@@ -483,7 +487,7 @@ public class UserController {
                     log.info("倾销币处理");
                     String uuid= (String)map.get("out_trade_no");
                     CountOrder countOrder = userService.findCountOrderByUUid(uuid);
-                if(countOrder.getType().equals("会员认证")) {
+                if(countOrder.getTypes().equals("会员认证")) {
                     log.info("会员认证处理");
                     User user = userService.findById(countOrder.getUser().getId());
                     user.setSign(1);
@@ -492,7 +496,7 @@ public class UserController {
                     user.setCount(count);
                     userService.updateUser(user);
                     userService.updateCountOrder(countOrder);
-                }else if(countOrder.getType().equals("充值")){
+                }else if(countOrder.getTypes().equals("充值")){
                     log.info("充值处理");
                     User user = userService.findById(countOrder.getUser().getId());
                     countOrder.setStatus(1);
@@ -550,7 +554,7 @@ public class UserController {
         countOrder.setPrices(prices);
         countOrder.setCount(count);
         countOrder.setStatus(0);
-        countOrder.setType("充值");
+        countOrder.setTypes("充值");
         countOrder.setUser(user);
         countOrder.setDate(new Date());
         countOrder.setUuid(UUID.randomUUID().toString());

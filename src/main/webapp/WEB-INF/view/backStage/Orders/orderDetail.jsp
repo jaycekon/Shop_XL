@@ -2,7 +2,9 @@
 <%@ page import="com.Shop.Model.OrderProduct" %>
 <%@ page import="com.Shop.Model.Orders" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.Shop.Model.Profit" %>
+<%@ page import="com.Shop.Model.Logistic" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/4/1 0001
@@ -40,6 +42,8 @@
                 Orders orders = orderPojo.getOrders();
                 List<OrderProduct> orderProducts = orderPojo.getOrderProduct();
                 String model = "yyyy-MM-dd HH:mm:ss";
+                Profit profit =(Profit)request.getAttribute("profit");
+                List<Logistic> logistics = (List<Logistic>)request.getAttribute("logistics");
                 SimpleDateFormat format = new SimpleDateFormat(model);
             %>
             <!-- [[右边操作页面 -->
@@ -152,15 +156,15 @@
                             <div class="pull-left">
                                 <div class="product-total">商品合计：￥<%=orders.getPrices()%>（共<%=orders.getNumber()%>件）
                                 </div>
-                                <div class="product-total">大区盈利：￥<%=orders.getAreaProfit()%>
+                                <div class="product-total">大区盈利：￥<%=(orders.getTotalPV()*profit.getArea_count())/100%>
                                 </div>
-                                <div class="product-total">角色盈利：￥<%=orders.getRolesProfit()%>
+                                <div class="product-total">角色盈利：￥<%=(orders.getTotalPV()*profit.getRole_count())/100%>
                                 </div>
                                 <div class="freight">运费合计：￥0.0</div>
                             </div>
                             <%
                                 if(orders.getStatus()==0){
-                                if (orders.getF() == 1) {
+                                if (orders.getF() == 1&& orders.getD()==0) {
                                     if (orders.getP() == 0) {
                             %>
                             <div class="pull-right">
@@ -240,8 +244,19 @@
                     <div class="form-group">
                         <label for="logisticCompany" class="control-label col-sm-2">物流公司</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" placeholder="填写物流公司" id="logisticCompany" name="logisticCompany"/>
+                            <select name = "logisticCompany" id="logisticCompany"  class="form-control"  placeholder="填写物流公司">
+                                <option value="">--请选择物流公司--</option>
+                                <%
+                                    for(Logistic logistic:logistics){
+                                %>
+                                <option name ="logisticCompany" value ="<%=logistic.getLogis_comp_name()%>"><%=logistic.getLogis_comp_name()%></option>
+                                <%
+                                    }
+                                %>
+                            </select>
                         </div>
+
+
                     </div>
                     <div class="form-group">
                         <label for="logisticCode" class="control-label col-sm-2">物流编号</label>

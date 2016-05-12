@@ -77,7 +77,7 @@
         <tbody>
         <tr>
             <td><%=format.format(countOrder.getDate())%></td>
-            <td><%=countOrder.getType()%></td>
+            <td><%=countOrder.getTypes()%></td>
             <td><%=countOrder.getCount()%></td>
             <td><%
                 switch(countOrder.getStatus()){

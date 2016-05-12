@@ -110,9 +110,22 @@
             for (OrderProduct orderProduct : orderProducts) {
         %>
         <li class="ui-border-t productLink" onclick="goDetail(this,<%=orders.getId()%>)">
+            <%
+                if(orderProduct.getImage()==null){
+            %>
             <div class="ui-list-thumb">
                 <img src="<%=request.getContextPath()%>/app/frontStage/image/1.jpg" alt="">
             </div>
+
+            <%
+                }else{
+                    %>
+            <div class="ui-list-thumb">
+                <img src="<%=orderProduct.getImage()%>" alt="">
+            </div>
+            <%
+                }
+            %>
             <div class="ui-list-info">
                 <h4 class="ui-nowrap"><%=orderProduct.getDescribes()%>
                 </h4>

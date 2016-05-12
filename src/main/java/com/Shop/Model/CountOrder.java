@@ -38,11 +38,11 @@ public class CountOrder {
         this.user = user;
     }
 
-    public String getType() {
+    public String getTypes() {
         return types;
     }
 
-    public void setType(String types) {
+    public void setTypes(String types) {
         this.types = types;
     }
 

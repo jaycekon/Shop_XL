@@ -138,6 +138,7 @@
                 %>
                 <!-- 订单]]-->
                 <!-- [[分页-->
+                <input id="recordNum" hidden="hidden" value="<%=pages.getBeginIndex()%>" />
                 <div class="paging">
                     <%
                         if(pages.getBeginIndex()!=0){

@@ -99,4 +99,7 @@ public class TerraceService {
         return logisticDao.findLogisticByName(name);
     }
 
+    public List<Logistic> listLogistic(){
+        return logisticDao.findAll();
+    }
 }

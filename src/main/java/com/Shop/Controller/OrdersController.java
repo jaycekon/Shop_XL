@@ -570,15 +570,24 @@ public class OrdersController {
                 Profit profit = terraceService.findProfit();
                 //判断订单中有没有角色和大区，如果有，将佣金划分入大区和角色中待结算佣金中
                 if(orders.getRoles()!=null) {
+                    List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                    float totalOrderProduct = 0;
+                    for(OrderProduct orderProduct:orderProducts){
+                        totalOrderProduct += orderProduct.getPv() * orderProduct.getCount();
+                    }
                     Roles roles = orders.getRoles();
-                    float total = roles.getTotalCommission() + (orders.getTotalPV()*profit.getRole_count())/100;
-                    float wait = roles.getWaitCommission() +(orders.getTotalPV()*profit.getRole_count())/100;
+                    float total = roles.getTotalCommission() + (totalOrderProduct*profit.getRole_count())/100;
+                    float wait = roles.getWaitCommission() +(totalOrderProduct*profit.getRole_count())/100;
+                    log.info("角色总佣金："+total);
+                    log.info("角色待收益佣金："+wait);
                     roles.setTotalCommission(total);
                     roles.setWaitCommission(wait);
                     userService.updateRoles(roles);
                     Areas areas = orders.getAreas();
-                    total = areas.getTotalCommission() + (orders.getTotalPV()*profit.getArea_count())/100;
-                    wait = areas.getWaitCommission()+(orders.getTotalPV()*profit.getArea_count())/100;
+                    total = areas.getTotalCommission() + (totalOrderProduct * profit.getArea_count())/100;
+                    wait = areas.getWaitCommission()+(totalOrderProduct * profit.getArea_count())/100;
+                    log.info("大区总佣金："+total);
+                    log.info("大区待收益佣金："+wait);
                     areas.setWaitCommission(wait);
                     areas.setTotalCommission(total);
                     userService.updateAreas(areas);
@@ -1249,7 +1258,7 @@ public class OrdersController {
         catch (Exception e){
             throw new RuntimeException(e);
         }finally{
-            return "redirect:/orderDetail/"+orders.getId();
+            return "redirect:/listCharge/"+orders.getId();
         }
     }
 
