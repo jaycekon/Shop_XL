@@ -29,7 +29,7 @@
 <section class="ui-container">
 
     <!-- [[轮播图 -->
-    <div class="ui-slider" id="carouselContainer">
+    <div class="ui-slider ui-border-b" id="carouselContainer">
         <ul class="ui-slider-content" style="width: 300%">
             <%
                 List<Image> images = (List<Image>)request.getAttribute("images");
@@ -148,6 +148,11 @@
     </div>
 </div><!-- 点击查看需要倾销]] -->
 <script>
+
+
+    // 设置图片大小为1:1
+    var sImg = $('.productList img');
+    $('.productList img').css({ 'height':  sImg.width() });
 
         // 跳转到详情页
         $('.productList').click(function (e) {

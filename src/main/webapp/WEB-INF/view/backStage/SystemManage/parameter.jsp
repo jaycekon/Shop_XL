@@ -75,8 +75,37 @@
 
                     <div class="form-group">
                         <label >角色抽佣：</label>
-                        <div class="input-group">
-                            <input type="text" class="form-control" name ="role_count" value ="<%=profit.getRole_count()%>" placeholder="Amount">
+                    </div>
+                    <div class="form-group roleRow clearfix">
+                        <p class="roleCol1">
+                            <span class="blockage text-right">0</span>
+                            <span class="symbol">&#60;</span>人数<span class="symbol">≤</span>
+                            <input type="text" class="blockage" id="input1" value="${profit.getLevel1()}" name="level1" data-accept="number" />
+                        </p>
+                        <div class="roleCol2 input-group">
+                            <input type="text" class="form-control" value="${profit.getLevel1Rate()}" name="level1Rate" placeholder="">
+                            <div class="input-group-addon">%</div>
+                        </div>
+                    </div>
+                    <div class="form-group roleRow clearfix">
+                        <p class="roleCol1">
+                            <input type="text" class="blockage" value="${profit.getLevel1()}" id="input2" data-accept="number" />
+                            <span class="symbol">&#60;</span>人数<span class="symbol">≤</span>
+                            <input type="text" class="blockage"  value="${profit.getLevel2()}" id="input3" name="level2" data-accept="number" />
+                        </p>
+                        <div class="roleCol2 input-group">
+                            <input type="text" class="form-control" value="${profit.getLevel2Rate()}"name="level2Rate" placeholder="">
+                            <div class="input-group-addon">%</div>
+                        </div>
+                    </div>
+                    <div class="form-group roleRow clearfix">
+                        <p class="roleCol1">
+                            <input type="text" class="blockage" id="input4" value="${profit.getLevel2()}" data-accept="number" />
+                            <span class="symbol">&#60;</span>人数<span class="symbol"></span>
+                            <span class="blockage"></span>
+                        </p>
+                        <div class="roleCol2 input-group">
+                            <input type="text" class="form-control" value="${profit.getLevel3Rate()}" name="level3Rate" placeholder="">
                             <div class="input-group-addon">%</div>
                         </div>
                     </div>
@@ -95,6 +124,38 @@
 
 <script src="<%=request.getContextPath()%>/app/backStage/lib/jquery/jquery.min.js"></script>
 <script src="<%=request.getContextPath()%>/app/backStage/js/common.js"></script>
+<script>
+    $(function(){
 
+        var dom = {
+            input1: $('#input1'),
+            input2: $('#input2'),
+            input3: $('#input3'),
+            input4: $('#input4')
+        }
+
+        dom.input1.keyup(function(){
+            dom.input2.val($(this).val());
+        });
+        dom.input3.keyup(function(){
+            dom.input4.val($(this).val());
+        });
+
+        dom.input3.blur(function(){
+            if( parseInt( $(this).val() ) < parseInt(dom.input2.val()) ){
+                alert('最大人数不应小于最小人数');
+                $(this).val('');
+                dom.input4.val('');
+            }
+
+        });
+
+        /*输入框只能输入数字*/
+        $("input[data-accept='number']").keyup(function() {
+            this.value = this.value.replace(/\D/g, "");
+        });
+
+    });
+</script>
 </body>
 </html>

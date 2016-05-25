@@ -1,4 +1,6 @@
-<%@ page import="com.Shop.Model.Good" %><%--
+<%@ page import="com.Shop.Model.Good" %>
+<%@ page import="com.Shop.Model.Image" %>
+<%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: Administrator
   Date: 2016/3/29 0029
@@ -43,7 +45,7 @@
                     <div class="form-group">
                         <label class="col-xs-2 control-label" for="number" >商品编号：</label>
                         <div class="col-xs-10 textShow">
-                            <input disabled="disabled" type="text" value="这些是显示商品编号的" class="form-control" id="number"/>
+                            <input disabled="disabled" type="text" value="<%=good.getId()%>" class="form-control" id="number"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -112,6 +114,23 @@
                         <div class="col-xs-10 imgArea" id="carouselImg">
 
                             <!-- [[添加图片 -->
+                            <%
+                                List<Image> images0 = (List<Image>)request.getAttribute("images0");
+                                for(Image image:images0){
+                            %>
+                            <!-- [[添加图片 -->
+                            <div class="col-xs-6 col-sm-2 col-lg-2">
+                                <div class="img-content add-content">
+                                    <input type="hidden" name="files" value="<%=image.getAddress()%>"/>
+                                    <span class="add" style="display: none;">&#43;</span>
+                                    <img src="<%=image.getAddress()%>" alt="" class="img-responsive" style="display: inline;"/>
+                                    <span class="cancel" style="display: inline;">&#88;</span>
+                                </div>
+                            </div><!-- 添加图片]] -->
+
+                            <%
+                                }
+                            %>
                             <div class="col-xs-6 col-sm-2 col-lg-2">
                                 <div class="img-content add-content">
                                     <input type="file" accept="image/*" class="fileInp" name="files"/>
@@ -120,13 +139,12 @@
                                     <span class="cancel" >&#88;</span>
                                 </div>
                             </div><!-- 添加图片]] -->
-
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="detail" class="col-xs-2 control-label">详情介绍：</label>
                         <div class="col-xs-10">
-                            <textarea name="describes" class="form-control" id="detail" value="<%=good.getDescribes()%>" rows="10"></textarea>
+                            <textarea name="describes" class="form-control" id="detail"  rows="10"><%=good.getDescribes()%></textarea>
                         </div>
                     </div>
 
@@ -137,7 +155,24 @@
                         </label>
                         <div class="col-xs-10 imgArea" id="illustration">
 
+
+                            <%
+                                List<Image> images1 = (List<Image>)request.getAttribute("images1");
+                                for(Image image:images1){
+                            %>
                             <!-- [[添加图片 -->
+                            <div class="col-xs-6 col-sm-2 col-lg-2">
+                                <div class="img-content add-content">
+                                    <input type="hidden" name="detailfiles" value="<%=image.getAddress()%>"/>
+                                    <span class="add" style="display: none;">&#43;</span>
+                                    <img src="<%=image.getAddress()%>" alt="" class="img-responsive" style="display: inline;"/>
+                                    <span class="cancel" style="display: inline;">&#88;</span>
+                                </div>
+                            </div><!-- 添加图片]] -->
+                            <%
+                                }
+                            %>
+
                             <div class="col-xs-6 col-sm-2 col-lg-2">
                                 <div class="img-content add-content">
                                     <input type="file" accept="image/*" class="fileInp" name="detailfiles"/>
@@ -146,7 +181,6 @@
                                     <span class="cancel" >&#88;</span>
                                 </div>
                             </div><!-- 添加图片]] -->
-
                         </div>
                     </div>
                     <div class="from-group">

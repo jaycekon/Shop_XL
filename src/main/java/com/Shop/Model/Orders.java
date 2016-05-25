@@ -20,6 +20,7 @@ public class Orders {
     private String name;                //收货人
     private String address;             //收货地址
     private String phone;               //联系电话
+    private float stageProfit;           //平台利润
     private int D;                      //订单状态
     private int F;                      //支付状态
     private int P;                      //配送状态
@@ -259,5 +260,13 @@ public class Orders {
 
     public void setTotalPV(float totalPV) {
         this.totalPV = totalPV;
+    }
+
+    public float getStageProfit() {
+        return stageProfit;
+    }
+
+    public void setStageProfit(float stageProfit) {
+        this.stageProfit = stageProfit;
     }
 }

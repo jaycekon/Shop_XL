@@ -13,6 +13,9 @@ import org.apache.http.util.EntityUtils;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+/**
+ * 物流查找
+ */
 public class ExpressSearch {
 	
 	public static String consult1(String type, String postId) {

@@ -48,64 +48,51 @@ $(function(){
         },
 
         changeFile : function(_this,maxNum,par){
-            $(_this).on('change',function(){
                 var imgcontent = $(_this).parents('.img-content'),src,that=_this;
 
-                /*
+
                  // 利用formData对象异步上传图片 但存在兼容性问题
                  var file = $(_this)[0].files[0];
                  var data = new FormData();
-                 data.append('carouselImg',file);
+                 data.append('files',file);
 
                  $.ajax({
                  type : 'POST',
                  data : data,
                  processData : false,
                  contentType : false,
-                 url : '',
+                 url : '/uploadFile',
+                 dataType: 'json',
                  success : function(data){
-                 if(data.code == 1){
-                 src = data.data;
-                 $(that).hide();
-                 imgcontent.find('.add').hide();
-                 imgcontent.find('img').attr({'src':src}).show();
-                 imgcontent.find('.cancel').show();
-                 imgcontent.find('.imgSrc').val(src);
-                 imgcontent.removeClass('add-content');
+                    /* console.log(data);
+                     data = JSON.parse(data);*/
+                     //data = JSON.stringify(data);
+                     if(data.status == 1){
+                         src = data.image;
+                         $(that).hide();
+                         imgcontent.find('.add').hide();
+                         imgcontent.find('img').attr({'src':src}).show();
+                         imgcontent.find('.cancel').show();
+                         imgcontent.find('.imgSrc').val(src);
+                         imgcontent.removeClass('add-content');
+                         /*input*/
+                         var input = $('<input name=' + $(_this).attr("name") + '>');
+                         input.attr({'type':'hidden','value':src });
+                         imgcontent.append(input);
 
-                 var index = $(par).find('.img-content').length;
-                 if(index < maxNum) {
-                 imgcontent.parents(par).append(method.addDom());
-                 resizeImg(dom.$img_content);
-                 }
-                 }else{
-                 alert('上传失败！');
-                 }
+                         var index = $(par).find('.img-content').length;
+                         if(index < maxNum) {
+                             imgcontent.parents(par).append(method.addDom());
+                             resizeImg(dom.$img_content);
+                         }
+                         $(_this).remove();
+                    }
                  },
                  error:function(data){
-                 alert('系统错误！');
+                     alert('系统错误！');
                  }
-                 });*/
+             });
 
-                //    前台模拟上传成功后
-                // 替换原来的添加图片为图片区
-                var file = $(_this)[0].files[0];
-                src = getObjectURL(file);
-                $(that).hide();
-                imgcontent.find('.add').hide();
-                imgcontent.find('img').attr({'src':src}).show();
-                imgcontent.find('.cancel').show();
-                imgcontent.find('.imgSrc').val(src);
-                imgcontent.removeClass('add-content');
-
-                // 增加新的增加图片区
-                var index = $(par).find('.img-content').length;
-                if(index < maxNum) {
-                    imgcontent.parents(par).append(method.addDom(par));
-                    resizeImg();
-                }
-
-            });
         },
 
         cancelImg : function(_this,par, maxNum){
@@ -130,11 +117,11 @@ $(function(){
 
     };
 
-    dom.$carouselImg.on('click','.fileInp',function(){
+    dom.$carouselImg.on('change','.fileInp',function(){
         method.changeFile(this,cMaxNum,'#carouselImg');
     });
 
-    dom.$illustration.on('click','.fileInp',function(){
+    dom.$illustration.on('change','.fileInp',function(){
         method.changeFile(this,fMaxNum,'#illustration');
     });
 

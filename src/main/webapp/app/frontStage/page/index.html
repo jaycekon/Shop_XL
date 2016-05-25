@@ -24,7 +24,7 @@
     <section class="ui-container">
 
         <!-- [[轮播图 -->
-        <div class="ui-slider" id="carouselContainer">
+        <div class="ui-slider ui-border-b" id="carouselContainer">
             <ul class="ui-slider-content" style="width: 300%">
                 <li><img src="./../image/carousel1.jpg" alt=""></li>
                 <li><img src="./../image/carousel2.jpg" alt=""></li>
@@ -38,7 +38,7 @@
             <div class="productList">
                 <div class="ui-row-flex">
                     <div class="ui-col ui-col-2">
-                        <a href="productDetail.html"><img src="./../image/1.jpg" alt="" class="productImg" /></a>
+                        <a href="productDetail.html"><img src="./../image/carousel2.jpg" alt="" class="productImg" /></a>
                     </div>
                     <div class="ui-col ui-col-3 ui-row-flex ui-whitespace ui-row-flex-ver productCol2">
                         <p class="ui-col ui-nowrap ui-flex-align-center productName"><a href="productDetail.html">自然堂雪域精粹纯粹滋润冰肌水(清润型)汇聚喜马拉雅5000米，滋润力量,提升肌肤角质屏障功能,优化肌肤保水力,令肌肤水润鲜活.欢迎访问自然堂(Chando)官网,发掘你与生俱来的美.</a></p>
@@ -147,6 +147,10 @@
     <script src="./../js/index.js?1"></script>
     <script>
         $(function() {
+
+            // 设置图片大小为1:1
+            var sImg = $('.productList img');
+            $('.productList img').css({ 'height':  sImg.width() });
 
         	// 跳转到详情页
         	$('.productList').click(function(e){

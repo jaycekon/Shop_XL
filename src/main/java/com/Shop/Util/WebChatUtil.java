@@ -98,7 +98,8 @@ public class WebChatUtil {
         HttpPost post = new HttpPost(url);
         JsonParser jsonParser = new JsonParser();
         post.addHeader(HTTP.CONTENT_TYPE, "application/json");
-        String encoderJson = "{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": "+type+flag+"}}}";
+        String encoderJson = "{\"expire_seconds\": 604800, \"action_name\": \"QR_SCENE\", \"action_info\": {\"scene\": {\"scene_id\": "
+                +type+flag+"}}}";
         System.out.println(encoderJson);
         StringEntity se = null;
         StringBuffer sb = new StringBuffer();
@@ -304,7 +305,7 @@ public class WebChatUtil {
     //调用统一下单接口,类型为网页支付，包含多张订单
     public static String placeOrdersJSAPI(long payId,float money,HttpServletRequest request,String uuid,String notify_url) throws Exception{
         //统计要付的钱
-        float payMoney=money;
+        float payMoney=1f;
         //付款成功后跳转url
 
         String nonce_str = generateStr(32);

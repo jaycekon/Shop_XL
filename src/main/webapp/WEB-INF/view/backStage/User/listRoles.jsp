@@ -44,8 +44,8 @@
                             <td>头像</td>
                             <td class="textLeft">姓名</td>
                             <td>关注时间</td>
-                            <td class="textLeft">常用邮箱</td>
-                            <td class="textRight">总收益佣金（元）</td>
+                            <td class="textLeft">等级</td>
+                            <td class="textRight">用户数量</td>
                             <td class="textRight">可支配佣金（元）</td>
                             <td class="textRight">待收益佣金（元）</td>
                         </tr>
@@ -63,8 +63,8 @@
                             </td>
                             <td class="textLeft"><%=r.getName()%></td>
                             <td><%=r.getDate()%></td>
-                            <td class="textLeft"><%=r.getEMail()%></td>
-                            <td class="textRight"><%=r.getTotalCommission()%></td>
+                            <td class="textLeft"><%=r.getLevel()%></td>
+                            <td class="textRight"><%=r.getCount()%></td>
                             <td class="textRight"><%=r.getExitCommission()%></td>
                             <td class="textRight"><%=r.getWaitCommission()%></td>
                         </tr>

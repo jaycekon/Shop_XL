@@ -2,6 +2,9 @@ package com.Shop.Util;
 
 import java.util.List;
 
+/**
+ * 物流实体
+ */
 public class ExpressBean {
 	private String message;
 	private String nu;

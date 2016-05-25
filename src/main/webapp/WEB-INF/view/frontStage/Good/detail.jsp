@@ -73,9 +73,9 @@
         <%
         }
         %>
-        <p class="specText"><span>库存：</span><span id="stock"><%=good.getNum()%></span></p>
+        <p class="specText"><span>库&nbsp;&nbsp;&nbsp;&nbsp;存：</span><span id="stock"><%=good.getNum()%></span></p>
         <p class="specText"><span>起批量：</span><%=good.getWholesaleCount()%></p>
-        <p class="specText"><span>销量：</span><%=good.getSaleCount()%></p>
+        <p class="specText"><span>销&nbsp;&nbsp;&nbsp;&nbsp;量：</span><%=good.getSaleCount()%></p>
         <%
             if(request.getAttribute("watchProduct")==null){
         %>
@@ -101,7 +101,7 @@
             <input type="number" value="<%=good.getWholesaleCount()%>"  name="count" id ="count" />
             <button class="add plus" type="button">&#43;</button>
         </div>
-
+            <button class="addCartBtnFix" type="submit"><i class="ui-icon-cart"></i></button>
         </form>
         <div class="ui-poptips ui-poptips-success addTip">
             <div class="ui-poptips-cnt"><i></i>1件商品成功加入购物车</div>
@@ -261,6 +261,15 @@
 
     });
 
+    // 显示购物车悬浮按钮
+    var $addCartBtnFix = $('.addCartBtnFix');
+    $(window).on('scroll',function(){
+        if( $(this).scrollTop() > 514 ) {
+            $addCartBtnFix.show();
+        }else {
+            $addCartBtnFix.hide();
+        }
+    });
 
 
 </script>

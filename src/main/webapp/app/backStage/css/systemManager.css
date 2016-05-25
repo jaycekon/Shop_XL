@@ -37,8 +37,36 @@
     padding: 10px;
     border: 1px solid #CCCCCC;
 }
-
-
+/*角色抽佣*/
+.clearfix:after {
+  content: " ";
+  display: block;
+  clear: both;
+  height: 0;
+}
+.clearfix {
+  zoom: 1;
+}
+.roleCol1, .roleCol2{
+    float: left;
+}
+.roleCol1 {
+    margin-right: 22px;
+}
+.roleCol2 {
+    width: 200px;
+}
+.blockage {
+    display: inline-block;
+    padding: 6px;
+    height: 32px;
+    width: 80px;
+}
+.symbol {
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+}
 
 
 

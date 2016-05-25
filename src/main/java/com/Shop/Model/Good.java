@@ -27,6 +27,7 @@ public class Good {
     private float wholesalePrices;          //促销价
     private float dumpingPrices;                //倾销价
     private float productPrices;                //商品零售价
+    private float firmPrices;                   //出厂价
     private int  wPrices;                   //倾销币查看价格
     private int wholesaleCount;                 //起批量
     private int saleCount;                      //销量
@@ -168,5 +169,13 @@ public class Good {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public float getFirmPrices() {
+        return firmPrices;
+    }
+
+    public void setFirmPrices(float firmPrices) {
+        this.firmPrices = firmPrices;
     }
 }

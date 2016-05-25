@@ -17,10 +17,16 @@ public class Areas {
     private String name;
     private String img;
     private long flag;
+    private int count;                  //角色数量
     private Date date;                  //注册时间
     private float totalCommission;                //全部佣金
     private float exitCommission;             //剩余佣金
     private float waitCommission;             //待结算佣金
+    private int rates;                      //佣金比率
+
+    public Areas(){
+        this.setRates(10);
+    }
 
     @Id
     @GeneratedValue
@@ -94,5 +100,21 @@ public class Areas {
 
     public void setWaitCommission(float waitCommission) {
         this.waitCommission = waitCommission;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getRates() {
+        return rates;
+    }
+
+    public void setRates(int rates) {
+        this.rates = rates;
     }
 }

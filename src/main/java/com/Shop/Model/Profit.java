@@ -21,6 +21,7 @@ public class Profit {
     private int level1Rate;             //1级佣金
     private int level2;                 //2级人数
     private int level2Rate;             //2级佣金
+    private int level3Rate;             //2级佣金
 
     @Id
     @GeneratedValue
@@ -103,5 +104,13 @@ public class Profit {
 
     public void setLevel2Rate(int level2Rate) {
         this.level2Rate = level2Rate;
+    }
+
+    public int getLevel3Rate() {
+        return level3Rate;
+    }
+
+    public void setLevel3Rate(int level3Rate) {
+        this.level3Rate = level3Rate;
     }
 }

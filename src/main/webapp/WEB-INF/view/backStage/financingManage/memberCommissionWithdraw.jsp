@@ -48,7 +48,7 @@
                 %>
                 <div class="order-type text-left">
                     <button class="btn btn-default" id="btn"
-                            onclick="window.location.href='<%=request.getContextPath()%>/listAreaCommission'">所有订单
+                            onclick="window.location.href='<%=request.getContextPath()%>/listAreaCommission'">所有提现
                     </button>
                     <button class="btn btn-default" id="btn0"
                             onclick="window.location.href='<%=request.getContextPath()%>/listAreaCommissionStatus?status=0'">

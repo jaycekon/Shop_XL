@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.management.relation.Role;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,7 @@ public class AdminController {
     private OrdersService ordersService;
 
     Logger log = Logger.getLogger(AdminController.class);
+    private ExpressBean expressBean;
 
     @RequestMapping(value="backStage")
     public String backStage(){
@@ -157,6 +159,7 @@ public class AdminController {
         p.setLevel1Rate(profit.getLevel1Rate());
         p.setLevel2(profit.getLevel2());
         p.setLevel2Rate(profit.getLevel2Rate());
+        p.setLevel3Rate(profit.getLevel3Rate());
         terraceService.updateProfit(p);
         model.addAttribute(profit);
         return "backStage/SystemManage/parameter";
@@ -210,6 +213,11 @@ public class AdminController {
         page.setEveryPage(10);
         page.setBeginIndex(pages);
         List<Areas> areas = userService.listAreas();
+        for(Areas areas1:areas){
+            List<Roles> roles = userService.listRolesByAreas(areas1.getId());
+            areas1.setCount(roles.size());
+            userService.updateAreas(areas1);
+        }
         page.setTotalCount(areas.size());
         List<Areas> a = userService.listAreasByPage(page);
         page.setList(a);
@@ -219,10 +227,26 @@ public class AdminController {
 
     @RequestMapping(value ="listRoles",method = RequestMethod.GET)
     public String listRoles(Model model){
+        Profit profit = terraceService.findProfit();
         Page<Roles> page = new Page();
         page.setEveryPage(10);
         page.setBeginIndex(0);
         List<Roles> roles = userService.listRoles();
+        for(Roles role:roles) {
+            List<User> users = userService.listUserByRolesId(role.getId());
+            role.setCount(users.size());
+            if(users.size() < profit.getLevel1()){
+                role.setLevel(1);
+                role.setRates(profit.getLevel1Rate());
+            }else if(users.size() <profit.getLevel2()){
+                role.setLevel(2);
+                role.setRates(profit.getLevel2Rate());
+            }else{
+                role.setLevel(3);
+                role.setRates(profit.getLevel3Rate());
+            }
+            userService.updateRoles(role);
+        }
         page.setTotalCount(roles.size());
         page.setList(userService.listRolesByPage(page));
         model.addAttribute("page",page);
@@ -401,7 +425,7 @@ public class AdminController {
     public String getOrderLogisticTrack(@PathVariable("id")int id, HttpSession session,Model model){
         Orders orders = ordersService.findOrdersById(id);
         String json = ExpressSearch.consult3(orders.getLogistic().getLogis_comp_id(),orders.getCarriageCode());
-        ExpressBean  expressBean = (ExpressBean) DataConvertorUtil.json2object(json, ExpressBean.class);
+        ExpressBean  expressBean =  (ExpressBean) DataConvertorUtil.json2object(json, ExpressBean.class);
         model.addAttribute("expressBean", expressBean);
         model.addAttribute("orders",orders);
         System.out.println("getOrderLogisticTrack   expressBean : "+expressBean);
@@ -657,6 +681,21 @@ public class AdminController {
         page.setList(withdrawalsOrders);
         model.addAttribute("page",page);
         return "backStage/financingManage/memberCommissionWithdraw";
+    }
+
+
+    /**
+     * 更新大区的比率
+     * @param id
+     * @param rates
+     * @return
+     */
+    @RequestMapping(value="updateAreasProfit",method = RequestMethod.POST)
+    public String updateAreasProfit(int id,int rates){
+        Areas areas = userService.getAreas(id);
+        areas.setRates(rates);
+        userService.updateAreas(areas);
+        return "redirect:/listAreas";
     }
 
 //    @RequestMapping(value="/getProductLogisticTrack/{id}",method={RequestMethod.GET,RequestMethod.POST})

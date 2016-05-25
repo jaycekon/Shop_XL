@@ -47,7 +47,7 @@
                             <td>头像</td>
                             <td class="textLeft">昵称</td>
                             <td>关注时间</td>
-                            <td class="textRight">总收益佣金（元）</td>
+                            <td class="textRight">角色数量</td>
                             <td class="textRight">可支配佣金（元）</td>
                             <td class="textRight">待收益佣金（元）</td>
                         </tr>
@@ -72,7 +72,7 @@
                                     out.println(format.format(a.getDate()));
                                 }
                             %></td>
-                            <td class="textRight"><%=a.getTotalCommission()%></td>
+                            <td class="textRight"><%=a.getCount()%></td>
                             <td class="textRight"><%=a.getExitCommission()%></td>
                             <td class="textRight"><%=a.getWaitCommission()%></td>
                         </tr>

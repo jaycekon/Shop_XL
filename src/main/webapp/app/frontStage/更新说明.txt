@@ -72,3 +72,34 @@ function acountPrice() {
 更新地方： index.html   最后面的script
 
 
+5月11：
+更新首页的商品图片大小 限定大小为1:1
+更新地方：index.html 的 script区
+
+5月12：
+1.首页： 轮播图加了底部border  
+修改地方：index.html  （【【【ui-border-b】】】新增）
+ <!-- [[轮播图 -->
+<div class="ui-slider 【【【ui-border-b】】】" id="carouselContainer">
+    <ul class="ui-slider-content" style="width: 300%">
+        <li><img src="./../image/carousel1.jpg" alt=""></li>
+        <li><img src="./../image/carousel2.jpg" alt=""></li>
+        <li><img src="./../image/carousel3.jpg" alt=""></li>
+    </ul>
+</div><!-- 轮播图]] -->
+2.商品详情页 商品基本信息(排版做了更改),  
+修改地方：prodctDetail.html  （【【【新增】】】）
+<p class="specText"><span>零售价：</span><span class="themeColor">&#165;123.09</span></p>
+<p class="specText"><span>市场价：</span><span class="themeColor">&#165;123.09</span></p>
+<p class="specText"><span>运【【【&nbsp;&nbsp;&nbsp;&nbsp;】】】费：</span>123</p>
+<p class="specText"><span>库【【【&nbsp;&nbsp;&nbsp;&nbsp;】】】存：</span><span id="stock">3</span></p>
+<p class="specText"><span>起批量：</span>123</p>
+<p class="specText"><span>销【【【&nbsp;&nbsp;&nbsp;&nbsp;】】】量：</span>123</p>
+更新product.css
+3.加入购物车固定在窗口
+修改地方：productDetail.html 以及 底部的script部分    
+		<!-- 加入购物车悬浮按钮 -->
+		 <a class="addCartBtnFix"><i class="ui-icon-cart"></i></a>
+		<!-- /加入购物车悬浮按钮 -->
+
+

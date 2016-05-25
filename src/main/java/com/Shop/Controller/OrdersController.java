@@ -567,34 +567,39 @@ public class OrdersController {
             if (map.get("result_code").toString().equalsIgnoreCase("SUCCESS")) {
                 String uuid = (String)map.get("out_trade_no");
                 Orders orders = ordersService.findOrdersByUid(uuid);
-                Profit profit = terraceService.findProfit();
+                float stageProfit = 0;
+                float totalOrderProduct = 0;
+                List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
+                for(OrderProduct orderProduct:orderProducts){
+                    totalOrderProduct += orderProduct.getPv() * orderProduct.getCount();
+                }
+                stageProfit = totalOrderProduct;
                 //判断订单中有没有角色和大区，如果有，将佣金划分入大区和角色中待结算佣金中
                 if(orders.getRoles()!=null) {
-                    List<OrderProduct> orderProducts = userService.findOrderProductByOrderId(orders.getId());
-                    float totalOrderProduct = 0;
-                    for(OrderProduct orderProduct:orderProducts){
-                        totalOrderProduct += orderProduct.getPv() * orderProduct.getCount();
-                    }
                     Roles roles = orders.getRoles();
-                    float total = roles.getTotalCommission() + (totalOrderProduct*profit.getRole_count())/100;
-                    float wait = roles.getWaitCommission() +(totalOrderProduct*profit.getRole_count())/100;
+                    Areas areas = orders.getAreas();
+                    float roleCommission = totalOrderProduct * roles.getRates();
+                    float total = roles.getTotalCommission() + roleCommission/100;
+                    float wait = roles.getWaitCommission() + roleCommission/100;
                     log.info("角色总佣金："+total);
                     log.info("角色待收益佣金："+wait);
                     roles.setTotalCommission(total);
                     roles.setWaitCommission(wait);
                     userService.updateRoles(roles);
-                    Areas areas = orders.getAreas();
-                    total = areas.getTotalCommission() + (totalOrderProduct * profit.getArea_count())/100;
-                    wait = areas.getWaitCommission()+(totalOrderProduct * profit.getArea_count())/100;
+                    float areaCommission = totalOrderProduct * areas.getRates();
+                    total = areas.getTotalCommission() + areaCommission/100;
+                    wait = areas.getWaitCommission() + areaCommission/100;
                     log.info("大区总佣金："+total);
                     log.info("大区待收益佣金："+wait);
                     areas.setWaitCommission(wait);
                     areas.setTotalCommission(total);
                     userService.updateAreas(areas);
+                    stageProfit = stageProfit - areaCommission/100 - roleCommission/100;
                 }
                 log.info("更新数据库中订单的信息："+orders.getUuid());
                 orders.setPayTime(new Date());
                 orders.setF(1);
+                orders.setStageProfit(stageProfit);
                 ordersService.updateOrders(orders);
                 //跟新商品的销量和库存
                 ordersService.updateOrderProductAfterPay(orders.getId());
@@ -1215,8 +1220,8 @@ public class OrdersController {
                         float totalCommission = roles.getTotalCommission();
                         float waitCommission = roles.getWaitCommission();
                         //总佣金减去订单项佣金
-                        totalCommission = totalCommission - (pv * profit.getRole_count())/100;
-                        waitCommission = waitCommission - (pv * profit.getRole_count())/100;
+                        totalCommission = totalCommission - (pv * roles.getRates())/100;
+                        waitCommission = waitCommission - (pv * roles.getRates())/100;
                         roles.setWaitCommission(waitCommission);
                         roles.setTotalCommission(totalCommission);
                         userService.updateRoles(roles);
@@ -1225,8 +1230,8 @@ public class OrdersController {
                         Areas areas = orders.getAreas();
                         totalCommission = areas.getTotalCommission();
                         waitCommission = areas.getWaitCommission();
-                        totalCommission = totalCommission - (pv * profit.getArea_count())/100;
-                        waitCommission = waitCommission - (pv * profit.getArea_count())/100;
+                        totalCommission = totalCommission - (pv * areas.getRates())/100;
+                        waitCommission = waitCommission - (pv * areas.getRates())/100;
                         areas.setTotalCommission(totalCommission);
                         areas.setWaitCommission(waitCommission);
                         userService.updateAreas(areas);

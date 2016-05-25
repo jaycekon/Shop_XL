@@ -459,8 +459,8 @@ public class WebChatController {
                         float totalCommission = roles.getTotalCommission();
                         float waitCommission = roles.getWaitCommission();
                         log.info("角色总佣金："+totalCommission+" 角色待结算佣金："+waitCommission);
-                        totalCommission = totalCommission - (pv * profit.getRole_count())/100;
-                        waitCommission = waitCommission - (pv * profit.getRole_count())/100;
+                        totalCommission = totalCommission - (pv * roles.getRates())/100;
+                        waitCommission = waitCommission - (pv * roles.getRates())/100;
                         log.info("角色总佣金："+totalCommission+" 角色待结算佣金："+waitCommission);
                         roles.setWaitCommission(waitCommission);
                         roles.setTotalCommission(totalCommission);
@@ -471,8 +471,8 @@ public class WebChatController {
                         totalCommission = areas.getTotalCommission();
                         waitCommission = areas.getWaitCommission();
                         log.info("大区总佣金："+totalCommission+" 大区待结算佣金："+waitCommission);
-                        totalCommission = totalCommission - (pv * profit.getArea_count())/100;
-                        waitCommission = waitCommission - (pv * profit.getArea_count())/100;
+                        totalCommission = totalCommission - (pv * areas.getRates())/100;
+                        waitCommission = waitCommission - (pv * areas.getRates())/100;
                         log.info("大区总佣金："+totalCommission+" 大区待结算佣金："+waitCommission);
                         areas.setTotalCommission(totalCommission);
                         areas.setWaitCommission(waitCommission);

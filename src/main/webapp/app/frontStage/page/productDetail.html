@@ -61,10 +61,10 @@
 
         <p class="specText"><span>零售价：</span><span class="themeColor">&#165;123.09</span></p>
         <p class="specText"><span>市场价：</span><span class="themeColor">&#165;123.09</span></p>
-        <p class="specText"><span>运费：</span>123</p>
-        <p class="specText"><span>库存：</span><span id="stock">3</span></p>
+        <p class="specText"><span>运&nbsp;&nbsp;&nbsp;&nbsp;费：</span>123</p>
+        <p class="specText"><span>库&nbsp;&nbsp;&nbsp;&nbsp;存：</span><span id="stock">3</span></p>
         <p class="specText"><span>起批量：</span>123</p>
-        <p class="specText"><span>销量：</span>123</p>
+        <p class="specText"><span>销&nbsp;&nbsp;&nbsp;&nbsp;量：</span>123</p>
 
         <button class="ui-btn productBtn watchPrice">查看倾销价</button>
         <button class="ui-btn addCartBtn" id="addCartBtn"><i class="ui-icon-cart"></i></button>
@@ -88,10 +88,10 @@
             <li class="current">商品介绍</li>
             <li>商品评价</li>
         </ul>
-        <ul class="ui-tab-content" style="width:300%">
+        <ul class="ui-tab-content">
             <!-- [[商品介绍内容 -->
-            <li class="productIntro"><!--
-                <p class="content">这是正文内容</p>-->
+            <li class="productIntro">
+                <p class="content">这是一些描述字段，测试一下描述字段的line-height测试测试</p>
                 <img src="../image/1.jpg" alt="">
                 <img src="../image/1.jpg" alt="">
             </li><!-- 商品介绍内容]] -->
@@ -132,6 +132,10 @@
         </div>
     </div>
 </div><!-- 点击查看需要倾销]] -->
+
+<!-- 加入购物车悬浮按钮 -->
+ <a class="addCartBtnFix"><i class="ui-icon-cart"></i></a>
+<!-- /加入购物车悬浮按钮 -->
 
 <script src="./../lib/js/zepto.min.js"></script>
 <script src="./../lib/js/frozen.js"></script>
@@ -190,6 +194,16 @@
             interval: 3000
         });
 
+    });
+
+    // 显示购物车悬浮按钮
+    var $addCartBtnFix = $('.addCartBtnFix');
+    $(window).on('scroll',function(){
+    	if( $(this).scrollTop() > 514 ) {
+    		$addCartBtnFix.show();
+    	}else {
+    		$addCartBtnFix.hide();
+    	}
     });
 
 

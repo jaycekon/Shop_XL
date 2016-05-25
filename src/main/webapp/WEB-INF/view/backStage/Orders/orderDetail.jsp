@@ -158,7 +158,7 @@
                                 </div>
                                 <div class="product-total">大区盈利：￥<%=(orders.getTotalPV()*profit.getArea_count())/100%>
                                 </div>
-                                <div class="product-total">角色盈利：￥<%=(orders.getTotalPV()*profit.getRole_count())/100%>
+                                <div class="product-total">角色盈利：￥<%=(orders.getTotalPV() * orders.getRoles().getRates())/100%>
                                 </div>
                                 <div class="freight">运费合计：￥0.0</div>
                             </div>

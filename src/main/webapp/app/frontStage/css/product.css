@@ -30,15 +30,34 @@
 .ui-btn .ui-icon-cart {
     line-height: 1;
 }
-.productSpecBlock .addCartBtn, .productSpecBlock .watchPrice {
+.productSpecBlock .addCartBtn, .productSpecBlock .watchPrice, .productSpecBlock .selectNum {
     position: absolute;
     right: 15px;
 }
 .addCartBtn {
-    bottom: 12px;
+    bottom: 60px;
 }
 .productSpecBlock .watchPrice {
-    bottom: 68px;
+    top: 22px;
+}
+.productSpecBlock .selectNum {
+    bottom: 12px;
+}
+/*加入购物车悬浮按钮*/
+.addCartBtnFix {
+    position: fixed;
+    z-index: 100;
+    bottom: 80px;
+    right: 20px;
+    display: block;
+    width: 44px;
+    line-height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    background-color: rgba(255,255,255,.9);
+    border: 1px solid #ececec;
+    box-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+    display: none;
 }
 /* 加入购物车提示 */
 .addTip {
@@ -125,11 +144,19 @@
 .ui-tab-content {
     background-color: #fff;
 }
+.productIntro {
+    padding: 8px;
+}
 .productIntro img{
     width: 100%;
+    margin: 2px 0;
+    border-radius: 2px;
 }
 .productIntro .content {
     padding: 10px;
+}
+.productComment .date {
+    float: right;
 }
 
 /*

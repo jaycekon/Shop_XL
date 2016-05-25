@@ -14,6 +14,9 @@ public class Roles {
     private String phone;
     private String EMail;
     private String img;
+    private int level;                  //角色等级
+    private int rates;                  //角色佣金比率
+    private int count;                  //用户数量
     private String OpenId;              //微信ID
     private Areas areas;                //上级大区
     private Date date;                  //关注日期
@@ -110,5 +113,29 @@ public class Roles {
 
     public void setWaitCommission(float waitCommission) {
         this.waitCommission = waitCommission;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getRates() {
+        return rates;
+    }
+
+    public void setRates(int rates) {
+        this.rates = rates;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 }

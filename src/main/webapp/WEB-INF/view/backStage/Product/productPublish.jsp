@@ -40,7 +40,7 @@
                     <div class="form-group">
                         <label for="productName" class="col-xs-2 control-label">商品名：</label>
                         <div class="col-xs-10 textShow">
-                            <input  type="text" class="form-control" value="商品的名字" name="name" id="productName"/>
+                            <input  type="text" class="form-control" name="name" id="productName"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -74,21 +74,22 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label for="PV" class="col-xs-2 control-label">出厂价：</label>
+                        <div class="col-xs-10 textShow">
+                            <div class="input-group">
+                                <span class="input-group-addon">&#165;</span>
+                                <input  type="text" class="form-control"name = "firmPrices" id="PV"/>
+                                <span class="input-group-addon">元</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label for="dumpingMoney" class="col-xs-2 control-label">倾销币：</label>
                         <div class="col-xs-10 textShow">
                             <input  type="number" class="form-control" name="wPrices" id="dumpingMoney"/>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="PV" class="col-xs-2 control-label">PV值：</label>
-                        <div class="col-xs-10 textShow">
-                            <div class="input-group">
-                                <span class="input-group-addon">&#165;</span>
-                                <input  type="text" class="form-control"name = "pv" id="PV"/>
-                                <span class="input-group-addon">元</span>
-                            </div>
-                        </div>
-                    </div>
+
                     <div class="form-group">
                         <label for="startBatch" class="col-xs-2 control-label">起批量：</label>
                         <div class="col-xs-10 textShow">
